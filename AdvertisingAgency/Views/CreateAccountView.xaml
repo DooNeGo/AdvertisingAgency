@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AdvertisingAgency.Views.CreateAccountView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
+    Title="Регистрация"
+    Padding="10"
+    x:DataType="viewModel:CreateAccountViewModel"
+    HideSoftInputOnTapped="True">
+
+    <VerticalStackLayout Spacing="10">
+        <material:TextField Title="Название компании" />
+        <material:TextField Title="ФИО" />
+        <material:TextField Title="Страна" />
+        <material:TextField Title="Город" />
+        <material:TextField Title="Телефон" />
+        <material:TextField Title="Логин" />
+        <material:TextField Title="Пароль">
+            <material:TextField.Attachments>
+                <material:TextFieldPasswordShowHideAttachment />
+            </material:TextField.Attachments>
+        </material:TextField>
+        <Button
+            Margin="0,20,0,0"
+            BackgroundColor="Transparent"
+            BorderColor="{StaticResource Primary}"
+            BorderWidth="1"
+            Text="Зарегистрироваться"
+            TextColor="{StaticResource Primary}"
+            TextTransform="Uppercase" />
+    </VerticalStackLayout>
+</ContentPage>
