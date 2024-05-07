@@ -9,12 +9,13 @@ public readonly record struct BriefId(Guid Value)
 
 public class Brief
 {
-    public Brief(Client client, Employee employee, MediaPlan mediaPlan, string mainProduct, string audience, decimal budget, string terms, string goal)
+    public Brief(Client client, Employee employee, MediaPlan mediaPlan, string product, string audience, decimal budget, string terms, string goal)
     {
+        Id = BriefId.Empty;
         Client = client;
         Employee = employee;
         MediaPlan = mediaPlan;
-        MainProduct = mainProduct;
+        Product = product;
         Audience = audience;
         Budget = budget;
         Terms = terms;
@@ -31,7 +32,7 @@ public class Brief
 
     public MediaPlan MediaPlan { get; set; } = null!;
 
-    public string MainProduct { get; set; } = string.Empty;
+    public string Product { get; set; } = string.Empty;
 
     public string Audience { get; set; } = string.Empty;
 

@@ -10,4 +10,10 @@ public sealed partial class LoginViewModel : ObservableObject
     {
         return Shell.Current.GoToAsync(nameof(CreateAccountViewModel));
     }
+
+    [RelayCommand]
+    private Task LogIn()
+    {
+        return Shell.Current.GoToAsync("///MainView");
+    }
 }

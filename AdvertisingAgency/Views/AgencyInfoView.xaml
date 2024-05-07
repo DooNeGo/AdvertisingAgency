@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="AdvertisingAgency.Views.AgencyInfoView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    xmlns:viewmodels="clr-namespace:AdvertisingAgency.ViewModels"
+    Padding="10"
+    x:DataType="viewmodels:AgencyInfoViewModel">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior />
+    </Shell.BackButtonBehavior>
+
+    <Shell.TitleView>
+        <Label
+            FontAttributes="Bold"
+            FontSize="30"
+            Text="Агенство" />
+    </Shell.TitleView>
+
+    <CollectionView ItemsSource="{Binding Employees}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="domain:Employee">
+                <Frame
+                    Margin="5"
+                    Padding="10"
+                    HasShadow="True">
+                    <Grid
+                        ColumnDefinitions="Auto, *"
+                        ColumnSpacing="15"
+                        RowDefinitions="*,*,*">
+                        <Frame
+                            Grid.RowSpan="3"
+                            Grid.Column="0"
+                            Padding="0"
+                            CornerRadius="30"
+                            HeightRequest="60"
+                            WidthRequest="60">
+                            <Image Aspect="AspectFill" />
+                        </Frame>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="{Binding FullName}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding PhoneNumber}"
+                            TextColor="{StaticResource Gray400}" />
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding Position.Title}"
+                            TextColor="{StaticResource Gray400}" />
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

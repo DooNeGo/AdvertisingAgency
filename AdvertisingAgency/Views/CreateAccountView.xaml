@@ -4,11 +4,18 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Title="Регистрация"
     Padding="10"
     x:DataType="viewModel:CreateAccountViewModel"
     HideSoftInputOnTapped="True">
+
+    <ContentPage.Resources>
+        <Style TargetType="material:TextField">
+            <Setter Property="ReturnType" Value="Next" />
+        </Style>
+    </ContentPage.Resources>
 
     <VerticalStackLayout Spacing="10">
         <material:TextField Title="Название компании" />
@@ -17,7 +24,7 @@
         <material:TextField Title="Город" />
         <material:TextField Title="Телефон" />
         <material:TextField Title="Логин" />
-        <material:TextField Title="Пароль">
+        <material:TextField Title="Пароль" ReturnType="Done">
             <material:TextField.Attachments>
                 <material:TextFieldPasswordShowHideAttachment />
             </material:TextField.Attachments>
@@ -27,6 +34,8 @@
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="1"
+            Command="{Binding RegisterAccountCommand}"
+            FontAttributes="Bold"
             Text="Зарегистрироваться"
             TextColor="{StaticResource Primary}"
             TextTransform="Uppercase" />

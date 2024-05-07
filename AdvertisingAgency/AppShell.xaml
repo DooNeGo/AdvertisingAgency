@@ -3,11 +3,12 @@
     x:Class="AdvertisingAgency.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:AdvertisingAgency"
     xmlns:views="clr-namespace:AdvertisingAgency.Views"
-    Title="AdvertisingAgency"
-    Shell.FlyoutBehavior="Disabled">
+    FlyoutBehavior="Disabled">
 
-    <ShellContent ContentTemplate="{DataTemplate views:LoginView}" Route="LoginView" />
-
+    <ShellContent ContentTemplate="{DataTemplate views:LoginView}" />
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" Route="MainView">
+        <ShellContent Title="Агенство" ContentTemplate="{DataTemplate views:AgencyInfoView}" />
+        <ShellContent Title="Заявки" ContentTemplate="{DataTemplate views:RequestsView}" />
+    </FlyoutItem>
 </Shell>

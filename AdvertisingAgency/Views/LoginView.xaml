@@ -4,11 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Padding="10"
     x:DataType="viewModel:LoginViewModel"
     HideSoftInputOnTapped="True"
     Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
     <VerticalStackLayout Spacing="20" VerticalOptions="Center">
         <Label
             FontAttributes="Bold"
@@ -32,6 +38,7 @@
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="1"
+            Command="{Binding LogInCommand}"
             CornerRadius="5"
             FontAttributes="Bold"
             Text="Войти"
