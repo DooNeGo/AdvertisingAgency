@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="AdvertisingAgency.Views.CampaignsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
+    xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+    xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels"
+    Padding="10"
+    x:DataType="viewModels:CampaignsViewModel"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <converters:BriefStatusConverter x:Key="CampaignStatusConverter" />
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Background}" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <CollectionView ItemsSource="{Binding Campaigns}" Scrolled="ItemsView_OnScrolled">
+            <CollectionView.Header>
+                <Label Style="{StaticResource Headline}" Text="Кампании" />
+            </CollectionView.Header>
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="1" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="domain:Campaign">
+                    <Frame
+                        Margin="3"
+                        Padding="15"
+                        BackgroundColor="White"
+                        BorderColor="{StaticResource Gray100}"
+                        CornerRadius="10"
+                        HasShadow="False">
+                        <VerticalStackLayout Spacing="8">
+                            <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
+
+                            <Grid>
+                                <Label
+                                    FontSize="17"
+                                    Text="{Binding Name}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontSize="17"
+                                    HorizontalOptions="End"
+                                    HorizontalTextAlignment="Center"
+                                    IsVisible="True"
+                                    Text="{Binding Budget, StringFormat='{0} BYN'}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+
+                            <Frame
+                                Padding="5,3"
+                                BackgroundColor="{StaticResource Gray50}"
+                                CornerRadius="3"
+                                HasShadow="False"
+                                HorizontalOptions="Start">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="11"
+                                    Text="{Binding Type}"
+                                    TextColor="{StaticResource Gray500}"
+                                    TextTransform="Uppercase" />
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <material:ButtonView
+            x:Name="AddButton"
+            Margin="0,0,5,5"
+            Padding="15"
+            BackgroundColor="{StaticResource Primary}"
+            HorizontalOptions="End"
+            StrokeShape="RoundRectangle 28"
+            TappedCommand="{Binding CreateCampaignCommand}"
+            VerticalOptions="End">
+            <Image HeightRequest="25" WidthRequest="25">
+                <Image.Source>
+                    <FontImageSource FontFamily="FARegular" Glyph="{x:Static uranium:Regular.Plus}" />
+                </Image.Source>
+            </Image>
+        </material:ButtonView>
+    </Grid>
+</ContentPage>

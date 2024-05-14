@@ -9,4 +9,6 @@ public sealed partial class LoginView
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+	private void TextField_OnCompleted(object? sender, EventArgs e) => LogInButton.SendClicked();
 }

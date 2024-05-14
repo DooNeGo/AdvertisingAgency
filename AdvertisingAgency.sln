@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvertisingAgency.Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvertisingAgency.Infrastructure", "AdvertisingAgency.Infrastructure\AdvertisingAgency.Infrastructure.csproj", "{A9B859EC-B4EE-412A-A1C9-F878880D21EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvertisingAgency.Application", "AdvertisingAgency.Application\AdvertisingAgency.Application.csproj", "{CC8CC47A-C579-4B08-89C6-5CE9768A055F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{A9B859EC-B4EE-412A-A1C9-F878880D21EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B859EC-B4EE-412A-A1C9-F878880D21EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9B859EC-B4EE-412A-A1C9-F878880D21EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8CC47A-C579-4B08-89C6-5CE9768A055F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8CC47A-C579-4B08-89C6-5CE9768A055F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8CC47A-C579-4B08-89C6-5CE9768A055F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8CC47A-C579-4B08-89C6-5CE9768A055F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

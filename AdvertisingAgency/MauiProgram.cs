@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Maui;
+﻿using AdvertisingAgency.Application;
+using AdvertisingAgency.Infrastructure;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using UraniumUI;
 
@@ -18,9 +20,10 @@ public static class MauiProgram
         {
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            fonts.AddFontAwesomeIconFonts();
         });
 
-        builder.Services.AddUI();
+        builder.Services.AddApplication().AddInfrastructure().AddUI();
 
 #if DEBUG
         builder.Logging.AddDebug();

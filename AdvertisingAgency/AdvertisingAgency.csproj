@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-maccatalyst;net8.0-android34.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-android34.0</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
@@ -68,7 +68,10 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.21" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.21" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="UraniumUI.Dialogs.Mopups" Version="2.8.1" />
+		<PackageReference Include="UraniumUI.Icons.FontAwesome" Version="2.8.1" />
 		<PackageReference Include="UraniumUI.Material" Version="2.8.1" />
+		<PackageReference Include="UraniumUI.Validations.DataAnnotations" Version="2.8.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -78,10 +81,29 @@
 	  <MauiXaml Update="Views\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\CreateCampaign\ChooseCampaignTypeView.xaml">
+	    <SubType>Designer</SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CreateCampaign\ChooseCampaignGoalView.xaml">
+	    <SubType>Designer</SubType>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\AdvertisingAgency.Application\AdvertisingAgency.Application.csproj" />
 	  <ProjectReference Include="..\AdvertisingAgency.Domain\AdvertisingAgency.Domain.csproj" />
+	  <ProjectReference Include="..\AdvertisingAgency.Infrastructure\AdvertisingAgency.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\CreateCampaign\ChooseCampaignTypeView.xaml.cs">
+	    <DependentUpon>ChooseCampaignTypeView.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="Views\CreateCampaign\ChooseCampaignGoalView.xaml.cs">
+	    <DependentUpon>CreateCampaignStartView.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="AdvertisingAgency.Views.CreateCampaign.ChooseCampaignTypeView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
+    xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    Title="Выбор типа кампании"
+    Padding="10"
+    x:DataType="createCampaign:ChooseCampaignTypeViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding GoNextCommand}" Text="Далее" />
+    </ContentPage.ToolbarItems>
+
+    <VerticalStackLayout BindableLayout.ItemsSource="{Binding CampaignTypes}" Spacing="5">
+        <BindableLayout.ItemTemplate>
+            <DataTemplate x:DataType="domain:CampaignType">
+                <Frame
+                    Padding="15"
+                    BackgroundColor="White"
+                    BorderColor="{StaticResource Gray100}"
+                    CornerRadius="10"
+                    HasShadow="False">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            Text="{Binding Title}" />
+                        <Label
+                            FontSize="13"
+                            Text="{Binding Description}"
+                            TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </BindableLayout.ItemTemplate>
+    </VerticalStackLayout>
+</ContentPage>

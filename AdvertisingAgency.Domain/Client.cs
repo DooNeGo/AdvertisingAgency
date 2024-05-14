@@ -4,19 +4,19 @@ public readonly record struct ClientId(Guid Value)
 {
     public static readonly ClientId Empty = default;
 
-    public static ClientId CreateNew() => new(Guid.NewGuid());
+    public static ClientId Create() => new(Guid.NewGuid());
 }
 
-public class Client
+public sealed class Client
 {
-    public Client(string companyName, string country, string city, string phoneNumber, string owner)
+    public Client(string companyName, string phoneNumber, FullName fullName, Location location)
     {
-        Id = ClientId.Empty;
+        Id = ClientId.Create();
         CompanyName = companyName;
-        Country = country;
-        City = city;
+        Location = location;
         PhoneNumber = phoneNumber;
-        Owner = owner;
+        FullName = fullName;
+        Campaigns = [];
     }
 
     private Client() { }
@@ -25,11 +25,11 @@ public class Client
 
     public string CompanyName { get; set; } = string.Empty;
 
-    public string Country { get; set; } = string.Empty;
-
-    public string City { get; set; } = string.Empty;
+    public Location Location { get; set; } = null!;
 
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public string Owner { get; set; } = string.Empty;
+    public FullName FullName { get; set; } = null!;
+
+    public List<Campaign> Campaigns { get; } = null!;
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="AdvertisingAgency.Views.CreateCampaign.CampaignSettingsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    Title="Настройка кампании"
+    Padding="10"
+    x:DataType="createCampaign:CampaignSettingsViewModel">
+    <VerticalStackLayout Spacing="20">
+        <VerticalStackLayout>
+            <Label Text="Введите название кампании, которое будет отображаться в кампаниях." TextColor="{StaticResource Gray400}" />
+            <material:TextField AllowClear="True" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Label Text="Выберите целевые местоположения." TextColor="{StaticResource Gray400}" />
+            <material:MultiplePickerField Title="Локации" ItemsSource="{Binding Locations}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Label Text="Выберите языки, на которых говорят ваши клиенты." TextColor="{StaticResource Gray400}" />
+            <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

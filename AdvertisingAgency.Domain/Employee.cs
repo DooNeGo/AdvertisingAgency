@@ -4,17 +4,16 @@ public readonly record struct EmployeeId(Guid Value)
 {
     public static readonly EmployeeId Empty = default;
 
-    public static EmployeeId CreateNew() => new(Guid.NewGuid());
+    public static EmployeeId Create() => new(Guid.NewGuid());
 }
 
-public class Employee
+public sealed class Employee
 {
-    public Employee(string fullName, string phoneNumber, DateOnly birthday, Position position)
+    public Employee(FullName fullName, string phoneNumber, Position position)
     {
-        Id = EmployeeId.Empty;
+        Id = EmployeeId.Create();
         FullName = fullName;
         PhoneNumber = phoneNumber;
-        Birthday = birthday;
         Position = position;
     }
 
@@ -22,11 +21,9 @@ public class Employee
 
     public EmployeeId Id { get; }
 
-    public string FullName { get; set; } = string.Empty;
+    public FullName FullName { get; set; } = null!;
 
     public string PhoneNumber { get; set; } = string.Empty;
-
-    public DateOnly Birthday { get; set; }
 
     public Position Position { get; set; } = null!;
 }

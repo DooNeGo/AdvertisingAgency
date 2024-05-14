@@ -5,57 +5,64 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:AdvertisingAgency.ViewModels"
     Padding="10"
-    x:DataType="viewmodels:AgencyInfoViewModel">
+    x:DataType="viewmodels:AgencyInfoViewModel"
+    Shell.NavBarIsVisible="False">
 
     <Shell.BackButtonBehavior>
         <BackButtonBehavior />
     </Shell.BackButtonBehavior>
 
-    <Shell.TitleView>
-        <Label
-            FontAttributes="Bold"
-            FontSize="30"
-            Text="Агенство" />
-    </Shell.TitleView>
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Background}" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
 
     <CollectionView ItemsSource="{Binding Employees}">
+        <CollectionView.Header>
+            <Label Style="{StaticResource Headline}" Text="Агенство" />
+        </CollectionView.Header>
+
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="domain:Employee">
                 <Frame
                     Margin="5"
-                    Padding="10"
+                    Padding="8"
+                    BackgroundColor="White"
+                    CornerRadius="10"
                     HasShadow="True">
                     <Grid
                         ColumnDefinitions="Auto, *"
-                        ColumnSpacing="15"
-                        RowDefinitions="*,*,*">
+                        ColumnSpacing="10"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="1">
                         <Frame
                             Grid.RowSpan="3"
                             Grid.Column="0"
                             Padding="0"
-                            CornerRadius="30"
-                            HeightRequest="60"
-                            WidthRequest="60">
+                            CornerRadius="25"
+                            HeightRequest="50"
+                            WidthRequest="50">
                             <Image Aspect="AspectFill" />
                         </Frame>
                         <Label
                             Grid.Row="0"
                             Grid.Column="1"
                             FontAttributes="Bold"
-                            FontSize="16"
+                            FontSize="14"
                             Text="{Binding FullName}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="1"
-                            Text="{Binding PhoneNumber}"
-                            TextColor="{StaticResource Gray400}" />
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="1"
+                            FontSize="13"
                             Text="{Binding Position.Title}"
                             TextColor="{StaticResource Gray400}" />
+                        <!--<Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding Position.Title}"
+                            TextColor="{StaticResource Gray400}" />-->
                     </Grid>
                 </Frame>
             </DataTemplate>

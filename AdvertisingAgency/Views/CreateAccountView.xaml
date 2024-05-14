@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<uranium:UraniumContentPage
     x:Class="AdvertisingAgency.Views.CreateAccountView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+    xmlns:v="clr-namespace:UraniumUI.Validations;assembly=UraniumUI.Validations.DataAnnotations"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Title="Регистрация"
     Padding="10"
     x:DataType="viewModel:CreateAccountViewModel"
     HideSoftInputOnTapped="True">
 
-    <ContentPage.Resources>
-        <Style TargetType="material:TextField">
-            <Setter Property="ReturnType" Value="Next" />
-        </Style>
-    </ContentPage.Resources>
+    <!--<input:FormView SubmitCommand="{Binding RegisterAccountCommand}">-->
+    <VerticalStackLayout>
+        <VerticalStackLayout.Resources>
+            <Style TargetType="material:TextField">
+                <Setter Property="AccentColor" Value="{StaticResource Primary}" />
+                <Setter Property="AllowClear" Value="True" />
+            </Style>
+        </VerticalStackLayout.Resources>
 
-    <VerticalStackLayout Spacing="10">
-        <material:TextField Title="Название компании" />
-        <material:TextField Title="ФИО" />
-        <material:TextField Title="Страна" />
-        <material:TextField Title="Город" />
-        <material:TextField Title="Телефон" />
-        <material:TextField Title="Логин" />
-        <material:TextField Title="Пароль" ReturnType="Done">
+        <material:TextField Title="Название компании" Text="{Binding CompanyName}" />
+        <material:TextField Title="Имя" Text="{Binding FirstName}" />
+        <material:TextField Title="Фамилия" Text="{Binding LastName}" />
+        <material:TextField Title="Страна" Text="{Binding Country}" />
+        <material:TextField Title="Город" Text="{Binding City}" />
+        <material:TextField Title="Телефон" Text="{Binding PhoneNumber}" />
+        <material:TextField Title="Логин" Text="{Binding UserName}" />
+        <material:TextField
+            Title="Пароль"
+            IsPassword="True"
+            ReturnType="Done"
+            Text="{Binding Password}">
             <material:TextField.Attachments>
                 <material:TextFieldPasswordShowHideAttachment />
             </material:TextField.Attachments>
         </material:TextField>
+
         <Button
             Margin="0,20,0,0"
+            input:FormView.IsSubmitButton="True"
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="1"
-            Command="{Binding RegisterAccountCommand}"
             FontAttributes="Bold"
             Text="Зарегистрироваться"
             TextColor="{StaticResource Primary}"
             TextTransform="Uppercase" />
     </VerticalStackLayout>
-</ContentPage>
+    <!--</input:FormView>-->
+</uranium:UraniumContentPage>

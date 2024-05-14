@@ -4,15 +4,16 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
-    Padding="10"
+    Padding="15"
     x:DataType="viewModel:LoginViewModel"
     HideSoftInputOnTapped="True"
     Shell.NavBarIsVisible="False">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="White" StatusBarStyle="DarkContent" />
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Background}" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
     <VerticalStackLayout Spacing="20" VerticalOptions="Center">
@@ -23,27 +24,56 @@
             Text="Авторизация"
             VerticalOptions="Center" />
 
-        <material:TextField Title="Логин" ReturnType="Next" />
-        <material:TextField
-            Title="Пароль"
-            IsPassword="True"
-            ReturnType="Done">
-            <material:TextField.Attachments>
-                <material:TextFieldPasswordShowHideAttachment />
-            </material:TextField.Attachments>
-        </material:TextField>
+        <VerticalStackLayout Spacing="10">
+            <material:TextField
+                Title="Логин"
+                AllowClear="True"
+                ReturnType="Next"
+                Text="{Binding UserName}" />
+
+            <material:TextField
+                Title="Пароль"
+                AllowClear="True"
+                Completed="TextField_OnCompleted"
+                IsPassword="True"
+                ReturnType="Done"
+                Text="{Binding Password}">
+                <material:TextField.Attachments>
+                    <material:TextFieldPasswordShowHideAttachment />
+                </material:TextField.Attachments>
+            </material:TextField>
+
+            <Label Style="{StaticResource ErrorLabel}" Text="{Binding Error}" />
+        </VerticalStackLayout>
 
         <Button
-            Margin="0,10,0,0"
+            x:Name="LogInButton"
             BackgroundColor="Transparent"
-            BorderColor="{StaticResource Primary}"
             BorderWidth="1"
             Command="{Binding LogInCommand}"
-            CornerRadius="5"
+            CornerRadius="10"
             FontAttributes="Bold"
+            FontSize="15"
+            HeightRequest="45"
             Text="Войти"
-            TextColor="{StaticResource Primary}"
-            TextTransform="Uppercase" />
+            TextTransform="Uppercase">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BorderColor" Value="{StaticResource Gray400}" />
+                            <Setter Property="TextColor" Value="{StaticResource Gray400}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
 
         <Button
             BackgroundColor="Transparent"
