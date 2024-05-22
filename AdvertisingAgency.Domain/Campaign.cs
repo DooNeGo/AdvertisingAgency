@@ -14,8 +14,7 @@ public sealed class Campaign
         CampaignGoal goal,
         CampaignType type,
         CampaignSettings settings,
-        string name,
-        decimal budget)
+        string name)
     {
         Id = CampaignId.Create();
         Status = CampaignStatus.Reviewing;
@@ -25,7 +24,6 @@ public sealed class Campaign
         Type = type;
         Settings = settings;
         Name = name;
-        Budget = budget;
     }
 
     private Campaign() { }
@@ -45,6 +43,4 @@ public sealed class Campaign
     public CampaignType Type { get; set; } = null!;
 
     public string Name { get; set; } = string.Empty;
-
-    public decimal Budget { get; set; }
 }

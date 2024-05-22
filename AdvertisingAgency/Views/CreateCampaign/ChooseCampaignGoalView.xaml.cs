@@ -16,7 +16,7 @@ public sealed partial class ChooseCampaignGoalView
     private void TapGestureRecognizer_OnTapped(object? sender, TappedEventArgs e)
     {
         if (sender is not Frame frame) return;
-        frame.BorderColor = (Color)App.Current.Resources["Primary"];
+        frame.BorderColor = (Color)Microsoft.Maui.Controls.Application.Current!.Resources["Primary"];
         _viewModel.SetCampaignGoalCommand.Execute(frame.BindingContext);
     }
 }

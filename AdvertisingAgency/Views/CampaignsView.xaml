@@ -6,12 +6,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels"
     Padding="10"
     x:DataType="viewModels:CampaignsViewModel"
+    BackgroundColor="{StaticResource Background}"
     Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
@@ -28,51 +30,53 @@
                 <Label Style="{StaticResource Headline}" Text="Кампании" />
             </CollectionView.Header>
 
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="1" />
-            </CollectionView.ItemsLayout>
-
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="domain:Campaign">
-                    <Frame
-                        Margin="3"
-                        Padding="15"
-                        BackgroundColor="White"
-                        BorderColor="{StaticResource Gray100}"
-                        CornerRadius="10"
-                        HasShadow="False">
-                        <VerticalStackLayout Spacing="8">
-                            <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem BackgroundColor="{StaticResource Error}" IconImageSource="trush_can.svg" />
+                        </SwipeView.RightItems>
+                        <Frame
+                            Margin="3"
+                            Padding="15"
+                            BackgroundColor="White"
+                            BorderColor="{StaticResource Gray100}"
+                            CornerRadius="10"
+                            HasShadow="False">
+                            <VerticalStackLayout Spacing="8">
+                                <Grid>
+                                    <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
+                                </Grid>
+                                <Grid>
+                                    <Label
+                                        FontSize="17"
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="17"
+                                        HorizontalOptions="End"
+                                        HorizontalTextAlignment="Center"
+                                        IsVisible="True"
+                                        Text="{Binding Settings.Budget, StringFormat='{0} BYN'}"
+                                        VerticalOptions="Center" />
+                                </Grid>
 
-                            <Grid>
-                                <Label
-                                    FontSize="17"
-                                    Text="{Binding Name}"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    FontSize="17"
-                                    HorizontalOptions="End"
-                                    HorizontalTextAlignment="Center"
-                                    IsVisible="True"
-                                    Text="{Binding Budget, StringFormat='{0} BYN'}"
-                                    VerticalOptions="Center" />
-                            </Grid>
-
-                            <Frame
-                                Padding="5,3"
-                                BackgroundColor="{StaticResource Gray50}"
-                                CornerRadius="3"
-                                HasShadow="False"
-                                HorizontalOptions="Start">
-                                <Label
-                                    FontAttributes="Bold"
-                                    FontSize="11"
-                                    Text="{Binding Type}"
-                                    TextColor="{StaticResource Gray500}"
-                                    TextTransform="Uppercase" />
-                            </Frame>
-                        </VerticalStackLayout>
-                    </Frame>
+                                <Frame
+                                    Padding="5,3"
+                                    BackgroundColor="{StaticResource Gray50}"
+                                    CornerRadius="3"
+                                    HasShadow="False"
+                                    HorizontalOptions="Start">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="11"
+                                        Text="{Binding Type}"
+                                        TextColor="{StaticResource Gray500}"
+                                        TextTransform="Uppercase" />
+                                </Frame>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
@@ -81,16 +85,26 @@
             x:Name="AddButton"
             Margin="0,0,5,5"
             Padding="15"
-            BackgroundColor="{StaticResource Primary}"
+            BackgroundColor="{StaticResource PrimaryContainer}"
             HorizontalOptions="End"
-            StrokeShape="RoundRectangle 28"
+            StrokeShape="RoundRectangle 15"
             TappedCommand="{Binding CreateCampaignCommand}"
             VerticalOptions="End">
             <Image HeightRequest="25" WidthRequest="25">
                 <Image.Source>
-                    <FontImageSource FontFamily="FARegular" Glyph="{x:Static uranium:Regular.Plus}" />
+                    <FontImageSource
+                        FontFamily="FARegular"
+                        Glyph="{x:Static uranium:Regular.Plus}"
+                        Color="{StaticResource OnPrimaryContainer}" />
                 </Image.Source>
             </Image>
+            <material:ButtonView.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.3"
+                    Radius="15"
+                    Offset="0, 10" />
+            </material:ButtonView.Shadow>
         </material:ButtonView>
     </Grid>
 </ContentPage>

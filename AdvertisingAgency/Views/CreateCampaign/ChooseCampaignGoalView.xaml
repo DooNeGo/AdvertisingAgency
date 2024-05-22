@@ -7,14 +7,14 @@
     xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     Title="Выбор цели кампании"
-    Padding="10"
+    Padding="5"
     x:DataType="createCampaign:ChooseCampaignGoalViewModel">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GoNextCommand}" Text="Далее" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
+    <ScrollView Padding="10">
         <VerticalStackLayout BindableLayout.ItemsSource="{Binding CampaignGoals}" Spacing="6">
             <BindableLayout.ItemTemplate>
                 <DataTemplate x:DataType="domain:CampaignGoal">

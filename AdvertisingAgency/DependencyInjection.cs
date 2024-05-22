@@ -9,15 +9,12 @@ namespace AdvertisingAgency;
 
 internal static class DependencyInjection
 {
-    public static IServiceCollection AddUI(this IServiceCollection serviceCollection)
-    {
-        return serviceCollection.AddTransientWithShellRoute<LoginView, LoginViewModel>(nameof(LoginViewModel))
-                .AddTransientWithShellRoute<CreateAccountView, CreateAccountViewModel>(nameof(CreateAccountViewModel))
-                .AddTransientWithShellRoute<AgencyInfoView, AgencyInfoViewModel>(nameof(AgencyInfoViewModel))
-                .AddTransientWithShellRoute<CreateAccountView, CreateAccountViewModel>(nameof(CreateAccountViewModel))
-                .AddTransientWithShellRoute<CampaignsView, CampaignsViewModel>(nameof(CampaignsViewModel))
-                .AddTransientWithShellRoute<ChooseCampaignGoalView, ChooseCampaignGoalViewModel>(nameof(ChooseCampaignGoalViewModel))
-                .AddTransientWithShellRoute<ChooseCampaignTypeView, ChooseCampaignTypeViewModel>(nameof(ChooseCampaignTypeViewModel))
-                .AddTransientWithShellRoute<CampaignSettingsView, CampaignSettingsViewModel>(nameof(CampaignSettingsViewModel));
-    }
+    public static IServiceCollection AddUI(this IServiceCollection serviceCollection) =>
+        serviceCollection.AddTransientWithShellRoute<LoginView, LoginViewModel>(nameof(LoginViewModel))
+            .AddTransientWithShellRoute<CreateAccountView, CreateAccountViewModel>(nameof(CreateAccountViewModel))
+            .AddTransientWithShellRoute<AgencyInfoView, AgencyInfoViewModel>(nameof(AgencyInfoViewModel))
+            .AddTransientWithShellRoute<CampaignsView, CampaignsViewModel>(nameof(CampaignsViewModel))
+            .AddTransientWithShellRoute<ChooseCampaignGoalView, ChooseCampaignGoalViewModel>(nameof(ChooseCampaignGoalViewModel))
+            .AddTransientWithShellRoute<ChooseCampaignTypeView, ChooseCampaignTypeViewModel>(nameof(ChooseCampaignTypeViewModel))
+            .AddTransientWithShellRoute<CampaignSettingsView, CampaignSettingsViewModel>(nameof(CampaignSettingsViewModel));
 }

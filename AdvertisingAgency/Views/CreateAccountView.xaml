@@ -13,11 +13,11 @@
     x:DataType="viewModel:CreateAccountViewModel"
     HideSoftInputOnTapped="True">
 
-    <!--<input:FormView SubmitCommand="{Binding RegisterAccountCommand}">-->
-    <VerticalStackLayout>
+    <VerticalStackLayout Spacing="10">
         <VerticalStackLayout.Resources>
             <Style TargetType="material:TextField">
                 <Setter Property="AccentColor" Value="{StaticResource Primary}" />
+                <Setter Property="TextColor" Value="Black"></Setter>
                 <Setter Property="AllowClear" Value="True" />
             </Style>
         </VerticalStackLayout.Resources>
@@ -45,10 +45,11 @@
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="1"
+            Command="{Binding RegisterAccountCommand}"
+            CornerRadius="10"
             FontAttributes="Bold"
             Text="Зарегистрироваться"
             TextColor="{StaticResource Primary}"
             TextTransform="Uppercase" />
     </VerticalStackLayout>
-    <!--</input:FormView>-->
 </uranium:UraniumContentPage>

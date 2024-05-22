@@ -1,3 +1,4 @@
+using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,9 +11,13 @@ public sealed partial class CampaignsViewModel : ObservableObject
 {
     [ObservableProperty] private List<Campaign> _campaigns = [];
     
-    public CampaignsViewModel(IMediator mediator)
+    public CampaignsViewModel(IMediator mediator, IIdentityService identityService)
     {
-        Task.Run(async () => Campaigns = await mediator.Send(new GetCampaignsQuery()));
+        Task.Run(async () =>
+        {
+            ClientId id = identityService.CurrentUser!.Client.Id;
+            return Campaigns = await mediator.Send(new GetCampaignsQuery(id));
+        });
     }
 
     [RelayCommand]

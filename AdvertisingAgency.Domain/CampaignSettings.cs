@@ -9,9 +9,10 @@ public readonly record struct CampaignSettingsId(Guid Value)
 
 public sealed class CampaignSettings
 {
-    public CampaignSettings(List<Location> locations, List<Language> clientSpeakLanguages, List<AdSchedule> adSchedules)
+    public CampaignSettings(decimal budget, List<Location> locations, List<Language> clientSpeakLanguages, List<AdSchedule> adSchedules)
     {
         Id = CampaignSettingsId.Create();
+        Budget = budget;
         Locations = locations;
         ClientSpeakLanguages = clientSpeakLanguages;
         AdSchedules = adSchedules;
@@ -20,6 +21,8 @@ public sealed class CampaignSettings
     private CampaignSettings() { }
 
     public CampaignSettingsId Id { get; }
+
+    public decimal Budget { get; set; } 
 
     public List<Location> Locations { get; set; } = null!;
 

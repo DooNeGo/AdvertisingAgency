@@ -1,5 +1,4 @@
-using AdvertisingAgency.ViewModels;
-using ChooseCampaignTypeViewModel = AdvertisingAgency.ViewModels.CreateCampaign.ChooseCampaignTypeViewModel;
+using AdvertisingAgency.ViewModels.CreateCampaign;
 
 namespace AdvertisingAgency.Views.CreateCampaign;
 
@@ -17,7 +16,7 @@ public sealed partial class ChooseCampaignTypeView
     private void TapGestureRecognizer_OnTapped(object? sender, TappedEventArgs e)
     {
         if (sender is not Frame frame) return;
-        frame.BorderColor = (Color)App.Current.Resources["Primary"];
+        frame.BorderColor = (Color)Microsoft.Maui.Controls.Application.Current!.Resources["Primary"];
         _viewModel.SetCampaignTypeCommand.Execute(frame.BindingContext);
     }
 }

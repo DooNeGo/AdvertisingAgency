@@ -4,25 +4,104 @@
     x:Class="AdvertisingAgency.Views.CreateCampaign.CampaignSettingsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
+    xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+    xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     Title="Настройка кампании"
-    Padding="10"
-    x:DataType="createCampaign:CampaignSettingsViewModel">
-    <VerticalStackLayout Spacing="20">
-        <VerticalStackLayout>
-            <Label Text="Введите название кампании, которое будет отображаться в кампаниях." TextColor="{StaticResource Gray400}" />
-            <material:TextField AllowClear="True" />
-        </VerticalStackLayout>
+    Padding="5"
+    x:DataType="viewModel:CampaignSettingsViewModel"
+    HideSoftInputOnTapped="True">
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="20">
+            <VerticalStackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="TextColor" Value="{StaticResource Black}" />
+                </Style>
+            </VerticalStackLayout.Resources>
 
-        <VerticalStackLayout>
-            <Label Text="Выберите целевые местоположения." TextColor="{StaticResource Gray400}" />
-            <material:MultiplePickerField Title="Локации" ItemsSource="{Binding Locations}" />
-        </VerticalStackLayout>
+            <VerticalStackLayout Spacing="3">
+                <Label Text="Введите название кампании, которое будет отображаться в кампаниях." />
+                <material:TextField Title="Название" AllowClear="True" />
+            </VerticalStackLayout>
 
-        <VerticalStackLayout>
-            <Label Text="Выберите языки, на которых говорят ваши клиенты." TextColor="{StaticResource Gray400}" />
-            <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
+            <VerticalStackLayout Spacing="3">
+                <Label Text="Выберите целевые местоположения." />
+                <material:MultiplePickerField Title="Локации" ItemsSource="{Binding Locations}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="3">
+                <Label Text="Выберите языки, на которых говорят ваши клиенты." />
+                <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
+            </VerticalStackLayout>
+
+            <uranium:ExpanderView>
+                <uranium:ExpanderView.Header>
+                    <Label
+                        Margin="7"
+                        FontSize="16"
+                        Text="Расписание показа рекламы" />
+                </uranium:ExpanderView.Header>
+                <Frame
+                    Padding="10,5"
+                    BackgroundColor="{StaticResource Background}"
+                    CornerRadius="8"
+                    HasShadow="True">
+                    <VerticalStackLayout>
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Schedules}" Spacing="5">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="domain:AdSchedule">
+                                    <VerticalStackLayout Padding="15,0" Spacing="10">
+                                        <VerticalStackLayout.Behaviors>
+                                            <toolkit:AnimationBehavior EventName="Loaded">
+                                                <toolkit:AnimationBehavior.AnimationType>
+                                                    <toolkit:FadeAnimation Length="250" />
+                                                </toolkit:AnimationBehavior.AnimationType>
+                                            </toolkit:AnimationBehavior>
+                                        </VerticalStackLayout.Behaviors>
+
+                                        <Grid ColumnDefinitions="105, *, Auto" ColumnSpacing="10">
+                                            <material:PickerField
+                                                AllowClear="False"
+                                                ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
+                                                SelectedItem="{Binding DayOfWeek, Mode=TwoWay}" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                                                <material:TimePickerField AllowClear="False" Time="{Binding StartTime}" />
+                                                <Label Text="до" VerticalOptions="Center" />
+                                                <material:TimePickerField AllowClear="False" Time="{Binding EndTime}" />
+                                            </HorizontalStackLayout>
+                                            <Label
+                                                Grid.Column="2"
+                                                Margin="0,3,2,0"
+                                                FontFamily="FASolid"
+                                                FontSize="18"
+                                                HorizontalOptions="Center"
+                                                Text="{x:Static fa:Solid.Xmark}"
+                                                TextColor="{StaticResource Gray500}"
+                                                VerticalOptions="Center">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DeleteScheduleCommand}" CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Grid>
+                                        <BoxView HeightRequest="0.5" Color="{StaticResource Gray300}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <Button
+                            BackgroundColor="Transparent"
+                            Command="{Binding AddScheduleCommand}"
+                            HorizontalOptions="Start"
+                            Text="Добавить"
+                            TextColor="{StaticResource Primary}"
+                            VerticalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+            </uranium:ExpanderView>
         </VerticalStackLayout>
-    </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

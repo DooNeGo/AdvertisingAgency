@@ -47,11 +47,7 @@ internal static class DataInitializerExtension
 
         AdSchedule[] adSchedules =
         [
-            new AdSchedule(
-                DayOfWeek.Monday,
-                DayOfWeek.Friday,
-                new TimeOnly(9, 0),
-                new TimeOnly(20, 0))
+            new AdSchedule(DayOfWeek.Monday, TimeSpan.FromHours(9), TimeSpan.FromHours(20))
         ];
 
         Language[] languages =
@@ -63,31 +59,36 @@ internal static class DataInitializerExtension
 
         CampaignSettings[] settings =
         [
-            new CampaignSettings([..locations], [languages[0]], [adSchedules[0]]),
-            new CampaignSettings([locations[0]], [languages[1]], [adSchedules[0]]),
-            new CampaignSettings([locations[1]], [languages[2]], [adSchedules[0]]),
-            new CampaignSettings([locations[2]], [languages[0]], [adSchedules[0]]),
-            new CampaignSettings([locations[0], locations[1]], [languages[1], languages[2]], [adSchedules[0]]),
-            new CampaignSettings([locations[3]], [languages[1]], [adSchedules[0]]),
-            new CampaignSettings([locations[3], locations[2]], [languages[1]], [adSchedules[0]]),
-            new CampaignSettings([locations[1], locations[2]], [languages[0]], [adSchedules[0]])
+            new CampaignSettings(1000, [..locations], [languages[0]], [adSchedules[0]]),
+            new CampaignSettings(2500, [locations[0]], [languages[1]], [adSchedules[0]]),
+            new CampaignSettings(800, [locations[1]], [languages[2]], [adSchedules[0]]),
+            new CampaignSettings(1240, [locations[2]], [languages[0]], [adSchedules[0]]),
+            new CampaignSettings(3245, [locations[0], locations[1]], [languages[1], languages[2]], [adSchedules[0]]),
+            new CampaignSettings(871, [locations[3]], [languages[1]], [adSchedules[0]]),
+            new CampaignSettings(555, [locations[3], locations[2]], [languages[1]], [adSchedules[0]]),
+            new CampaignSettings(4353, [locations[1], locations[2]], [languages[0]], [adSchedules[0]])
         ];
         
         var client = new Client("Белакт", "+375447452007", new FullName("Матвей", "Кострома"), locations[0]);
         var user = new User("qwerty", "123123123", client);
-        var position = new Position("Аналитик");
-        var employee = new Employee(new FullName("Давид", "Тарасенко"), "+375444682390", position);
+
+        Employee[] employees =
+        [
+            new Employee(new FullName("Кирилл", "Пархоменко"), "+375445491424", new Position("Директор")),
+            new Employee(new FullName("Полина", "Келасьева"), "+375292354323", new Position("Менеджер по продажам")),
+            new Employee(new FullName("Павел", "Грамотеев"), "+375294353295", new Position("Аналитик")),
+        ];
 
         Campaign[] campaigns =
         [
-            new Campaign(client, employee, goals[0], types[0], settings[0], "Молоко", 1000),
-            new Campaign(client, employee, goals[1], types[1], settings[1],"Сайт", 2500),
-            new Campaign(client, employee, goals[2], types[3], settings[2],"Приложение", 800),
-            new Campaign(client, employee, goals[3], types[4], settings[3],"Книга", 1240),
-            new Campaign(client, employee, goals[4], types[0], settings[4],"Фильм", 3245),
-            new Campaign(client, employee, goals[5], types[1], settings[5],"Музыка", 871),
-            new Campaign(client, employee, goals[6], types[2], settings[6],"Детское питание", 555),
-            new Campaign(client, employee, goals[7], types[3], settings[7],"Спортивное питание", 4353)
+            new Campaign(client, employees[^1], goals[0], types[0], settings[0], "Молоко"),
+            new Campaign(client, employees[^1], goals[1], types[1], settings[1],"Сайт"),
+            new Campaign(client, employees[^1], goals[2], types[3], settings[2],"Приложение"),
+            new Campaign(client, employees[^1], goals[3], types[4], settings[3],"Книга"),
+            new Campaign(client, employees[^1], goals[4], types[0], settings[4],"Фильм"),
+            new Campaign(client, employees[^1], goals[5], types[1], settings[5],"Музыка"),
+            new Campaign(client, employees[^1], goals[6], types[2], settings[6],"Детское питание"),
+            new Campaign(client, employees[^1], goals[7], types[3], settings[7],"Спортивное питание")
         ];
         
         // context.CampaignGoals.AddRange(goals);
@@ -97,6 +98,7 @@ internal static class DataInitializerExtension
         // context.Languages.AddRange(languages);
         // context.CampaignSettings.AddRange(settings);
         context.Users.Add(user);
+        context.Employees.AddRange(employees);
         context.Campaigns.AddRange(campaigns);
         context.SaveChanges();
     }

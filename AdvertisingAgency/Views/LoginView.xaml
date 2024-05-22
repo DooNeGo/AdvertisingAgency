@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Padding="15"
@@ -52,6 +51,7 @@
             BorderWidth="1"
             Command="{Binding LogInCommand}"
             CornerRadius="10"
+            Clicked="Button_OnClicked"
             FontAttributes="Bold"
             FontSize="15"
             HeightRequest="45"
@@ -79,9 +79,12 @@
             BackgroundColor="Transparent"
             Command="{Binding GoToCreateAccountCommand}"
             CornerRadius="5"
+            Clicked="Button_OnClicked"
             FontAttributes="Bold"
             Text="У меня нет аккаунта"
             TextColor="{StaticResource Primary}"
             TextTransform="Uppercase" />
+        
+        <Entry x:Name="Entry" IsVisible="False" />
     </VerticalStackLayout>
 </ContentPage>

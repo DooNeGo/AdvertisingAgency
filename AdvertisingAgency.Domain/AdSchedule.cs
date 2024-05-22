@@ -9,11 +9,10 @@ public readonly record struct AdScheduleId(Guid Value)
 
 public sealed class AdSchedule
 {
-    public AdSchedule(DayOfWeek startDay, DayOfWeek endDay, TimeOnly startTime, TimeOnly endTime)
+    public AdSchedule(DayOfWeek day, TimeSpan startTime, TimeSpan endTime)
     {
         Id = AdScheduleId.Create();
-        StartDay = startDay;
-        EndDay = endDay;
+        DayOfWeek = day;
         StartTime = startTime;
         EndTime = endTime;
     }
@@ -22,11 +21,9 @@ public sealed class AdSchedule
 
     public AdScheduleId Id { get; }
     
-    public DayOfWeek StartDay { get; set; }
+    public DayOfWeek DayOfWeek { get; set; }
     
-    public DayOfWeek EndDay { get; set; }
+    public TimeSpan StartTime { get; set; }
     
-    public TimeOnly StartTime { get; set; }
-    
-    public TimeOnly EndTime { get; set; }
+    public TimeSpan EndTime { get; set; }
 }
