@@ -4,19 +4,12 @@ namespace AdvertisingAgency.Views;
 
 public sealed partial class CampaignsView
 {
-    private readonly CampaignsViewModel _viewModel;
+    private double _lastScrollY;
     
     public CampaignsView(CampaignsViewModel viewModel)
     {
         InitializeComponent();
-        _viewModel = viewModel;
-        BindingContext = _viewModel;
-    }
-
-    private void ItemsView_OnScrolled(object? sender, ItemsViewScrolledEventArgs e)
-    {
-        if (e.VerticalDelta > 0) HideAddButton();
-        else ShowAddButton();
+        BindingContext = viewModel;
     }
 
     private Task<bool> HideAddButton() => 
@@ -25,7 +18,13 @@ public sealed partial class CampaignsView
     private Task<bool> ShowAddButton() =>
         AddButton.TranslateTo(0, 0, easing: Easing.SpringOut);
 
-    private void AddButton_OnTapped(object? sender, EventArgs e)
+    private async void ScrollView_OnScrolled(object? sender, ScrolledEventArgs e)
     {
+        double delta = e.ScrollY - _lastScrollY;
+        
+        if (delta > 0) await HideAddButton();
+        else await ShowAddButton();
+        
+        _lastScrollY = e.ScrollY;
     }
 }

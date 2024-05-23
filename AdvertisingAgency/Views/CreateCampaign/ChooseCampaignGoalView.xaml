@@ -4,29 +4,32 @@
     x:Class="AdvertisingAgency.Views.CreateCampaign.ChooseCampaignGoalView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
+    xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     Title="Выбор цели кампании"
-    Padding="5"
-    x:DataType="createCampaign:ChooseCampaignGoalViewModel">
+    Padding="0"
+    x:DataType="viewModels:ChooseCampaignGoalViewModel">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GoNextCommand}" Text="Далее" />
     </ContentPage.ToolbarItems>
 
     <ScrollView Padding="10">
-        <VerticalStackLayout BindableLayout.ItemsSource="{Binding CampaignGoals}" Spacing="6">
+        <VerticalStackLayout x:Name="VerticalStackLayout" BindableLayout.ItemsSource="{Binding CampaignGoals}">
             <BindableLayout.ItemTemplate>
                 <DataTemplate x:DataType="domain:CampaignGoal">
-                    <Frame
+                    <Border
+                        Margin="3,1,3,7"
                         Padding="15"
                         BackgroundColor="White"
-                        BorderColor="{StaticResource Gray100}"
-                        CornerRadius="10"
-                        HasShadow="False">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
-                        </Frame.GestureRecognizers>
+                        Shadow="{StaticResource ShadowAttr}"
+                        StrokeShape="RoundRectangle 10">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Path=SetCampaignGoalCommand,
+                                                  Source={RelativeSource AncestorType={Type viewModels:ChooseCampaignGoalViewModel}}}" 
+                                CommandParameter="{Binding}" />
+                        </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="5">
                             <Label
@@ -38,7 +41,7 @@
                                 Text="{Binding Description}"
                                 TextColor="{StaticResource Gray500}" />
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </VerticalStackLayout>

@@ -37,55 +37,55 @@
                 <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
             </VerticalStackLayout>
 
-            <uranium:ExpanderView>
+            <uranium:ExpanderView x:Name="ExpanderView">
                 <uranium:ExpanderView.Header>
                     <Label
                         Margin="7"
                         FontSize="16"
                         Text="Расписание показа рекламы" />
                 </uranium:ExpanderView.Header>
-                <Frame
+                
+                <Border
+                    x:Name="ScheduleFrame"
                     Padding="10,5"
+                    Shadow="{StaticResource ShadowAttr}"
                     BackgroundColor="{StaticResource Background}"
-                    CornerRadius="8"
-                    HasShadow="True">
+                    StrokeShape="RoundRectangle 8">
                     <VerticalStackLayout>
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Schedules}" Spacing="5">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="domain:AdSchedule">
-                                    <VerticalStackLayout Padding="15,0" Spacing="10">
-                                        <VerticalStackLayout.Behaviors>
-                                            <toolkit:AnimationBehavior EventName="Loaded">
-                                                <toolkit:AnimationBehavior.AnimationType>
-                                                    <toolkit:FadeAnimation Length="250" />
-                                                </toolkit:AnimationBehavior.AnimationType>
-                                            </toolkit:AnimationBehavior>
-                                        </VerticalStackLayout.Behaviors>
-
-                                        <Grid ColumnDefinitions="105, *, Auto" ColumnSpacing="10">
+                                    <VerticalStackLayout
+                                        Padding="15,0"
+                                        Loaded="VisualElement_OnLoaded"
+                                        Spacing="10">
+                                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
                                             <material:PickerField
                                                 AllowClear="False"
                                                 ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
+                                                MinimumWidthRequest="110"
                                                 SelectedItem="{Binding DayOfWeek, Mode=TwoWay}" />
+                                            
                                             <HorizontalStackLayout Grid.Column="1" Spacing="10">
                                                 <material:TimePickerField AllowClear="False" Time="{Binding StartTime}" />
                                                 <Label Text="до" VerticalOptions="Center" />
                                                 <material:TimePickerField AllowClear="False" Time="{Binding EndTime}" />
                                             </HorizontalStackLayout>
-                                            <Label
+                                            
+                                            <Button
                                                 Grid.Column="2"
                                                 Margin="0,3,2,0"
+                                                Padding="10"
+                                                BackgroundColor="Transparent"
+                                                Clicked="Button_OnClicked"
                                                 FontFamily="FASolid"
                                                 FontSize="18"
                                                 HorizontalOptions="Center"
                                                 Text="{x:Static fa:Solid.Xmark}"
                                                 TextColor="{StaticResource Gray500}"
-                                                VerticalOptions="Center">
-                                                <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DeleteScheduleCommand}" CommandParameter="{Binding .}" />
-                                                </Label.GestureRecognizers>
-                                            </Label>
+                                                VerticalOptions="Center" />
                                         </Grid>
+                                        
                                         <BoxView HeightRequest="0.5" Color="{StaticResource Gray300}" />
                                     </VerticalStackLayout>
                                 </DataTemplate>
@@ -100,7 +100,7 @@
                             TextColor="{StaticResource Primary}"
                             VerticalOptions="Center" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
             </uranium:ExpanderView>
         </VerticalStackLayout>
     </ScrollView>

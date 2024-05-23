@@ -9,22 +9,27 @@
     Title="Выбор типа кампании"
     Padding="10"
     x:DataType="createCampaign:ChooseCampaignTypeViewModel">
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GoNextCommand}" Text="Далее" />
     </ContentPage.ToolbarItems>
 
-    <VerticalStackLayout BindableLayout.ItemsSource="{Binding CampaignTypes}" Spacing="5">
+    <VerticalStackLayout x:Name="VerticalStackLayout" BindableLayout.ItemsSource="{Binding CampaignTypes}">
         <BindableLayout.ItemTemplate>
             <DataTemplate x:DataType="domain:CampaignType">
-                <Frame
+                <Border
+                    Margin="3,1,3,7"
                     Padding="15"
                     BackgroundColor="White"
-                    BorderColor="{StaticResource Gray100}"
-                    CornerRadius="10"
-                    HasShadow="False">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
-                    </Frame.GestureRecognizers>
+                    StrokeShape="RoundRectangle 10"
+                    Shadow="{StaticResource ShadowAttr}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding Path=SetCampaignTypeCommand,
+                                              Source={RelativeSource AncestorType={Type createCampaign:ChooseCampaignTypeViewModel}}}" 
+                            CommandParameter="{Binding}" />
+                    </Border.GestureRecognizers>
+                    
                     <VerticalStackLayout Spacing="5">
                         <Label
                             FontAttributes="Bold"
@@ -35,7 +40,7 @@
                             Text="{Binding Description}"
                             TextColor="{StaticResource Gray500}" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
             </DataTemplate>
         </BindableLayout.ItemTemplate>
     </VerticalStackLayout>

@@ -4,19 +4,21 @@ namespace AdvertisingAgency.Views.CreateCampaign;
 
 public sealed partial class ChooseCampaignTypeView
 {
-    private readonly ChooseCampaignTypeViewModel _viewModel;
-    
+    private Border? _selection;
+
     public ChooseCampaignTypeView(ChooseCampaignTypeViewModel viewModel)
     {
         InitializeComponent();
-        _viewModel = viewModel;
-        BindingContext = _viewModel;
-    }
-
-    private void TapGestureRecognizer_OnTapped(object? sender, TappedEventArgs e)
-    {
-        if (sender is not Frame frame) return;
-        frame.BorderColor = (Color)Microsoft.Maui.Controls.Application.Current!.Resources["Primary"];
-        _viewModel.SetCampaignTypeCommand.Execute(frame.BindingContext);
+        BindingContext = viewModel;
+        
+        viewModel.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName is not nameof(viewModel.CampaignType)) return;
+            if (_selection != null) _selection.Stroke = Brush.White;
+            
+            _selection = (Border)VerticalStackLayout.Children.First(view =>
+                ((BindableObject)view).BindingContext == viewModel.CampaignType);
+            _selection.Stroke = (Color)Microsoft.Maui.Controls.Application.Current?.Resources["Primary"]!;
+        };
     }
 }

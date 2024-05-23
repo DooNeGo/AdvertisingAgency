@@ -16,94 +16,94 @@
     </ContentPage.Behaviors>
 
     <ScrollView Padding="10">
-    <VerticalStackLayout Spacing="5">
-        <Image HeightRequest="100" Source="logo.png" />
-        <Label
-            FontAttributes="Bold"
-            FontSize="30"
-            HorizontalOptions="Center"
-            Text="MediaWaves"
-            VerticalOptions="Center" />
-        <Label
-            HorizontalOptions="Center"
-            HorizontalTextAlignment="Center"
-            FontSize="14"
-            TextColor="{StaticResource Gray500}"
-            Text="Ваш надежный партнер в мире рекламы. Мы создаем креативные и эффективные рекламные кампании, которые помогают вашему бизнесу расти." />
+        <VerticalStackLayout Spacing="5">
+            <Image HeightRequest="100" Source="logo.png" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="30"
+                HorizontalOptions="Center"
+                Text="MediaWaves"
+                VerticalOptions="Center" />
+            <Label
+                FontSize="14"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="Ваш надежный партнер в мире рекламы. Мы создаем креативные и эффективные рекламные кампании, которые помогают вашему бизнесу расти."
+                TextColor="{StaticResource Gray500}" />
 
-        <Frame
-            Margin="5, 15,5,0"
-            Padding="10"
-            BackgroundColor="White"
-            CornerRadius="10">
-            <VerticalStackLayout Spacing="15">
-                <Label
-                    FontAttributes="None"
-                    FontSize="20"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    Text="Войдите в аккаунт или зарегестрируйтесь" />
-                <Button
-                    BackgroundColor="{StaticResource Primary}"
-                    FontSize="15"
-                    Text="Войти" />
-                <Button
-                    BackgroundColor="{StaticResource PrimaryContainer}"
-                    FontSize="15"
-                    Text="Зарегестрироваться"
-                    TextColor="Black" />
+            <Border
+                Margin="5,15,5,0"
+                Padding="10"
+                BackgroundColor="White"
+                Shadow="{StaticResource ShadowAttr}"
+                StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="15">
+                    <Label
+                        FontAttributes="None"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="Войдите в аккаунт или зарегестрируйтесь" />
+                    <Button
+                        BackgroundColor="{StaticResource Primary}"
+                        FontSize="15"
+                        Text="Войти" />
+                    <Button
+                        BackgroundColor="{StaticResource PrimaryContainer}"
+                        FontSize="15"
+                        Text="Зарегестрироваться"
+                        TextColor="Black" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label
+                Margin="0,15,0,0"
+                Style="{StaticResource SubHeadline}"
+                Text="Наш коллектив" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Employees}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="domain:Employee">
+                        <Border
+                            Margin="5"
+                            Padding="8"
+                            BackgroundColor="White"
+                            Shadow="{StaticResource ShadowAttr}"
+                            StrokeShape="RoundRectangle 10">
+                            <Grid
+                                ColumnDefinitions="Auto, *"
+                                ColumnSpacing="10"
+                                RowDefinitions="Auto, Auto, Auto"
+                                RowSpacing="1">
+                                <Border
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    HeightRequest="50"
+                                    Shadow="{StaticResource ShadowAttr}"
+                                    StrokeShape="RoundRectangle 25"
+                                    WidthRequest="50">
+                                    <Image Aspect="AspectFill" Source="empty_person.jpg" />
+                                </Border>
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontAttributes="None"
+                                    FontSize="16"
+                                    Text="{Binding FullName}" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Text="{Binding PhoneNumber}"
+                                    TextColor="{StaticResource Gray400}" />
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Text="{Binding Position.Title}"
+                                    TextColor="{StaticResource Gray400}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
             </VerticalStackLayout>
-        </Frame>
-        
-        <Label
-            Margin="0,15,0,0"
-            Style="{StaticResource SubHeadline}"
-            Text="Наш коллектив" />
-        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Employees}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="domain:Employee">
-                    <Frame
-                        Margin="5"
-                        Padding="8"
-                        BackgroundColor="White"
-                        CornerRadius="10"
-                        HasShadow="True">
-                        <Grid
-                            ColumnDefinitions="Auto, *"
-                            ColumnSpacing="10"
-                            RowDefinitions="Auto, Auto, Auto"
-                            RowSpacing="1">
-                            <Frame
-                                Grid.RowSpan="3"
-                                Grid.Column="0"
-                                Padding="0"
-                                CornerRadius="25"
-                                HasShadow="True"
-                                HeightRequest="50"
-                                WidthRequest="50">
-                                <Image Aspect="AspectFit" Source="empty_person.jpg" />
-                            </Frame>
-                            <Label
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                FontAttributes="None"
-                                FontSize="16"
-                                Text="{Binding FullName}" />
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Text="{Binding PhoneNumber}"
-                                TextColor="{StaticResource Gray400}" />
-                            <Label
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                Text="{Binding Position.Title}"
-                                TextColor="{StaticResource Gray400}" />
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
         </VerticalStackLayout>
-    </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

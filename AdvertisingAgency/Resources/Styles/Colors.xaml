@@ -77,9 +77,6 @@
     <Color x:Key="OutlineVariant">#C4C7C5</Color>
     <Color x:Key="OutlineVariantDark">#444746</Color>
 
-    <Color x:Key="Shadow">#000000</Color>
-    <Color x:Key="ShadowDark">#000000</Color>
-
     <Color x:Key="SurfaceTint">#6750A4</Color>
     <Color x:Key="SurfaceTintDark">#D0BCFF</Color>
 
