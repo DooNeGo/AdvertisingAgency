@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
 using AsyncAwaitBestPractices;
@@ -27,7 +26,7 @@ public sealed partial class CampaignSettingsViewModel : ObservableObject
             Locations = await mediator.Send(new GetLocationsQuery()).ConfigureAwait(false);
         }).SafeFireAndForget();
         
-        DayOfWeeks = Enum.GetValues<DayOfWeek>().ToList();
+        DayOfWeeks = [..Enum.GetValues<DayOfWeek>()];
     }
 
     [RelayCommand]

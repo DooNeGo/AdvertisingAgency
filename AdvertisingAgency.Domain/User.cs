@@ -2,7 +2,7 @@
 
 public readonly record struct UserId(Guid Value)
 {
-    public static readonly UserId Empty = new();
+    public static readonly UserId Empty;
 
     public static UserId Create() => new(Guid.NewGuid());
 }

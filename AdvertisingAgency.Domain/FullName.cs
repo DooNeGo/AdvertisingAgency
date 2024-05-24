@@ -2,7 +2,7 @@ namespace AdvertisingAgency.Domain;
 
 public readonly record struct FullNameId(Guid Value)
 {
-    public static readonly FullNameId Empty = default;
+    public static readonly FullNameId Empty;
 
     public static FullNameId Create() => new(Guid.NewGuid());
 }

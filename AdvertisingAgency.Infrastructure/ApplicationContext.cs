@@ -2,7 +2,6 @@
 using AdvertisingAgency.Domain;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
-using Client = AdvertisingAgency.Domain.Client;
 
 namespace AdvertisingAgency.Infrastructure;
 

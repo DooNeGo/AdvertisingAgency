@@ -2,7 +2,7 @@ namespace AdvertisingAgency.Domain;
 
 public readonly record struct LocationId(Guid Value)
 {
-    public static readonly LocationId Empty = new();
+    public static readonly LocationId Empty;
 
     public static LocationId Create() => new(Guid.NewGuid());
 }

@@ -38,10 +38,12 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<PublishTrimmed>False</PublishTrimmed>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android34.0|AnyCPU'">
 	  <AndroidLinkTool>r8</AndroidLinkTool>
+	  <PublishTrimmed>True</PublishTrimmed>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

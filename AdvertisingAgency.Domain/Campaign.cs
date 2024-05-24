@@ -2,7 +2,7 @@
 
 public readonly record struct CampaignId(Guid Value)
 {
-    public static readonly CampaignId Empty = new();
+    public static readonly CampaignId Empty;
 
     public static CampaignId Create() => new(Guid.NewGuid());
 }

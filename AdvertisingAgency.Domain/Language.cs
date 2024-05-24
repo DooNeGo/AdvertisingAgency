@@ -2,7 +2,7 @@ namespace AdvertisingAgency.Domain;
 
 public readonly record struct LanguageId(Guid Value)
 {
-    public static readonly LanguageId Empty = default;
+    public static readonly LanguageId Empty;
 
     public static LanguageId Create() => new(Guid.NewGuid());
 }

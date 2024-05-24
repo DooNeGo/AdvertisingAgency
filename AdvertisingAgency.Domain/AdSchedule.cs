@@ -2,7 +2,7 @@ namespace AdvertisingAgency.Domain;
 
 public readonly record struct AdScheduleId(Guid Value)
 {
-    public static readonly AdScheduleId Empty = new();
+    public static readonly AdScheduleId Empty;
 
     public static AdScheduleId Create() => new(Guid.NewGuid());
 }

@@ -2,7 +2,7 @@
 
 public readonly record struct PositionId(Guid Value)
 {
-    public static readonly PositionId Empty = default;
+    public static readonly PositionId Empty;
 
     public static PositionId Create() => new(Guid.NewGuid());
 }

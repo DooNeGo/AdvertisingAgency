@@ -4,9 +4,9 @@
     x:Class="AdvertisingAgency.Views.CreateCampaign.ChooseCampaignGoalView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
-    xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     Title="Выбор цели кампании"
     Padding="0"
     x:DataType="viewModels:ChooseCampaignGoalViewModel">
@@ -56,7 +56,7 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Path=SetCampaignGoalCommand, Source={RelativeSource AncestorType={Type viewModels:ChooseCampaignGoalViewModel}}}" CommandParameter="{Binding}" />
                         </Border.GestureRecognizers>
-                        
+
                         <Border.Behaviors>
                             <behaviours:OnAppearingBehaviour />
                         </Border.Behaviors>
