@@ -44,6 +44,16 @@
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	  <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
+	  <AndroidDexTool>d8</AndroidDexTool>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+	  <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+	  <AndroidDexTool>d8</AndroidDexTool>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />

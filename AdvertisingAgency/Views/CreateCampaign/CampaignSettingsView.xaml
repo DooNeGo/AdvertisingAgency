@@ -4,10 +4,10 @@
     x:Class="AdvertisingAgency.Views.CreateCampaign.CampaignSettingsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     Title="Настройка кампании"
@@ -44,34 +44,33 @@
                         FontSize="16"
                         Text="Расписание показа рекламы" />
                 </uranium:ExpanderView.Header>
-                
+
                 <Border
                     x:Name="ScheduleFrame"
                     Padding="10,5"
-                    Shadow="{StaticResource ShadowAttr}"
                     BackgroundColor="{StaticResource Background}"
-                    StrokeShape="RoundRectangle 8">
+                    Shadow="{StaticResource ShadowAttr}">
                     <VerticalStackLayout>
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Schedules}" Spacing="5">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="domain:AdSchedule">
-                                    <VerticalStackLayout
-                                        Padding="15,0"
-                                        Loaded="VisualElement_OnLoaded"
-                                        Spacing="10">
-                                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
+                                    <VerticalStackLayout Padding="15,0" Spacing="10">
+                                        <Grid
+                                            ColumnDefinitions="Auto, *, Auto"
+                                            ColumnSpacing="10"
+                                            Loaded="VisualElement_OnLoaded">
                                             <material:PickerField
                                                 AllowClear="False"
                                                 ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
                                                 MinimumWidthRequest="110"
                                                 SelectedItem="{Binding DayOfWeek, Mode=TwoWay}" />
-                                            
+
                                             <HorizontalStackLayout Grid.Column="1" Spacing="10">
                                                 <material:TimePickerField AllowClear="False" Time="{Binding StartTime}" />
                                                 <Label Text="до" VerticalOptions="Center" />
                                                 <material:TimePickerField AllowClear="False" Time="{Binding EndTime}" />
                                             </HorizontalStackLayout>
-                                            
+
                                             <Button
                                                 Grid.Column="2"
                                                 Margin="0,3,2,0"
@@ -85,7 +84,7 @@
                                                 TextColor="{StaticResource Gray500}"
                                                 VerticalOptions="Center" />
                                         </Grid>
-                                        
+
                                         <BoxView HeightRequest="0.5" Color="{StaticResource Gray300}" />
                                     </VerticalStackLayout>
                                 </DataTemplate>

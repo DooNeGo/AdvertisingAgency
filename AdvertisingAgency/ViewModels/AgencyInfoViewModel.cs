@@ -1,16 +1,25 @@
+using System.Collections.ObjectModel;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
+using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Mediator;
 
 namespace AdvertisingAgency.ViewModels;
 
-public sealed partial class AgencyInfoViewModel : ObservableObject
+public sealed partial class AgencyInfoViewModel : BaseViewModel
 {
-    [ObservableProperty] private List<Employee> _employees = [];
+    [ObservableProperty] private ObservableCollection<Employee> _employees = [];
+    [ObservableProperty] private bool _isRefreshing;
 
-    public AgencyInfoViewModel(IMediator mediator)
+    public AgencyInfoViewModel(IMediator mediator) : base(mediator) =>
+        Refresh(CancellationToken.None).SafeFireAndForget();
+
+    [RelayCommand]
+    private async Task Refresh(CancellationToken cancellationToken)
     {
-        Task.Run(async () => Employees = await mediator.Send(new GetEmployeesQuery()));
+        await UpdateCollectionAsync(Employees, new GetEmployeesQuery(), cancellationToken).ConfigureAwait(false);
+        IsRefreshing = false;
     }
 }

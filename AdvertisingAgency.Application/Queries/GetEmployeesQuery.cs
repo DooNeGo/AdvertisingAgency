@@ -5,11 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingAgency.Application.Queries;
 
-public sealed record GetEmployeesQuery : IQuery<List<Employee>>;
+public sealed record GetEmployeesQuery : IQuery<IAsyncEnumerable<Employee>>;
 
 public sealed class GetEmployeesQueryHandler(IApplicationContext context)
-    : IQueryHandler<GetEmployeesQuery, List<Employee>>
+    : IQueryHandler<GetEmployeesQuery, IAsyncEnumerable<Employee>>
 {
-    public ValueTask<List<Employee>> Handle(GetEmployeesQuery query, CancellationToken cancellationToken) =>
-        new(context.Employees.ToListAsync(cancellationToken: cancellationToken));
+    public ValueTask<IAsyncEnumerable<Employee>> Handle(GetEmployeesQuery query, CancellationToken cancellationToken) =>
+        new(context.Employees
+            .AsNoTracking()
+            .Include(employee => employee.Position)
+            .Include(employee => employee.FullName)
+            .AsAsyncEnumerable());
 }

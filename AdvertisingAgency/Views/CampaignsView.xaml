@@ -4,14 +4,14 @@
     x:Class="AdvertisingAgency.Views.CampaignsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
-    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels"
-    Padding="0"
+    Padding="10,0"
     x:DataType="viewModels:CampaignsViewModel"
     BackgroundColor="{StaticResource Background}"
     Shell.NavBarIsVisible="False">
@@ -25,40 +25,53 @@
     </ContentPage.Behaviors>
 
     <Grid>
-        <ScrollView Scrolled="ScrollView_OnScrolled">
-            <VerticalStackLayout Padding="10">
-                <Label Style="{StaticResource Headline}" Text="Кампании" />
-                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Campaigns}" Spacing="8">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="domain:Campaign">
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView ItemsSource="{Binding Campaigns}" Scrolled="ItemsView_OnScrolled">
+                <CollectionView.Header>
+                    <Label Style="{StaticResource Headline}" Text="Кампании" />
+                </CollectionView.Header>
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout
+                        HorizontalItemSpacing="0"
+                        Orientation="Vertical"
+                        Span="2"
+                        VerticalItemSpacing="0" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="domain:Campaign">
+                        <Grid Padding="3,1,3,8">
                             <Border
                                 Padding="15"
                                 BackgroundColor="White"
-                                Shadow="{StaticResource ShadowAttr}"
-                                StrokeShape="RoundRectangle 10">
+                                Shadow="{StaticResource ShadowAttr}">
+                                <Border.Behaviors>
+                                    <behaviours:OnAppearingBehaviour />
+                                </Border.Behaviors>
+                                
                                 <VerticalStackLayout Spacing="8">
-                                    <Grid>
-                                        <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
-                                    </Grid>
-                                    <Grid>
-                                        <Label
-                                            FontSize="17"
-                                            Text="{Binding Name}"
-                                            VerticalOptions="Center" />
-                                        <Label
-                                            FontSize="17"
-                                            HorizontalOptions="End"
-                                            HorizontalTextAlignment="Center"
-                                            IsVisible="True"
-                                            Text="{Binding Settings.Budget, StringFormat='{0} BYN'}"
-                                            VerticalOptions="Center" />
-                                    </Grid>
+                                    <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
+
+                                    <Label
+                                        FontSize="17"
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
+
+                                    <Label
+                                        FontSize="17"
+                                        HorizontalOptions="Start"
+                                        HorizontalTextAlignment="Center"
+                                        IsVisible="True"
+                                        Text="{Binding Settings.Budget, StringFormat='{0} BYN'}"
+                                        VerticalOptions="Center" />
 
                                     <Border
                                         Padding="5,3"
                                         BackgroundColor="{StaticResource Gray50}"
+                                        HorizontalOptions="Start"
                                         StrokeShape="RoundRectangle 3"
-                                        HorizontalOptions="Start">
+                                        StrokeThickness="0">
                                         <Label
                                             FontAttributes="Bold"
                                             FontSize="11"
@@ -68,22 +81,22 @@
                                     </Border>
                                 </VerticalStackLayout>
                             </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
-            </VerticalStackLayout>
-        </ScrollView>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
 
         <material:ButtonView
             x:Name="AddButton"
             Margin="0,0,15,10"
-            WidthRequest="55"
-            HeightRequest="55"
             BackgroundColor="{StaticResource PrimaryContainer}"
+            HeightRequest="60"
             HorizontalOptions="End"
             StrokeShape="RoundRectangle 15"
             TappedCommand="{Binding CreateCampaignCommand}"
-            VerticalOptions="End">
+            VerticalOptions="End"
+            WidthRequest="60">
             <material:ButtonView.Shadow>
                 <Shadow
                     Brush="Black"
@@ -91,14 +104,14 @@
                     Radius="15"
                     Offset="0, 10" />
             </material:ButtonView.Shadow>
-            
+
             <Label
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontSize="22"
                 FontFamily="FARegular"
+                FontSize="23"
+                HorizontalOptions="Center"
                 Text="{x:Static uranium:Regular.Plus}"
-                TextColor="{StaticResource OnPrimaryContainer}" />
+                TextColor="{StaticResource OnPrimaryContainer}"
+                VerticalOptions="Center" />
         </material:ButtonView>
     </Grid>
 </ContentPage>

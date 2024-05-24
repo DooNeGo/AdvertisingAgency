@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingAgency.Application.Queries;
 
-public sealed record GetCampaignTypesQuery : IQuery<List<CampaignType>>;
+public sealed record GetCampaignTypesQuery : IQuery<IAsyncEnumerable<CampaignType>>;
 
-public sealed class GetCampaignTypesQueryHandler(IApplicationContext context) : IQueryHandler<GetCampaignTypesQuery, List<CampaignType>>
+public sealed class GetCampaignTypesQueryHandler(IApplicationContext context)
+    : IQueryHandler<GetCampaignTypesQuery, IAsyncEnumerable<CampaignType>>
 {
-    public ValueTask<List<CampaignType>> Handle(GetCampaignTypesQuery query, CancellationToken cancellationToken) =>
-        new(context.CampaignTypes.AsNoTracking().ToListAsync(cancellationToken));
+    public ValueTask<IAsyncEnumerable<CampaignType>> Handle(GetCampaignTypesQuery query,
+        CancellationToken cancellationToken) =>
+        new(context.CampaignTypes.AsNoTracking().AsAsyncEnumerable());
 }

@@ -1,11 +1,10 @@
 using AdvertisingAgency.ViewModels;
+using AsyncAwaitBestPractices;
 
 namespace AdvertisingAgency.Views;
 
 public sealed partial class CampaignsView
 {
-    private double _lastScrollY;
-    
     public CampaignsView(CampaignsViewModel viewModel)
     {
         InitializeComponent();
@@ -18,13 +17,9 @@ public sealed partial class CampaignsView
     private Task<bool> ShowAddButton() =>
         AddButton.TranslateTo(0, 0, easing: Easing.SpringOut);
 
-    private async void ScrollView_OnScrolled(object? sender, ScrolledEventArgs e)
+    private void ItemsView_OnScrolled(object? sender, ItemsViewScrolledEventArgs e)
     {
-        double delta = e.ScrollY - _lastScrollY;
-        
-        if (delta > 0) await HideAddButton();
-        else await ShowAddButton();
-        
-        _lastScrollY = e.ScrollY;
+        if (e.VerticalDelta > 0) HideAddButton().SafeFireAndForget();
+        else ShowAddButton().SafeFireAndForget();
     }
 }

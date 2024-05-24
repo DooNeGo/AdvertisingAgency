@@ -21,12 +21,14 @@ public sealed partial class CreateAccountViewModel : ObservableObject
     [Required] public string UserName { get; set; } = string.Empty;
 
     [Required] public string Password { get; set; } = string.Empty;
-    
+
     [RelayCommand]
-    private async Task RegisterAccount()
+    private async Task RegisterAccount(CancellationToken cancellationToken)
     {
         await Shell.Current.CurrentPage.DisplayAlert("Успешная регистрация",
-            "Вы успешно зарегистрировались. Войдите с вашим новым аккаунтом", "Ок");
-        await Shell.Current.Navigation.PopAsync();
+                "Вы успешно зарегистрировались. Войдите с вашим новым аккаунтом", "Ок")
+            .WaitAsync(cancellationToken)
+            .ConfigureAwait(false);
+        await Shell.Current.Navigation.PopAsync().WaitAsync(cancellationToken).ConfigureAwait(false);
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
+using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mediator;
@@ -21,9 +23,10 @@ public sealed partial class CampaignSettingsViewModel : ObservableObject
     {
         Task.Run(async () =>
         {
-            Locations = await mediator.Send(new GetLocationsQuery());
-            Languages = await mediator.Send(new GetLanguagesQuery());
-        });
+            Languages = await mediator.Send(new GetLanguagesQuery()).ConfigureAwait(false);
+            Locations = await mediator.Send(new GetLocationsQuery()).ConfigureAwait(false);
+        }).SafeFireAndForget();
+        
         DayOfWeeks = Enum.GetValues<DayOfWeek>().ToList();
     }
 

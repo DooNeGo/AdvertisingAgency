@@ -3,10 +3,8 @@
     x:Class="AdvertisingAgency.Views.CreateAccountView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
-    xmlns:v="clr-namespace:UraniumUI.Validations;assembly=UraniumUI.Validations.DataAnnotations"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Title="Регистрация"
     Padding="10"
@@ -41,7 +39,6 @@
 
         <Button
             Margin="0,20,0,0"
-            input:FormView.IsSubmitButton="True"
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="1"

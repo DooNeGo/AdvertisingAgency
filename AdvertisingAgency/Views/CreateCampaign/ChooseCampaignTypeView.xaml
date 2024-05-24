@@ -4,12 +4,13 @@
     x:Class="AdvertisingAgency.Views.CreateCampaign.ChooseCampaignTypeView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     Title="Выбор типа кампании"
     Padding="10"
     x:DataType="createCampaign:ChooseCampaignTypeViewModel">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GoNextCommand}" Text="Далее" />
     </ContentPage.ToolbarItems>
@@ -21,15 +22,15 @@
                     Margin="3,1,3,7"
                     Padding="15"
                     BackgroundColor="White"
-                    StrokeShape="RoundRectangle 10"
                     Shadow="{StaticResource ShadowAttr}">
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer 
-                            Command="{Binding Path=SetCampaignTypeCommand,
-                                              Source={RelativeSource AncestorType={Type createCampaign:ChooseCampaignTypeViewModel}}}" 
-                            CommandParameter="{Binding}" />
+                        <TapGestureRecognizer Command="{Binding Path=SetCampaignTypeCommand, Source={RelativeSource AncestorType={Type createCampaign:ChooseCampaignTypeViewModel}}}" CommandParameter="{Binding}" />
                     </Border.GestureRecognizers>
-                    
+
+                    <Border.Behaviors>
+                        <behaviours:OnAppearingBehaviour />
+                    </Border.Behaviors>
+
                     <VerticalStackLayout Spacing="5">
                         <Label
                             FontAttributes="Bold"
