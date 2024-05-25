@@ -436,7 +436,7 @@
     <Shadow
         x:Key="ShadowAttr"
         Brush="Black"
-        Opacity="0.1"
+        Opacity="0.05"
         Radius="20"
         Offset="0,5" />
 

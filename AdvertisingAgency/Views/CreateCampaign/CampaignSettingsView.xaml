@@ -4,7 +4,6 @@
     x:Class="AdvertisingAgency.Views.CreateCampaign.CampaignSettingsView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
@@ -15,38 +14,32 @@
     x:DataType="viewModel:CampaignSettingsViewModel"
     HideSoftInputOnTapped="True">
     <ScrollView>
-        <VerticalStackLayout Padding="10" Spacing="20">
+        <VerticalStackLayout Padding="10" Spacing="5">
             <VerticalStackLayout.Resources>
                 <Style TargetType="Label">
-                    <Setter Property="TextColor" Value="{StaticResource Black}" />
+                    <Setter Property="TextColor" Value="{StaticResource Gray500}" />
+                    <Setter Property="Margin" Value="0,10,0,0"></Setter>
                 </Style>
             </VerticalStackLayout.Resources>
 
-            <VerticalStackLayout Spacing="3">
-                <Label Text="Введите название кампании, которое будет отображаться в кампаниях." />
-                <material:TextField Title="Название" AllowClear="True" />
-            </VerticalStackLayout>
+            <Label Text="Введите название кампании, которое будет отображаться в кампаниях." Margin="0" />
+            <material:TextField Title="Название" AllowClear="True" />
 
-            <VerticalStackLayout Spacing="3">
-                <Label Text="Выберите целевые местоположения." />
-                <material:MultiplePickerField Title="Локации" ItemsSource="{Binding Locations}" />
-            </VerticalStackLayout>
+            <Label Text="Выберите целевые местоположения." />
+            <material:MultiplePickerField Title="Локации" ItemsSource="{Binding Locations}" />
 
-            <VerticalStackLayout Spacing="3">
-                <Label Text="Выберите языки, на которых говорят ваши клиенты." />
-                <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
-            </VerticalStackLayout>
+            <Label Text="Выберите языки, на которых говорят ваши клиенты." />
+            <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
 
-            <uranium:ExpanderView x:Name="ExpanderView">
+            <uranium:ExpanderView x:Name="ExpanderView" Margin="0,10,0,0">
                 <uranium:ExpanderView.Header>
                     <Label
                         Margin="7"
                         FontSize="16"
-                        Text="Расписание показа рекламы" />
+                        Text="Расписание показа рекламы"
+                        TextColor="Black" />
                 </uranium:ExpanderView.Header>
-
                 <Border
-                    x:Name="ScheduleFrame"
                     Padding="10,5"
                     BackgroundColor="{StaticResource Background}"
                     Shadow="{StaticResource ShadowAttr}">

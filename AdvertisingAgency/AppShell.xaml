@@ -6,7 +6,7 @@
     xmlns:views="clr-namespace:AdvertisingAgency.Views"
     FlyoutBehavior="Disabled">
 
-    <ShellContent ContentTemplate="{DataTemplate views:LoginView}" Shell.FlyoutItemIsVisible="False" />
+    <!--<ShellContent ContentTemplate="{DataTemplate views:LoginView}" Shell.FlyoutItemIsVisible="False" />-->
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems" Route="MainView">
         <ShellContent

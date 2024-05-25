@@ -39,9 +39,6 @@
                     Padding="10"
                     BackgroundColor="White"
                     Shadow="{StaticResource ShadowAttr}">
-                    <Border.Behaviors>
-                         <behaviours:OnAppearingBehaviour />
-                    </Border.Behaviors>
                     
                     <VerticalStackLayout Spacing="15">
                         <Label
@@ -106,7 +103,7 @@
                                     <Label
                                         Grid.Row="2"
                                         Grid.Column="1"
-                                        Text="{Binding Position.Title}"
+                                        Text="{Binding Position}"
                                         TextColor="{StaticResource Gray400}" />
                                 </Grid>
                             </Border>

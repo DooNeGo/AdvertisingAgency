@@ -18,16 +18,14 @@ public sealed partial class CampaignSettingsView
         if (!ExpanderView.IsExpanded) return;
         if (sender is not VisualElement visualElement) return;
         visualElement.Scale = 0;
-        await visualElement.ScaleTo(1, 350, Easing.Default).ConfigureAwait(false);
+        await visualElement.ScaleTo(1, 400, Easing.SpringOut).ConfigureAwait(false);
     }
 
     private async void Button_OnClicked(object? sender, EventArgs e)
     {
-        if (!ExpanderView.IsExpanded) return;
         if (sender is not VisualElement element) return;
-        var visualElement = (VisualElement)element.Parent.Parent;
-        await visualElement.FadeTo(0, 300, Easing.Default);
-        
+        var visualElement = (VisualElement)element.Parent;
+        if (ExpanderView.IsExpanded) await visualElement.FadeTo(0, 300, Easing.Default);
         _viewModel.DeleteScheduleCommand.Execute(visualElement.BindingContext);
     }
 }
