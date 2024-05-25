@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
+using AdvertisingAgency.ViewModels.CreateCampaign;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -32,6 +33,6 @@ public sealed partial class CampaignsViewModel : BaseViewModel
 
     [RelayCommand]
     private Task CreateCampaign(CancellationToken cancellationToken) => 
-        Shell.Current.GoToAsync(nameof(ViewModels.CreateCampaign.ChooseCampaignGoalViewModel))
+        Shell.Current.GoToAsync(nameof(ChooseCampaignGoalViewModel))
             .WaitAsync(cancellationToken);
 }

@@ -20,7 +20,7 @@
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <ScrollView Padding="10">
             <VerticalStackLayout Spacing="5">
-                <Image HeightRequest="100" Source="logo.png" />
+                <Image HeightRequest="100" Source="logo.jpg" />
                 <Label
                     FontAttributes="Bold"
                     FontSize="30"
@@ -50,6 +50,7 @@
                         <Button
                             BackgroundColor="{StaticResource Primary}"
                             FontSize="15"
+                            TextColor="White"
                             Text="Войти" />
                         <Button
                             BackgroundColor="{StaticResource PrimaryContainer}"

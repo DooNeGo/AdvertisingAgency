@@ -42,6 +42,7 @@
             BackgroundColor="Transparent"
             BorderColor="{StaticResource Primary}"
             BorderWidth="1"
+            Clicked="Button_OnClicked"
             Command="{Binding RegisterAccountCommand}"
             CornerRadius="10"
             FontAttributes="Bold"

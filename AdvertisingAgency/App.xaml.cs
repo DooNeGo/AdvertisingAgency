@@ -9,7 +9,7 @@ public sealed partial class App
     {
         InitializeComponent();
 
-        MainPage = serviceProvider.GetRequiredService<LoginView>();
+        MainPage = new NavigationPage(serviceProvider.GetRequiredService<LoginView>());
         UserAppTheme = AppTheme.Light;
 
         identityService.Authorized += _ => MainPage = new AppShell();

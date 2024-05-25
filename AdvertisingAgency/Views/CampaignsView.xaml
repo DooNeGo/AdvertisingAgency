@@ -26,22 +26,23 @@
 
     <Grid>
         <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView ItemsSource="{Binding Campaigns}" Scrolled="ItemsView_OnScrolled">
+            <CollectionView
+                CanReorderItems="True"
+                ItemsSource="{Binding Campaigns}"
+                Scrolled="ItemsView_OnScrolled">
                 <CollectionView.Header>
                     <Label Style="{StaticResource Headline}" Text="Кампании" />
                 </CollectionView.Header>
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout
-                        HorizontalItemSpacing="0"
                         Orientation="Vertical"
-                        Span="2"
-                        VerticalItemSpacing="0" />
+                        Span="2" />
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="domain:Campaign">
-                        <Grid Padding="3,1,3,8">
+                        <Grid Padding="5,2,5,8">
                             <Border
                                 Padding="15"
                                 BackgroundColor="White"
@@ -49,7 +50,7 @@
                                 <Border.Behaviors>
                                     <behaviours:OnAppearingBehaviour />
                                 </Border.Behaviors>
-                                
+
                                 <VerticalStackLayout Spacing="8">
                                     <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
 
@@ -100,8 +101,8 @@
             <material:ButtonView.Shadow>
                 <Shadow
                     Brush="Black"
-                    Opacity="0.3"
-                    Radius="15"
+                    Opacity="0.15"
+                    Radius="20"
                     Offset="0, 10" />
             </material:ButtonView.Shadow>
 

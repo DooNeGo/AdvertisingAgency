@@ -44,16 +44,13 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android34.0|AnyCPU'">
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <PublishTrimmed>True</PublishTrimmed>
+		<AndroidDexTool>d8</AndroidDexTool>
+		<AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-	  <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
-	  <AndroidDexTool>d8</AndroidDexTool>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-	  <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
-	  <AndroidDexTool>d8</AndroidDexTool>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android34.0|AnyCPU'">
+		<AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
+		<AndroidDexTool>d8</AndroidDexTool>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -75,6 +72,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AsyncAwaitBestPractices" Version="7.0.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />

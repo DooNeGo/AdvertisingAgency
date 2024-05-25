@@ -16,19 +16,22 @@
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="5">
             <VerticalStackLayout.Resources>
-                <Style TargetType="Label">
+                <Style x:Key="DescriptionLabel" TargetType="Label">
                     <Setter Property="TextColor" Value="{StaticResource Gray500}" />
-                    <Setter Property="Margin" Value="0,10,0,0"></Setter>
+                    <Setter Property="Margin" Value="0,10,0,0" />
                 </Style>
             </VerticalStackLayout.Resources>
 
-            <Label Text="Введите название кампании, которое будет отображаться в кампаниях." Margin="0" />
+            <Label
+                Margin="0"
+                Style="{StaticResource DescriptionLabel}"
+                Text="Введите название кампании, которое будет отображаться в кампаниях." />
             <material:TextField Title="Название" AllowClear="True" />
 
-            <Label Text="Выберите целевые местоположения." />
+            <Label Style="{StaticResource DescriptionLabel}" Text="Выберите целевые местоположения." />
             <material:MultiplePickerField Title="Локации" ItemsSource="{Binding Locations}" />
 
-            <Label Text="Выберите языки, на которых говорят ваши клиенты." />
+            <Label Style="{StaticResource DescriptionLabel}" Text="Выберите языки, на которых говорят ваши клиенты." />
             <material:MultiplePickerField Title="Языки" ItemsSource="{Binding Languages}" />
 
             <uranium:ExpanderView x:Name="ExpanderView" Margin="0,10,0,0">
@@ -54,8 +57,10 @@
                                             Loaded="VisualElement_OnLoaded">
                                             <material:PickerField
                                                 AllowClear="False"
+                                                Icon="calendar.jpg"
                                                 ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
-                                                MinimumWidthRequest="110"
+                                                MaximumHeightRequest="150"
+                                                MinimumWidthRequest="120"
                                                 SelectedItem="{Binding DayOfWeek, Mode=TwoWay}" />
 
                                             <HorizontalStackLayout Grid.Column="1" Spacing="10">
@@ -78,7 +83,7 @@
                                                 VerticalOptions="Center" />
                                         </Grid>
 
-                                        <BoxView HeightRequest="0.5" Color="{StaticResource Gray300}" />
+                                        <BoxView HeightRequest="0.6" Color="{StaticResource Gray300}" />
                                     </VerticalStackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>

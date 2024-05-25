@@ -3,19 +3,28 @@
     x:Class="AdvertisingAgency.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
     xmlns:views="clr-namespace:AdvertisingAgency.Views"
     FlyoutBehavior="Disabled">
 
     <!--<ShellContent ContentTemplate="{DataTemplate views:LoginView}" Shell.FlyoutItemIsVisible="False" />-->
 
     <TabBar FlyoutDisplayOptions="AsMultipleItems" Route="MainView">
-        <ShellContent
-            Title="Агенство"
-            ContentTemplate="{DataTemplate views:AgencyInfoView}"
-            Icon="building.svg" />
-        <ShellContent
-            Title="Кампании"
-            ContentTemplate="{DataTemplate views:CampaignsView}"
-            Icon="envelope.svg" />
+        <ShellContent Title="Агенство" ContentTemplate="{DataTemplate views:AgencyInfoView}">
+            <ShellContent.Icon>
+                <FontImageSource
+                    FontFamily="FARegular"
+                    Glyph="{x:Static fa:Regular.Building}"
+                    Color="Black" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Кампании" ContentTemplate="{DataTemplate views:CampaignsView}">
+            <ShellContent.Icon>
+                <FontImageSource
+                    FontFamily="FARegular"
+                    Glyph="{x:Static fa:Regular.Envelope}"
+                    Color="Black" />
+            </ShellContent.Icon>
+        </ShellContent>
     </TabBar>
 </Shell>

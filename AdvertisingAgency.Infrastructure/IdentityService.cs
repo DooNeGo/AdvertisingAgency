@@ -13,8 +13,11 @@ internal sealed class IdentityService(IApplicationContext context) : IIdentitySe
     public async Task AuthorizeAsync(string userName, string password, CancellationToken cancellationToken)
     {
         CurrentUser = await context.Users
+            .AsNoTracking()
             .Where(user => user.UserName == userName && user.Password == password)
-            .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+            .Include(user => user.Client)
+            .FirstOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
 
         if (CurrentUser is not null) Authorized?.Invoke(CurrentUser);
     }

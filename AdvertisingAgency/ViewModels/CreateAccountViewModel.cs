@@ -23,12 +23,8 @@ public sealed partial class CreateAccountViewModel : ObservableObject
     [Required] public string Password { get; set; } = string.Empty;
 
     [RelayCommand]
-    private async Task RegisterAccount(CancellationToken cancellationToken)
-    {
-        await Shell.Current.CurrentPage.DisplayAlert("Успешная регистрация",
+    private static Task RegisterAccount(CancellationToken cancellationToken) =>
+        App.Current!.MainPage!.DisplayAlert("Успешная регистрация",
                 "Вы успешно зарегистрировались. Войдите с вашим новым аккаунтом", "Ок")
-            .WaitAsync(cancellationToken)
-            .ConfigureAwait(false);
-        await Shell.Current.Navigation.PopAsync().WaitAsync(cancellationToken).ConfigureAwait(false);
-    }
+            .WaitAsync(cancellationToken);
 }

@@ -1,4 +1,5 @@
 using AdvertisingAgency.ViewModels;
+using UraniumUI.Extensions;
 
 namespace AdvertisingAgency.Views;
 
@@ -9,4 +10,6 @@ public sealed partial class CreateAccountView
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+	private void Button_OnClicked(object? sender, EventArgs e) => Navigation.PopAsync().FireAndForget();
 }

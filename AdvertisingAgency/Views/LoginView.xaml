@@ -9,7 +9,7 @@
     Padding="15"
     x:DataType="viewModel:LoginViewModel"
     HideSoftInputOnTapped="True"
-    Shell.NavBarIsVisible="False">
+    NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Background}" StatusBarStyle="DarkContent" />
@@ -27,6 +27,7 @@
             <material:TextField
                 Title="Логин"
                 AllowClear="True"
+                Keyboard="Plain"
                 ReturnType="Next"
                 Text="{Binding UserName}" />
 
@@ -35,6 +36,7 @@
                 AllowClear="True"
                 Completed="TextField_OnCompleted"
                 IsPassword="True"
+                Keyboard="Plain"
                 ReturnType="Done"
                 Text="{Binding Password}">
                 <material:TextField.Attachments>
@@ -49,7 +51,7 @@
             x:Name="LogInButton"
             BackgroundColor="Transparent"
             BorderWidth="1"
-            Clicked="Button_OnClicked"
+            Clicked="LogInButton_OnClicked"
             Command="{Binding LogInCommand}"
             CornerRadius="10"
             FontAttributes="Bold"
@@ -78,7 +80,6 @@
         <Button
             BackgroundColor="Transparent"
             Clicked="Button_OnClicked"
-            Command="{Binding GoToCreateAccountCommand}"
             CornerRadius="5"
             FontAttributes="Bold"
             Text="У меня нет аккаунта"
