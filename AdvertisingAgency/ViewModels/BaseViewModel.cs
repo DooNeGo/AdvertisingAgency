@@ -10,7 +10,7 @@ public class BaseViewModel(IMediator mediator) : ObservableObject
         IQuery<IAsyncEnumerable<T>> updateQuery, CancellationToken cancellationToken)
     {
         await Task.Delay(TimeSpan.FromMilliseconds(260), cancellationToken).ConfigureAwait(false);
-        await App.Current!.Dispatcher.DispatchAsync(collection.Clear).WaitAsync(cancellationToken).ConfigureAwait(false);
+        await App.Current!.Dispatcher.DispatchAsync(collection.Clear).ConfigureAwait(false);
 
         IAsyncEnumerable<T> enumerable = await mediator.Send(updateQuery, cancellationToken)
             .ConfigureAwait(false);
@@ -18,8 +18,7 @@ public class BaseViewModel(IMediator mediator) : ObservableObject
         await foreach (T item in enumerable.WithCancellation(cancellationToken).ConfigureAwait(false))
         {
             await Task.Delay(TimeSpan.FromMilliseconds(35), cancellationToken).ConfigureAwait(false);
-            await App.Current.Dispatcher.DispatchAsync(() => collection.Add(item)).WaitAsync(cancellationToken)
-                .ConfigureAwait(false);
+            await App.Current.Dispatcher.DispatchAsync(() => collection.Add(item)).ConfigureAwait(false);
         }
     }
 }
