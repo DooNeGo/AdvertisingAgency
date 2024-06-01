@@ -26,5 +26,13 @@
                     Color="Black" />
             </ShellContent.Icon>
         </ShellContent>
+        <ShellContent Title="Аккаунт" ContentTemplate="{DataTemplate views:UserView}">
+            <ShellContent.Icon>
+                <FontImageSource
+                    FontFamily="FARegular"
+                    Glyph="{x:Static fa:Regular.User}"
+                    Color="Black" />
+            </ShellContent.Icon>
+        </ShellContent>
     </TabBar>
 </Shell>

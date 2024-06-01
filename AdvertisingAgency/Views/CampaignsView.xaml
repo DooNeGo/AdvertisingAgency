@@ -35,9 +35,7 @@
                 </CollectionView.Header>
 
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout
-                        Orientation="Vertical"
-                        Span="2" />
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
@@ -52,7 +50,21 @@
                                 </Border.Behaviors>
 
                                 <VerticalStackLayout Spacing="8">
-                                    <Label FontSize="13" Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}" />
+                                    <Grid>
+                                        <Label
+                                            FontSize="13"
+                                            Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontSize="15"
+                                            HorizontalOptions="End"
+                                            Text="•••"
+                                            VerticalOptions="Center">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={Type viewModels:CampaignsViewModel}}, Path=ShowCampaignActionMenuCommand}" CommandParameter="{Binding .}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
 
                                     <Label
                                         FontSize="17"
@@ -102,8 +114,8 @@
                 <Shadow
                     Brush="Black"
                     Opacity="0.15"
-                    Radius="20"
-                    Offset="0, 10" />
+                    Radius="15"
+                    Offset="0, 8" />
             </material:ButtonView.Shadow>
 
             <Label

@@ -6,7 +6,11 @@ public interface IIdentityService
 {
     public User? CurrentUser { get; }
     
-    public event Action<User>? Authorized;
+    public event Action? LoggedOut;
     
-    public Task AuthorizeAsync(string userName, string password, CancellationToken cancellationToken);
+    public event Action<User>? LoggedIn;
+    
+    public Task LoginAsync(string userName, string password, CancellationToken cancellationToken);
+
+    public void Logout();
 }

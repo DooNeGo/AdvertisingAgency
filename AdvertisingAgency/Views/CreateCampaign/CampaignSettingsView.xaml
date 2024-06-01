@@ -9,10 +9,16 @@
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
+    xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     Title="Настройка кампании"
     Padding="5"
     x:DataType="viewModel:CampaignSettingsViewModel"
     HideSoftInputOnTapped="True">
+    
+    <ContentPage.Resources>
+        <converters:DayOfWeekConverter x:Key="DayOfWeekConverter"/>
+    </ContentPage.Resources>
+    
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="5">
             <VerticalStackLayout.Resources>
@@ -61,7 +67,7 @@
                                                 ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
                                                 MaximumHeightRequest="150"
                                                 MinimumWidthRequest="120"
-                                                SelectedItem="{Binding DayOfWeek, Mode=TwoWay}" />
+                                                SelectedIndex="2" />
 
                                             <HorizontalStackLayout Grid.Column="1" Spacing="10">
                                                 <material:TimePickerField AllowClear="False" Time="{Binding StartTime}" />

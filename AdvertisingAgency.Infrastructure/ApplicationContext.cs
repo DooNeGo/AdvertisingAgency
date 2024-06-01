@@ -10,7 +10,7 @@ internal sealed class ApplicationContext : DbContext, IApplicationContext
     public ApplicationContext(DbContextOptions options) : base(options)
     {
         Batteries_V2.Init();
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
         this.LoadData();
     }
@@ -106,5 +106,7 @@ internal sealed class ApplicationContext : DbContext, IApplicationContext
             .Property(name => name.Id)
             .HasConversion(id => id.Value, value => new FullNameId(value));
 
+        modelBuilder.Entity<User>().HasIndex(user => user.UserName);
+        modelBuilder.Entity<Client>().HasIndex(client => client.PhoneNumber);
     }
 }

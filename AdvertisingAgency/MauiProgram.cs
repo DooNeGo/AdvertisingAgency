@@ -23,7 +23,9 @@ public static class MauiProgram
             fonts.AddFontAwesomeIconFonts();
         });
 
-        builder.Services.AddApplication().AddInfrastructure().AddUI();
+        builder.Services.AddApplication()
+            .AddInfrastructure()
+            .AddUI();
 
 #if DEBUG
         builder.Logging.AddDebug();

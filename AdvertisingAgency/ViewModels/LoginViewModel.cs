@@ -24,7 +24,7 @@ public sealed partial class LoginViewModel(IIdentityService identityService) : O
     [RelayCommand(CanExecute = nameof(CanExecuteLogin))]
     private async Task LogIn(CancellationToken cancellationToken)
     {
-        await identityService.AuthorizeAsync(UserName.Trim(), Password.Trim(), cancellationToken)
+        await identityService.LoginAsync(UserName.Trim(), Password.Trim(), cancellationToken)
             .ConfigureAwait(false);
 
         if (identityService.CurrentUser is null)

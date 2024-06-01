@@ -46,17 +46,15 @@
                             FontSize="18"
                             HorizontalOptions="Center"
                             HorizontalTextAlignment="Center"
-                            Text="Войдите в аккаунт или зарегестрируйтесь" />
+                            Text="Войдите в аккаунт или зарегистрируйтесь" />
                         <Button
-                            BackgroundColor="{StaticResource Primary}"
+                            StyleClass="FilledButton"
                             FontSize="15"
-                            TextColor="White"
                             Text="Войти" />
                         <Button
-                            BackgroundColor="{StaticResource PrimaryContainer}"
+                            StyleClass="FilledTonalButton"
                             FontSize="15"
-                            Text="Зарегестрироваться"
-                            TextColor="Black" />
+                            Text="Зарегистрироваться" />
                     </VerticalStackLayout>
                 </Border>
 

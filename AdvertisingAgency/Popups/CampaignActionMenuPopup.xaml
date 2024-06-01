@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<toolkit:Popup
+    x:Class="AdvertisingAgency.Popups.CampaignActionMenuPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    CanBeDismissedByTappingOutsideOfPopup="True"
+    HorizontalOptions="Fill"
+    VerticalOptions="End"
+    Color="Transparent">
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <VerticalStackLayout.Resources>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="{StaticResource Primary}" />
+            </Style>
+
+            <Style ApplyToDerivedTypes="True" TargetType="material:ButtonView">
+                <Setter Property="Padding" Value="15" />
+                <Setter Property="StrokeThickness" Value="0" />
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.9" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </VerticalStackLayout.Resources>
+
+        <VerticalStackLayout>
+            <material:ButtonView StrokeShape="RoundRectangle 15 15 0 0">
+                <Label Text="Изменить" />
+            </material:ButtonView>
+
+            <BoxView BackgroundColor="{StaticResource Gray200}" HeightRequest="0.5" />
+
+            <material:ButtonView StrokeShape="RoundRectangle 0 0 15 15">
+                <Label Text="Удалить" TextColor="{StaticResource Error}" />
+            </material:ButtonView>
+        </VerticalStackLayout>
+
+        <material:ButtonView Margin="0,0,0,10" StrokeShape="RoundRectangle 15" Tapped="ButtonView_OnTapped">
+            <Label Text="Отменить" />
+        </material:ButtonView>
+    </VerticalStackLayout>
+</toolkit:Popup>

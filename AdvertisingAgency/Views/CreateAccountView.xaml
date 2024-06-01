@@ -3,51 +3,75 @@
     x:Class="AdvertisingAgency.Views.CreateAccountView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+    xmlns:validations="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Title="Регистрация"
-    Padding="10"
+    Padding="0"
     x:DataType="viewModel:CreateAccountViewModel"
     HideSoftInputOnTapped="True">
 
-    <VerticalStackLayout Spacing="10">
-        <VerticalStackLayout.Resources>
-            <Style TargetType="material:TextField">
-                <Setter Property="AccentColor" Value="{StaticResource Primary}" />
-                <Setter Property="TextColor" Value="Black"></Setter>
-                <Setter Property="AllowClear" Value="True" />
-            </Style>
-        </VerticalStackLayout.Resources>
+    <ScrollView Padding="10">
+        <controls:FormView
+            Margin="0,0,0,150"
+            Orientation="Vertical"
+            Spacing="10"
+            SubmitCommand="{Binding RegisterAccountCommand}">
 
-        <material:TextField Title="Название компании" Text="{Binding CompanyName}" />
-        <material:TextField Title="Имя" Text="{Binding FirstName}" />
-        <material:TextField Title="Фамилия" Text="{Binding LastName}" />
-        <material:TextField Title="Страна" Text="{Binding Country}" />
-        <material:TextField Title="Город" Text="{Binding City}" />
-        <material:TextField Title="Телефон" Text="{Binding PhoneNumber}" />
-        <material:TextField Title="Логин" Text="{Binding UserName}" />
-        <material:TextField
-            Title="Пароль"
-            IsPassword="True"
-            ReturnType="Done"
-            Text="{Binding Password}">
-            <material:TextField.Attachments>
-                <material:TextFieldPasswordShowHideAttachment />
-            </material:TextField.Attachments>
-        </material:TextField>
+            <material:TextField Title="Название компании" Text="{Binding CompanyName}">
+                <validations:RequiredValidation Message="Обязательное" />
+            </material:TextField>
 
-        <Button
-            Margin="0,20,0,0"
-            BackgroundColor="Transparent"
-            BorderColor="{StaticResource Primary}"
-            BorderWidth="1"
-            Clicked="Button_OnClicked"
-            Command="{Binding RegisterAccountCommand}"
-            CornerRadius="10"
-            FontAttributes="Bold"
-            Text="Зарегистрироваться"
-            TextColor="{StaticResource Primary}"
-            TextTransform="Uppercase" />
-    </VerticalStackLayout>
+            <material:TextField Title="Имя" Text="{Binding FirstName}">
+                <validations:RequiredValidation Message="Обязательное" />
+                <validations:MinLengthValidation Message="Минимальная длина 2 символа" MinLength="2" />
+            </material:TextField>
+
+            <material:TextField Title="Фамилия" Text="{Binding LastName}">
+                <validations:RequiredValidation Message="Обязательное" />
+                <validations:MinLengthValidation Message="Минимальная длина 2 символа" MinLength="2" />
+            </material:TextField>
+
+            <material:AutoCompleteTextField
+                Title="Страна"
+                ItemsSource="{Binding Locations}"
+                Text="{Binding Country}">
+                <material:AutoCompleteTextField.Validations>
+                    <validations:RequiredValidation Message="Обязательное" />
+                </material:AutoCompleteTextField.Validations>
+            </material:AutoCompleteTextField>
+
+            <material:TextField Title="Телефон" Text="{Binding PhoneNumber}">
+                <validations:RequiredValidation Message="Обязательное" />
+                <validations:RegexValidation Message="Неверный формат телефона" Pattern="{x:Static controls:AdvancedEntry.REGEX_PHONE}" />
+            </material:TextField>
+
+            <material:TextField Title="Логин" Text="{Binding UserName}">
+                <validations:RequiredValidation Message="Обязательное" />
+                <validations:MinLengthValidation Message="Минимальная длина 6 символов" MinLength="6" />
+            </material:TextField>
+
+            <material:TextField
+                Title="Пароль"
+                IsPassword="True"
+                ReturnType="Done"
+                Text="{Binding Password}">
+                <material:TextField.Attachments>
+                    <material:TextFieldPasswordShowHideAttachment />
+                </material:TextField.Attachments>
+
+                <validations:MinLengthValidation Message="Минимальная длина 6 символов" MinLength="6" />
+                <validations:RegexValidation Message="Неверный формат пароля" Pattern="{x:Static controls:AdvancedEntry.REGEX_PASSWORD}" />
+                <validations:RequiredValidation Message="Обязательное" />
+            </material:TextField>
+
+            <Button
+                Margin="0,20,0,10"
+                controls:FormView.IsSubmitButton="True"
+                StyleClass="OutlinedButton"
+                Text="Зарегистрироваться" />
+        </controls:FormView>
+    </ScrollView>
 </uranium:UraniumContentPage>

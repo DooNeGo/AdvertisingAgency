@@ -49,42 +49,15 @@
 
         <Button
             x:Name="LogInButton"
-            BackgroundColor="Transparent"
-            BorderWidth="1"
             Clicked="LogInButton_OnClicked"
             Command="{Binding LogInCommand}"
-            CornerRadius="10"
-            FontAttributes="Bold"
-            FontSize="15"
-            HeightRequest="45"
-            Text="Войти"
-            TextTransform="Uppercase">
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup Name="CommonStates">
-                    <VisualState Name="Disabled">
-                        <VisualState.Setters>
-                            <Setter Property="BorderColor" Value="{StaticResource Gray400}" />
-                            <Setter Property="TextColor" Value="{StaticResource Gray400}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
-                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-        </Button>
+            StyleClass="OutlinedButton"
+            Text="Войти" />
 
         <Button
-            BackgroundColor="Transparent"
             Clicked="Button_OnClicked"
-            CornerRadius="5"
-            FontAttributes="Bold"
-            Text="У меня нет аккаунта"
-            TextColor="{StaticResource Primary}"
-            TextTransform="Uppercase" />
+            StyleClass="TextButton"
+            Text="У меня нет аккаунта" />
 
         <Entry x:Name="Entry" IsVisible="False" />
     </VerticalStackLayout>

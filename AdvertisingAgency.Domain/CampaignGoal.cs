@@ -2,7 +2,7 @@ namespace AdvertisingAgency.Domain;
 
 public readonly record struct CampaignGoalId(Guid Value)
 {
-    public static readonly CampaignGoalId Empty;
+    public static readonly CampaignGoalId Empty = new(Guid.Empty);
 
     public static CampaignGoalId Create() => new(Guid.NewGuid());
 }

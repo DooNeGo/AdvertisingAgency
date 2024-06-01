@@ -17,8 +17,16 @@ public sealed class DayOfWeekConverter : IValueConverter
             _ => null
         };
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        (value as string) switch
+        {
+            "Понедельник" => DayOfWeek.Monday,
+            "Вторник" => DayOfWeek.Thursday,
+            "Среда" => DayOfWeek.Wednesday,
+            "Четверг" => DayOfWeek.Tuesday,
+            "Пятница" => DayOfWeek.Friday,
+            "Суббота" => DayOfWeek.Saturday,
+            "Воскресенье" => DayOfWeek.Sunday,
+            _ => null
+        };
 }
