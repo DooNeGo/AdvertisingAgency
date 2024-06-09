@@ -10,6 +10,7 @@
     xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+    xmlns:templateSelectors="clr-namespace:AdvertisingAgency.TemplateSelectors"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     x:DataType="viewModel:CampaignSettingsViewModel"
     HideSoftInputOnTapped="True">
@@ -26,6 +27,7 @@
                 Text="Настройка кампании"
                 VerticalOptions="Center" />
             <core:DXButton
+                Command="{Binding FinishCommand}"
                 Content="Завершить"
                 HorizontalOptions="End"
                 Style="{StaticResource TextButtonStyle}" />
@@ -34,21 +36,40 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="10">
-            <editors:TextEdit HelpText="Введите название кампании, которое будет отображаться в кампаниях." LabelText="Название кампании" />
+            <editors:TextEdit
+                HelpText="Введите название кампании, которое будет отображаться в кампаниях."
+                LabelText="Название кампании"
+                Text="{Binding Name}" />
+
+            <editors:NumericEdit
+                DisplayFormat="c"
+                HelpText="Введите бюджет кампании, на основании, которого будет рассчитываться стратегия рекламы"
+                IsUpDownIconVisible="True"
+                LabelText="Бюджет"
+                StepValue="1"
+                TextHorizontalAlignment="Start"
+                UpDownIconAlignment="End"
+                Value="{Binding Budget}" />
 
             <editors:AutoCompleteTokenEdit
                 HelpText="Выберите целевые местоположения."
-                ItemsSource="{Binding Locations}"
                 LabelText="Локации"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItems="{Binding SelectedLocations}" />
+                SelectedItems="{Binding SelectedLocations}">
+                <editors:AutoCompleteTokenEdit.ItemsSourceProvider>
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Locations}" />
+                </editors:AutoCompleteTokenEdit.ItemsSourceProvider>
+            </editors:AutoCompleteTokenEdit>
 
-            <editors:TokenEdit
+            <editors:AutoCompleteTokenEdit
                 HelpText="Выберите языки, на которых говорят ваши клиенты."
-                ItemsSource="{Binding Languages}"
                 LabelText="Языки"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItems="{Binding SelectedLanguages}" />
+                SelectedItems="{Binding SelectedLanguages}">
+                <editors:AutoCompleteTokenEdit.ItemsSourceProvider>
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Languages}" />
+                </editors:AutoCompleteTokenEdit.ItemsSourceProvider>
+            </editors:AutoCompleteTokenEdit>
 
             <Border
                 Padding="0,0"
@@ -65,60 +86,97 @@
                     <BoxView Margin="0,0,0,5" Style="{StaticResource DividerBoxViewStyle}" />
 
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Schedules}" Spacing="5">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="domain:AdSchedule">
-                                <VerticalStackLayout Spacing="5">
-                                    <SwipeView Padding="10,5" androidSpecific:SwipeView.SwipeTransitionMode="Drag">
-                                        <SwipeView.RightItems>
-                                            <SwipeItemView>
-                                                <core:DXButton
-                                                    BackgroundColor="{StaticResource ErrorContainer}"
-                                                    ButtonType="Filled"
-                                                    Clicked="MenuItem_OnClicked"
-                                                    Content="Удалить"
-                                                    CornerRadius="10"
-                                                    FontSize="13"
-                                                    HorizontalOptions="End"
-                                                    PressedBackgroundColor="{StaticResource Error}"
-                                                    TextColor="{StaticResource OnErrorContainer}" />
-                                            </SwipeItemView>
-                                        </SwipeView.RightItems>
+                        <BindableLayout.ItemTemplateSelector>
+                            <templateSelectors:SpecialFirstItemSelector>
+                                <templateSelectors:SpecialFirstItemSelector.DefaultTemplate>
+                                    <DataTemplate x:DataType="domain:AdSchedule">
+                                        <VerticalStackLayout Spacing="5">
+                                            <SwipeView Padding="10,5" androidSpecific:SwipeView.SwipeTransitionMode="Drag">
+                                                <SwipeView.RightItems>
+                                                    <SwipeItemView>
+                                                        <core:DXButton
+                                                            BackgroundColor="{StaticResource ErrorContainer}"
+                                                            ButtonType="Filled"
+                                                            Clicked="MenuItem_OnClicked"
+                                                            Content="Удалить"
+                                                            CornerRadius="10"
+                                                            FontSize="13"
+                                                            HorizontalOptions="End"
+                                                            PressedBackgroundColor="{StaticResource Error}"
+                                                            TextColor="{StaticResource OnErrorContainer}" />
+                                                    </SwipeItemView>
+                                                </SwipeView.RightItems>
 
-                                        <SwipeView.Behaviors>
-                                            <behaviours:OnAppearingBehaviour />
-                                        </SwipeView.Behaviors>
+                                                <SwipeView.Behaviors>
+                                                    <behaviours:OnAppearingBehaviour />
+                                                </SwipeView.Behaviors>
 
-                                        <FlexLayout BackgroundColor="White" JustifyContent="SpaceBetween">
-                                            <editors:ComboBoxEdit
-                                                ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
-                                                SelectedItem="{Binding DayOfWeek}"
-                                                VerticalOptions="Center">
-                                                <!--<editors:ComboBoxEdit.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Label
-                                                            Padding="5"
-                                                            FontSize="14"
-                                                            Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
-                                                    </DataTemplate>
-                                                </editors:ComboBoxEdit.ItemTemplate>
+                                                <FlexLayout BackgroundColor="White" JustifyContent="SpaceBetween">
+                                                    <editors:ComboBoxEdit
+                                                        ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
+                                                        SelectedItem="{Binding DayOfWeek}"
+                                                        VerticalOptions="Center">
+                                                        <editors:ComboBoxEdit.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Label
+                                                                    Padding="5"
+                                                                    FontSize="14"
+                                                                    Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
+                                                            </DataTemplate>
+                                                        </editors:ComboBoxEdit.ItemTemplate>
 
-                                                <editors:ComboBoxEdit.DisplayItemTemplate>
-                                                    <DataTemplate>
-                                                        <Label FontSize="14" TextColor="Black" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
-                                                    </DataTemplate>
-                                                </editors:ComboBoxEdit.DisplayItemTemplate>-->
-                                            </editors:ComboBoxEdit>
+                                                        <editors:ComboBoxEdit.DisplayItemTemplate>
+                                                            <DataTemplate>
+                                                                <Label FontSize="14" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}, StringFormat='{0}'}" />
+                                                            </DataTemplate>
+                                                        </editors:ComboBoxEdit.DisplayItemTemplate>
+                                                    </editors:ComboBoxEdit>
 
-                                            <editors:TimeEdit Time="{Binding StartTime}" />
+                                                    <editors:TimeEdit Time="{Binding StartTime}" />
 
-                                            <editors:TimeEdit Time="{Binding EndTime}" />
-                                        </FlexLayout>
-                                    </SwipeView>
+                                                    <editors:TimeEdit Time="{Binding EndTime}" />
+                                                </FlexLayout>
+                                            </SwipeView>
 
-                                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
-                                </VerticalStackLayout>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                                            <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </templateSelectors:SpecialFirstItemSelector.DefaultTemplate>
+                                <templateSelectors:SpecialFirstItemSelector.SpecialTemplate>
+                                    <DataTemplate x:DataType="domain:AdSchedule">
+                                        <VerticalStackLayout Padding="10,5" Spacing="5">
+                                            <FlexLayout BackgroundColor="White" JustifyContent="SpaceBetween">
+                                                <editors:ComboBoxEdit
+                                                    ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
+                                                    SelectedItem="{Binding DayOfWeek}"
+                                                    VerticalOptions="Center">
+                                                    <editors:ComboBoxEdit.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Label
+                                                                Padding="5"
+                                                                FontSize="14"
+                                                                Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
+                                                        </DataTemplate>
+                                                    </editors:ComboBoxEdit.ItemTemplate>
+
+                                                    <editors:ComboBoxEdit.DisplayItemTemplate>
+                                                        <DataTemplate>
+                                                            <Label FontSize="14" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}, StringFormat='{0}'}" />
+                                                        </DataTemplate>
+                                                    </editors:ComboBoxEdit.DisplayItemTemplate>
+                                                </editors:ComboBoxEdit>
+
+                                                <editors:TimeEdit Time="{Binding StartTime}" />
+
+                                                <editors:TimeEdit Time="{Binding EndTime}" />
+                                            </FlexLayout>
+
+                                            <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </templateSelectors:SpecialFirstItemSelector.SpecialTemplate>
+                            </templateSelectors:SpecialFirstItemSelector>
+                        </BindableLayout.ItemTemplateSelector>
                     </VerticalStackLayout>
 
                     <core:DXButton

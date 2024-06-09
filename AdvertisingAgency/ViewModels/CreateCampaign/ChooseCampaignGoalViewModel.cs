@@ -18,7 +18,7 @@ public sealed partial class ChooseCampaignGoalViewModel : BaseViewModel
 
     public ChooseCampaignGoalViewModel(IMediator mediator) : base(mediator) =>
         UpdateCollectionAsync(CampaignGoals, new GetCampaignGoalsQuery(), CancellationToken.None).SafeFireAndForget();
-
+    
     [RelayCommand]
     private void SetCampaignGoal(CampaignGoal goal) => CampaignGoal = goal;
 

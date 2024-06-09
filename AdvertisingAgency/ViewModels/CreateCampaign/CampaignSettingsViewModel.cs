@@ -1,10 +1,13 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
 using AdvertisingAgency.Domain.Exceptions;
 using AdvertisingAgency.Messages;
 using AsyncAwaitBestPractices;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,30 +16,43 @@ using Location = AdvertisingAgency.Domain.Location;
 
 namespace AdvertisingAgency.ViewModels.CreateCampaign;
 
-public sealed partial class CampaignSettingsViewModel : ObservableObject
+public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQueryAttributable
 {
     private readonly IMediator _mediator;
-    private readonly IIdentityService _identityService;
     private readonly IMessenger _messenger;
+
+    private CampaignGoal? _campaignGoal;
+    private CampaignType? _campaignType;
+    
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [MinLength(1)]
+    private List<Location> _selectedLocations = [];
+    
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [MinLength(1)]
+    private List<Language> _selectedLanguages = [];
+    
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [MinLength(1)]
+    private List<DayOfWeek> _dayOfWeeks;
+    
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required]
+    private string _name = string.Empty;
     
     [ObservableProperty] private List<Location> _locations = [];
-    [ObservableProperty] private List<Location> _selectedLocations = [];
-    [ObservableProperty] private List<string> _locationsString = [];
-    [ObservableProperty] private List<string> _selectedLocationsString = [];
-    
     [ObservableProperty] private List<Language> _languages = [];
-    [ObservableProperty] private List<Language> _selectedLanguages = [];
-    [ObservableProperty] private List<string> _languagesString = [];
-    [ObservableProperty] private List<string> _selectedLanguagesString = [];
-    
-    [ObservableProperty] private List<DayOfWeek> _dayOfWeeks;
+    [ObservableProperty] private decimal _budget;
 
     [ObservableProperty] private ObservableCollection<AdSchedule> _schedules =
         [new AdSchedule(DayOfWeek.Monday, new DateTime(), new DateTime(DateOnly.MinValue, TimeOnly.MaxValue))];
 
-    public CampaignSettingsViewModel(IMediator mediator, IIdentityService identityService, IMessenger messenger)
+    public CampaignSettingsViewModel(IMediator mediator, IMessenger messenger)
     {
-        _identityService = identityService;
         _mediator = mediator;
         _messenger = messenger;
         
@@ -44,11 +60,15 @@ public sealed partial class CampaignSettingsViewModel : ObservableObject
         {
             Languages = await mediator.Send(new GetLanguagesQuery()).ConfigureAwait(false);
             Locations = await mediator.Send(new GetLocationsQuery()).ConfigureAwait(false);
-            LanguagesString = Languages.ConvertAll(language => language.ToString());
-            LocationsString = Locations.ConvertAll(location => location.ToString());
         }).SafeFireAndForget();
         
         DayOfWeeks = [..Enum.GetValues<DayOfWeek>()];
+    }
+    
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        _campaignGoal = (CampaignGoal)query["CampaignGoal"];
+        _campaignType = (CampaignType)query["CampaignType"];
     }
 
     [RelayCommand]
@@ -58,11 +78,28 @@ public sealed partial class CampaignSettingsViewModel : ObservableObject
     [RelayCommand]
     private void DeleteSchedule(AdSchedule schedule) => Schedules.Remove(schedule);
 
+    private static Task GoBack(CancellationToken cancellationToken = default) =>
+        Shell.Current.GoToAsync("../../..").WaitAsync(cancellationToken);
+
+    private static Task ShowSuccessfulAlert(CancellationToken cancellationToken = default) =>
+        App.Current.MainPage
+            .DisplayAlert("Кампания", "Вы успешно создали новую кампанию", "Ок")
+            .WaitAsync(cancellationToken);
+
     [RelayCommand]
     private async Task FinishAsync(CancellationToken cancellationToken = default)
     {
-        //Client client = _identityService.CurrentUser?.Client ?? throw new NotLoggedInException();
-        //var campaign = new Campaign(client,);
-        //_messenger.Send(new AddCampaignMessage(campaign.Id));
+        Guard.IsNotNull(_campaignGoal, nameof(_campaignGoal));
+        Guard.IsNotNull(_campaignType, nameof(_campaignType));
+
+        var setting = new CampaignSettings(Budget, SelectedLocations, SelectedLanguages, Schedules.ToList());
+
+        CampaignId id = await _mediator
+            .Send(new AddCampaignCommand(_campaignGoal, _campaignType, setting, Name), cancellationToken)
+            .ConfigureAwait(false);
+        _messenger.Send(new AddCampaignMessage(id));
+
+        await ShowSuccessfulAlert(cancellationToken).ConfigureAwait(false);
+        await GoBack(cancellationToken).ConfigureAwait(false);
     }
 }

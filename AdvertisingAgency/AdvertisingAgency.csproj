@@ -73,6 +73,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="7.0.0" />
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
+		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="DevExpress.Maui.Editors" Version="23.2.6" />

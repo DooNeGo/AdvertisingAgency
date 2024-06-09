@@ -458,7 +458,7 @@
         <Setter Property="BackgroundColor" Value="{StaticResource Gray200}" />
     </Style>
 
-    <Style ApplyToDerivedTypes="True" TargetType="editors:ComboBoxEditBase">
+    <Style ApplyToDerivedTypes="True" TargetType="editors:ItemsEditBase">
         <Setter Property="BoxMode" Value="Outlined" />
         <Setter Property="CornerRadius" Value="10" />
         <Setter Property="CursorColor" Value="{StaticResource Primary}" />
@@ -467,7 +467,6 @@
         <Setter Property="ReturnType" Value="Next" />
         <Setter Property="DropDownBackgroundColor" Value="White" />
         <Setter Property="DropDownSelectedItemBackgroundColor" Value="#C3D8EA" />
-        <Setter Property="FilterCondition" Value="StartsWith" />
     </Style>
 
     <Style x:Key="TextButtonStyle" TargetType="core:DXButton">

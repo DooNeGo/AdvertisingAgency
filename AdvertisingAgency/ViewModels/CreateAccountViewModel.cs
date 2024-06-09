@@ -46,7 +46,7 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     [Phone]
-    [MinLength(10, ErrorMessage = "Неверная длина пароля (ожидаемая длина 13)")]
+    [MinLength(9, ErrorMessage = "Неверная длина пароля (ожидаемая длина 13)")]
     private string _phoneNumber = string.Empty;
     
     [ObservableProperty] private string _phoneNumberError = string.Empty;
@@ -66,7 +66,6 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     private string _password = string.Empty;
     
     [ObservableProperty] private string _passwordError = string.Empty;
-    
     [ObservableProperty] private string _error = string.Empty;
 
     [ObservableProperty] private List<Location> _locations = [];
@@ -86,8 +85,9 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     [RelayCommand]
     private async Task RegisterAccount(CancellationToken cancellationToken)
     {
+        await TrimProperties(cancellationToken).ConfigureAwait(false);
         ValidateAllProperties();
-        UpdateErrorProperties();
+        await UpdateErrorProperties(cancellationToken).ConfigureAwait(false);
         
         if (HasErrors) return;
         
@@ -100,31 +100,45 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
         }
         catch (Exception e)
         {
-            Error = e.InnerException!.Message;
+            if (e.InnerException is not null) Error = e.InnerException.Message;
+            Error = e.Message;
         }
     }
 
-    private void UpdateErrorProperties()
+    private Task TrimProperties(CancellationToken cancellationToken = default) => Task.Run(() =>
     {
-        CompanyNameError = GetErrors(nameof(CompanyName)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-        FirstNameError = GetErrors(nameof(FirstName)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-        LastNameError = GetErrors(nameof(LastName)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-        LocationError = GetErrors(nameof(SelectedLocation)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-        PhoneNumberError = GetErrors(nameof(PhoneNumber)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-        UserNameError = GetErrors(nameof(UserName)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-        PasswordError = GetErrors(nameof(Password)).FirstOrDefault()?.ErrorMessage ?? string.Empty;
-    }
+        CompanyName = CompanyName.TrimEnd();
+        FirstName = FirstName.TrimEnd();
+        LastName = LastName.TrimEnd();
+        PhoneNumber = PhoneNumber.TrimEnd();
+        UserName = UserName.TrimEnd();
+        Password = Password.TrimEnd();
+    }, cancellationToken);
 
-    private static Task ShowSuccessfulRegistrationAlert(Page page, CancellationToken cancellationToken) =>
+    private Task UpdateErrorProperties(CancellationToken cancellationToken = default) => Task.Run(() =>
+    {
+        CompanyNameError = GetErrorMessageOrEmpty(nameof(CompanyName));
+        FirstNameError = GetErrorMessageOrEmpty(nameof(FirstName));
+        LastNameError = GetErrorMessageOrEmpty(nameof(LastName));
+        LocationError = GetErrorMessageOrEmpty(nameof(SelectedLocation));
+        PhoneNumberError = GetErrorMessageOrEmpty(nameof(PhoneNumber));
+        UserNameError = GetErrorMessageOrEmpty(nameof(UserName));
+        PasswordError = GetErrorMessageOrEmpty(nameof(Password));
+    }, cancellationToken);
+    
+    private string GetErrorMessageOrEmpty(string propertyName) =>
+        GetErrors(propertyName).FirstOrDefault()?.ErrorMessage ?? string.Empty;
+
+    private static Task ShowSuccessfulRegistrationAlert(Page page, CancellationToken cancellationToken = default) =>
         page.DisplayAlert("Успешная регистрация",
                 "Вы успешно зарегистрировались. Войдите с вашим новым аккаунтом", "Ок")
             .WaitAsync(cancellationToken);
 
-    private static async Task GoBackSuccessfulAsync(CancellationToken cancellationToken)
-        //App.Current!.Dispatcher.DispatchAsync(async () =>
+    private static Task GoBackSuccessfulAsync(CancellationToken cancellationToken = default) =>
+        App.Current!.Dispatcher.DispatchAsync(async () =>
         {
             Page page = App.Current.MainPage!;
             await ShowSuccessfulRegistrationAlert(page, cancellationToken);
             await page.Navigation.PopAsync().WaitAsync(cancellationToken);
-        }
+        }).WaitAsync(cancellationToken);
 }
