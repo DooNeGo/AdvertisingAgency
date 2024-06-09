@@ -5,15 +5,26 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
-    Title="Выбор типа кампании"
     Padding="10"
     x:DataType="createCampaign:ChooseCampaignTypeViewModel">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding GoNextCommand}" Text="Далее" />
-    </ContentPage.ToolbarItems>
+    <Shell.TitleView>
+        <Grid>
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="Выбор типа кампании"
+                VerticalOptions="Center" />
+            <core:DXButton
+                Command="{Binding GoNextCommand}"
+                Content="Далее"
+                HorizontalOptions="End"
+                Style="{StaticResource TextButtonStyle}" />
+        </Grid>
+    </Shell.TitleView>
 
     <VerticalStackLayout x:Name="VerticalStackLayout" BindableLayout.ItemsSource="{Binding CampaignTypes}">
         <BindableLayout.ItemTemplate>
@@ -24,7 +35,7 @@
                     BackgroundColor="White"
                     Shadow="{StaticResource ShadowAttr}">
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Path=SetCampaignTypeCommand, Source={RelativeSource AncestorType={Type createCampaign:ChooseCampaignTypeViewModel}}}" CommandParameter="{Binding}" />
+                        <TapGestureRecognizer Command="{Binding Path=SetCampaignTypeCommand, Source={RelativeSource AncestorType={Type createCampaign:ChooseCampaignTypeViewModel}}}" CommandParameter="{Binding .}" />
                     </Border.GestureRecognizers>
 
                     <Border.Behaviors>

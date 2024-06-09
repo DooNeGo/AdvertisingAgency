@@ -5,6 +5,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     Title="Выбор цели кампании"
@@ -17,30 +18,11 @@
                 FontSize="20"
                 Text="Выбор цели кампании"
                 VerticalOptions="Center" />
-            <Button
-                BackgroundColor="Transparent"
+            <core:DXButton
                 Command="{Binding GoNextCommand}"
-                FontAttributes="Bold"
+                Content="Далее"
                 HorizontalOptions="End"
-                Text="Далее"
-                TextColor="Black"
-                VerticalOptions="Center">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Disabled">
-                            <VisualState.Setters>
-                                <Setter Property="TextColor" Value="{StaticResource Gray300}" />
-                            </VisualState.Setters>
-                        </VisualState>
-
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="TextColor" Value="Black" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </Button>
+                Style="{StaticResource TextButtonStyle}" />
         </Grid>
     </Shell.TitleView>
 

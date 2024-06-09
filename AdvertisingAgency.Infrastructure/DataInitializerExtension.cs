@@ -41,13 +41,13 @@ internal static class DataInitializerExtension
         [
             new Location("Беларусь"),
             new Location("Россия"),
-            new Location("Украина"),
+            new Location("Литва"),
             new Location("Латвия")
         ];
 
         AdSchedule[] adSchedules =
         [
-            new AdSchedule(DayOfWeek.Monday, TimeSpan.FromHours(9), TimeSpan.FromHours(20))
+            new AdSchedule(DayOfWeek.Monday, new DateTime(DateOnly.MinValue, new TimeOnly(9, 0)), new DateTime(DateOnly.MinValue, new TimeOnly(22, 0)))
         ];
 
         Language[] languages =

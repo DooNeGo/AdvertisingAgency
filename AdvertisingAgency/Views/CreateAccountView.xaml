@@ -1,77 +1,86 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<uranium:UraniumContentPage
+<ContentPage
     x:Class="AdvertisingAgency.Views.CreateAccountView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
-    xmlns:validations="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+    xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
+    xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     Title="Регистрация"
     Padding="0"
     x:DataType="viewModel:CreateAccountViewModel"
     HideSoftInputOnTapped="True">
 
     <ScrollView Padding="10">
-        <controls:FormView
-            Margin="0,0,0,150"
-            Orientation="Vertical"
-            Spacing="10"
-            SubmitCommand="{Binding RegisterAccountCommand}">
+        <VerticalStackLayout Margin="0,0,0,150" Spacing="10">
+            <VerticalStackLayout.Resources>
+                <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+            </VerticalStackLayout.Resources>
 
-            <material:TextField Title="Название компании" Text="{Binding CompanyName}">
-                <validations:RequiredValidation Message="Обязательное" />
-            </material:TextField>
+            <editors:TextEdit
+                ErrorText="{Binding CompanyNameError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
+                LabelText="Название компании"
+                Text="{Binding CompanyName}" />
 
-            <material:TextField Title="Имя" Text="{Binding FirstName}">
-                <validations:RequiredValidation Message="Обязательное" />
-                <validations:MinLengthValidation Message="Минимальная длина 2 символа" MinLength="2" />
-            </material:TextField>
+            <editors:TextEdit
+                ErrorText="{Binding FirstNameError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
+                LabelText="Имя"
+                Text="{Binding FirstName}" />
 
-            <material:TextField Title="Фамилия" Text="{Binding LastName}">
-                <validations:RequiredValidation Message="Обязательное" />
-                <validations:MinLengthValidation Message="Минимальная длина 2 символа" MinLength="2" />
-            </material:TextField>
+            <editors:TextEdit
+                ErrorText="{Binding LastNameError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
+                LabelText="Фамилия"
+                Text="{Binding LastName}" />
 
-            <material:AutoCompleteTextField
-                Title="Страна"
+            <editors:ComboBoxEdit
+                ErrorText="{Binding LocationError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
                 ItemsSource="{Binding Locations}"
-                Text="{Binding Country}">
-                <material:AutoCompleteTextField.Validations>
-                    <validations:RequiredValidation Message="Обязательное" />
-                </material:AutoCompleteTextField.Validations>
-            </material:AutoCompleteTextField>
+                LabelText="Страна"
+                SelectedItem="{Binding SelectedLocation}" />
 
-            <material:TextField Title="Телефон" Text="{Binding PhoneNumber}">
-                <validations:RequiredValidation Message="Обязательное" />
-                <validations:RegexValidation Message="Неверный формат телефона" Pattern="{x:Static controls:AdvancedEntry.REGEX_PHONE}" />
-            </material:TextField>
+            <editors:TextEdit
+                ErrorText="{Binding PhoneNumberError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
+                LabelText="Телефон"
+                Mask="+375 (00) 000 0000"
+                Text="{Binding PhoneNumber}" />
 
-            <material:TextField Title="Логин" Text="{Binding UserName}">
-                <validations:RequiredValidation Message="Обязательное" />
-                <validations:MinLengthValidation Message="Минимальная длина 6 символов" MinLength="6" />
-            </material:TextField>
+            <editors:TextEdit
+                ErrorText="{Binding UserNameError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
+                LabelText="Логин"
+                Text="{Binding UserName}" />
 
-            <material:TextField
-                Title="Пароль"
-                IsPassword="True"
+            <editors:PasswordEdit
+                ErrorText="{Binding PasswordError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
+                HelpText="*Обязательное"
+                LabelText="Пароль"
                 ReturnType="Done"
                 Text="{Binding Password}">
-                <material:TextField.Attachments>
-                    <material:TextFieldPasswordShowHideAttachment />
-                </material:TextField.Attachments>
 
-                <validations:MinLengthValidation Message="Минимальная длина 6 символов" MinLength="6" />
+                <!--<validations:MinLengthValidation Message="Минимальная длина 6 символов" MinLength="6" />
                 <validations:RegexValidation Message="Неверный формат пароля" Pattern="{x:Static controls:AdvancedEntry.REGEX_PASSWORD}" />
-                <validations:RequiredValidation Message="Обязательное" />
-            </material:TextField>
+                <validations:RequiredValidation Message="Обязательное" />-->
+            </editors:PasswordEdit>
 
-            <Button
-                Margin="0,20,0,10"
-                controls:FormView.IsSubmitButton="True"
-                StyleClass="OutlinedButton"
-                Text="Зарегистрироваться" />
-        </controls:FormView>
+            <Label Style="{StaticResource ErrorLabel}" Text="{Binding Error}" />
+
+            <core:DXButton
+                Command="{Binding RegisterAccountCommand}"
+                Style="{StaticResource OutlineButtonStyle}"
+                Content="Зарегистрироваться" />
+        </VerticalStackLayout>
     </ScrollView>
-</uranium:UraniumContentPage>
+</ContentPage>

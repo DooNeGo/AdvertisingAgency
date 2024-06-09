@@ -13,7 +13,7 @@ public sealed partial class ChooseCampaignTypeViewModel : BaseViewModel
     [ObservableProperty] private ObservableCollection<CampaignType> _campaignTypes = [];
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SetCampaignTypeCommand))]
+    [NotifyCanExecuteChangedFor(nameof(GoNextCommand))]
     private CampaignType? _campaignType;
 
     public ChooseCampaignTypeViewModel(IMediator mediator) : base(mediator) =>
@@ -22,7 +22,9 @@ public sealed partial class ChooseCampaignTypeViewModel : BaseViewModel
     [RelayCommand]
     private void SetCampaignType(CampaignType type) => CampaignType = type;
 
-    [RelayCommand]
+    private bool CanExecuteGoNext() => CampaignType is not null;
+    
+    [RelayCommand(CanExecute = nameof(CanExecuteGoNext))]
     private Task GoNext(CancellationToken cancellationToken) => 
         Shell.Current.GoToAsync(nameof(CampaignSettingsViewModel)).WaitAsync(cancellationToken);
 }

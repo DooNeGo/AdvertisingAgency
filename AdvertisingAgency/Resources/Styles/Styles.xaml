@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+    xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors">
 
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
@@ -24,7 +28,7 @@
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource PrimaryDarkText}}" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="BorderWidth" Value="0" />
         <Setter Property="CornerRadius" Value="8" />
@@ -68,7 +72,7 @@
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -89,7 +93,7 @@
     <Style TargetType="Editor">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="MinimumHeightRequest" Value="44" />
@@ -111,7 +115,7 @@
     <Style TargetType="Entry">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="ClearButtonVisibility" Value="WhileEditing" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
@@ -162,7 +166,7 @@
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -210,7 +214,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -248,7 +252,7 @@
     <Style TargetType="RadioButton">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -275,7 +279,7 @@
         <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
         <Setter Property="CancelButtonColor" Value="{StaticResource Gray500}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -298,7 +302,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -378,7 +382,7 @@
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MinimumHeightRequest" Value="44" />
         <Setter Property="MinimumWidthRequest" Value="44" />
@@ -439,5 +443,62 @@
         Opacity="0.08"
         Radius="5"
         Offset="0,5" />
+
+    <Style ApplyToDerivedTypes="True" TargetType="editors:EditBase">
+        <Setter Property="BoxMode" Value="Outlined" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CursorColor" Value="{StaticResource Primary}" />
+        <Setter Property="FocusedBorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="FocusedLabelColor" Value="{StaticResource Primary}" />
+        <Setter Property="ReturnType" Value="Next" />
+    </Style>
+
+    <Style x:Key="DividerBoxViewStyle" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="0.4" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Gray200}" />
+    </Style>
+
+    <Style ApplyToDerivedTypes="True" TargetType="editors:ComboBoxEditBase">
+        <Setter Property="BoxMode" Value="Outlined" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CursorColor" Value="{StaticResource Primary}" />
+        <Setter Property="FocusedBorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="FocusedLabelColor" Value="{StaticResource Primary}" />
+        <Setter Property="ReturnType" Value="Next" />
+        <Setter Property="DropDownBackgroundColor" Value="White" />
+        <Setter Property="DropDownSelectedItemBackgroundColor" Value="#C3D8EA" />
+        <Setter Property="FilterCondition" Value="StartsWith" />
+    </Style>
+
+    <Style x:Key="TextButtonStyle" TargetType="core:DXButton">
+        <Setter Property="PressedBackgroundColor" Value="{StaticResource PrimaryContainer}" />
+        <Setter Property="ButtonType" Value="Text" />
+        <Setter Property="PressedTextColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style
+        x:Key="OutlineButtonStyle"
+        BasedOn="{StaticResource TextButtonStyle}"
+        TargetType="core:DXButton">
+        <Setter Property="ButtonType" Value="Outlined" />
+    </Style>
+
+    <Style x:Key="AccentButtonStyle" TargetType="core:DXButton">
+        <Setter Property="PressedBackgroundColor" Value="#366C9B" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="ButtonType" Value="Filled" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style x:Key="FilledButtonStyle" TargetType="core:DXButton">
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryContainer}" />
+        <Setter Property="PressedBackgroundColor" Value="#ADD2FF" />
+        <Setter Property="TextColor" Value="{StaticResource OnPrimaryContainer}" />
+        <Setter Property="ButtonType" Value="Filled" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
 
 </ResourceDictionary>

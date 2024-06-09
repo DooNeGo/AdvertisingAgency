@@ -3,7 +3,8 @@
     x:Class="AdvertisingAgency.Views.LoginView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+    xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels"
     Padding="15"
@@ -15,8 +16,9 @@
         <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Background}" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
-    <VerticalStackLayout Spacing="20" VerticalOptions="Center">
+    <VerticalStackLayout Spacing="10" VerticalOptions="Center">
         <Label
+            Margin="0,0,0,10"
             FontAttributes="Bold"
             FontSize="30"
             HorizontalOptions="Center"
@@ -24,40 +26,32 @@
             VerticalOptions="Center" />
 
         <VerticalStackLayout Spacing="10">
-            <material:TextField
-                Title="Логин"
-                AllowClear="True"
+            <editors:TextEdit
                 Keyboard="Plain"
+                LabelText="Логин"
                 ReturnType="Next"
                 Text="{Binding UserName}" />
 
-            <material:TextField
-                Title="Пароль"
-                AllowClear="True"
+            <editors:PasswordEdit
                 Completed="TextField_OnCompleted"
-                IsPassword="True"
                 Keyboard="Plain"
+                LabelText="Пароль"
                 ReturnType="Done"
-                Text="{Binding Password}">
-                <material:TextField.Attachments>
-                    <material:TextFieldPasswordShowHideAttachment />
-                </material:TextField.Attachments>
-            </material:TextField>
+                Text="{Binding Password}" />
 
             <Label Style="{StaticResource ErrorLabel}" Text="{Binding Error}" />
         </VerticalStackLayout>
 
-        <Button
-            x:Name="LogInButton"
+        <core:DXButton
             Clicked="LogInButton_OnClicked"
             Command="{Binding LogInCommand}"
-            StyleClass="OutlinedButton"
-            Text="Войти" />
+            Content="Войти"
+            Style="{StaticResource OutlineButtonStyle}" />
 
-        <Button
+        <core:DXButton
             Clicked="Button_OnClicked"
-            StyleClass="TextButton"
-            Text="У меня нет аккаунта" />
+            Content="У меня нет аккаунта"
+            Style="{StaticResource TextButtonStyle}" />
 
         <Entry x:Name="Entry" IsVisible="False" />
     </VerticalStackLayout>

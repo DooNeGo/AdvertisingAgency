@@ -6,15 +6,22 @@ namespace AdvertisingAgency.Views;
 public sealed partial class LoginView
 {
 	private readonly IServiceProvider _provider;
+	private readonly LoginViewModel _viewModel;
 
 	public LoginView(LoginViewModel viewModel, IServiceProvider provider)
 	{
-		_provider = provider;
+		_viewModel = viewModel;
 		InitializeComponent();
-		BindingContext = viewModel;
+		
+		_provider = provider;
+		BindingContext = _viewModel = viewModel;
 	}
 
-	private void TextField_OnCompleted(object? sender, EventArgs e) => LogInButton.SendClicked();
+	private void TextField_OnCompleted(object? sender, EventArgs e)
+	{
+		LogInButton_OnClicked(sender, e);
+		_viewModel.LogInCommand.ExecuteAsync(null).SafeFireAndForget();
+	}
 
 	private async void Button_OnClicked(object? sender, EventArgs e)
 	{

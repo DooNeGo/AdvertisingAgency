@@ -73,14 +73,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices" Version="7.0.0" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="DevExpress.Maui.Editors" Version="23.2.6" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="UraniumUI" Version="2.8.1" />
 		<PackageReference Include="UraniumUI.Icons.FontAwesome" Version="2.8.1" />
-		<PackageReference Include="UraniumUI.Material" Version="2.8.1" />
 	</ItemGroup>
 
 	<ItemGroup>

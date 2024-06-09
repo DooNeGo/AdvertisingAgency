@@ -7,10 +7,10 @@
     xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
-    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     Padding="10,0"
     x:DataType="viewModels:CampaignsViewModel"
     BackgroundColor="{StaticResource Background}"
@@ -26,10 +26,7 @@
 
     <Grid>
         <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView
-                CanReorderItems="True"
-                ItemsSource="{Binding Campaigns}"
-                Scrolled="ItemsView_OnScrolled">
+            <CollectionView ItemsSource="{Binding Campaigns}" Scrolled="ItemsView_OnScrolled">
                 <CollectionView.Header>
                     <Label Style="{StaticResource Headline}" Text="Кампании" />
                 </CollectionView.Header>
@@ -52,11 +49,12 @@
                                 <VerticalStackLayout Spacing="8">
                                     <Grid>
                                         <Label
-                                            FontSize="13"
+                                            FontSize="12"
                                             Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}"
                                             VerticalOptions="Center" />
                                         <Label
-                                            FontSize="15"
+                                            Padding="1"
+                                            FontSize="14"
                                             HorizontalOptions="End"
                                             Text="•••"
                                             VerticalOptions="Center">
@@ -71,13 +69,7 @@
                                         Text="{Binding Name}"
                                         VerticalOptions="Center" />
 
-                                    <Label
-                                        FontSize="17"
-                                        HorizontalOptions="Start"
-                                        HorizontalTextAlignment="Center"
-                                        IsVisible="True"
-                                        Text="{Binding Settings.Budget, StringFormat='{0} BYN'}"
-                                        VerticalOptions="Center" />
+                                    <Label Text="{Binding Settings.Budget, StringFormat='Бюджет: {0} BYN'}" />
 
                                     <Border
                                         Padding="5,3"
@@ -100,31 +92,27 @@
             </CollectionView>
         </RefreshView>
 
-        <material:ButtonView
+        <core:DXButton
             x:Name="AddButton"
-            Margin="0,0,15,10"
+            Margin="0,0,15,15"
             BackgroundColor="{StaticResource PrimaryContainer}"
-            HeightRequest="60"
+            CornerRadius="15"
+            FontSize="20"
+            HeightRequest="65"
+            WidthRequest="65"
+            Style="{StaticResource FilledButtonStyle}"
             HorizontalOptions="End"
-            StrokeShape="RoundRectangle 15"
-            TappedCommand="{Binding CreateCampaignCommand}"
+            Command="{Binding CreateCampaignCommand}"
             VerticalOptions="End"
-            WidthRequest="60">
-            <material:ButtonView.Shadow>
+            FontFamily="FARegular"
+            Content="{x:Static uranium:Regular.Plus}">
+            <core:DXButton.Shadow>
                 <Shadow
                     Brush="Black"
-                    Opacity="0.15"
-                    Radius="15"
+                    Opacity="0.2"
+                    Radius="20"
                     Offset="0, 8" />
-            </material:ButtonView.Shadow>
-
-            <Label
-                FontFamily="FARegular"
-                FontSize="23"
-                HorizontalOptions="Center"
-                Text="{x:Static uranium:Regular.Plus}"
-                TextColor="{StaticResource OnPrimaryContainer}"
-                VerticalOptions="Center" />
-        </material:ButtonView>
+            </core:DXButton.Shadow>
+        </core:DXButton>
     </Grid>
 </ContentPage>

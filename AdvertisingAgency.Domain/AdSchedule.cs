@@ -9,7 +9,7 @@ public readonly record struct AdScheduleId(Guid Value)
 
 public sealed class AdSchedule
 {
-    public AdSchedule(DayOfWeek day, TimeSpan startTime, TimeSpan endTime)
+    public AdSchedule(DayOfWeek day, DateTime startTime, DateTime endTime)
     {
         Id = AdScheduleId.Create();
         DayOfWeek = day;
@@ -23,7 +23,7 @@ public sealed class AdSchedule
     
     public DayOfWeek DayOfWeek { get; set; }
     
-    public TimeSpan StartTime { get; set; }
+    public DateTime StartTime { get; set; }
     
-    public TimeSpan EndTime { get; set; }
+    public DateTime EndTime { get; set; }
 }

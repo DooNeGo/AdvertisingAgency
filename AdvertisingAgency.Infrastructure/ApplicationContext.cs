@@ -106,7 +106,7 @@ internal sealed class ApplicationContext : DbContext, IApplicationContext
             .Property(name => name.Id)
             .HasConversion(id => id.Value, value => new FullNameId(value));
 
-        modelBuilder.Entity<User>().HasIndex(user => user.UserName);
-        modelBuilder.Entity<Client>().HasIndex(client => client.PhoneNumber);
+        modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
+        modelBuilder.Entity<Client>().HasIndex(client => client.PhoneNumber).IsUnique();
     }
 }

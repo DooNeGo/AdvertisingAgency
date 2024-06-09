@@ -7,10 +7,10 @@ namespace AdvertisingAgency.ViewModels;
 public sealed partial class UserViewModel(IIdentityService identityService) : ObservableObject
 {
     [RelayCommand]
-    private async Task Logout()
+    private async Task LogoutAsync(CancellationToken cancellationToken)
     {
-        if (await App.Current.MainPage.DisplayAlert("Выход", "Вы точно хотите выйти?",
-                "Да", "Нет"))
+        if (await App.Current!.MainPage!.DisplayAlert("Выход", "Вы точно хотите выйти?",
+                "Да", "Нет").WaitAsync(cancellationToken).ConfigureAwait(false))
         {
             identityService.Logout();
         }

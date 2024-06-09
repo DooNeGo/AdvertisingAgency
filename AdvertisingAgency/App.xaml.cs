@@ -1,5 +1,6 @@
 ﻿using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Views;
+using AsyncAwaitBestPractices;
 
 namespace AdvertisingAgency;
 
@@ -12,6 +13,8 @@ public sealed partial class App
         _serviceProvider = serviceProvider;
         InitializeComponent();
 
+        DevExpress.Maui.Editors.Initializer.Init();
+        
         MainPage = new NavigationPage(serviceProvider.GetRequiredService<LoginView>());
         UserAppTheme = AppTheme.Light;
 
@@ -19,8 +22,11 @@ public sealed partial class App
         identityService.LoggedOut += SetLoginPageAsMain;
     }
 
-    public void SetLoginPageAsMain() =>
-        MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginView>());
+    public void SetLoginPageAsMain() => Dispatcher
+        .DispatchAsync(() => MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginView>()))
+        .SafeFireAndForget();
 
-    public void SetAppShellAsMain() => MainPage = new AppShell();
+    public void SetAppShellAsMain() => Dispatcher
+        .DispatchAsync(() => MainPage = new AppShell())
+        .SafeFireAndForget();
 }

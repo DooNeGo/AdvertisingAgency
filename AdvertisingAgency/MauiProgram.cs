@@ -1,6 +1,8 @@
 ﻿using AdvertisingAgency.Application;
 using AdvertisingAgency.Infrastructure;
 using CommunityToolkit.Maui;
+using CommunityToolkit.Mvvm.Messaging;
+using DevExpress.Maui;
 using Microsoft.Extensions.Logging;
 using UraniumUI;
 
@@ -10,22 +12,24 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
+        MauiAppBuilder builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
-            .UseUraniumUI()
-            .UseUraniumUIMaterial()
+            .UseDevExpress()
+            //.UseUraniumUI()
             .ConfigureFonts(fonts =>
-        {
-            fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-            fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            fonts.AddFontAwesomeIconFonts();
-        });
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("Inter-Regular.ttf", "InterRegular");
+                fonts.AddFontAwesomeIconFonts();
+            });
 
         builder.Services.AddApplication()
             .AddInfrastructure()
-            .AddUI();
+            .AddUI()
+            .AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
 #if DEBUG
         builder.Logging.AddDebug();

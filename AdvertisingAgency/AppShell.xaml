@@ -26,11 +26,11 @@
                     Color="Black" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="Аккаунт" ContentTemplate="{DataTemplate views:UserView}">
+        <ShellContent Title="Выйти" ContentTemplate="{DataTemplate views:UserView}">
             <ShellContent.Icon>
                 <FontImageSource
-                    FontFamily="FARegular"
-                    Glyph="{x:Static fa:Regular.User}"
+                    FontFamily="FASolid"
+                    Glyph="{x:Static fa:Solid.ArrowRightFromBracket}"
                     Color="Black" />
             </ShellContent.Icon>
         </ShellContent>
