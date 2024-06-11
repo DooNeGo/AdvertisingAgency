@@ -4,7 +4,7 @@ using Mediator;
 
 namespace AdvertisingAgency.ViewModels;
 
-public class BaseViewModel(IMediator mediator) : ObservableObject
+public abstract class BaseViewModel(IMediator mediator) : ObservableObject
 {
     protected async Task UpdateCollectionAsync<T>(ObservableCollection<T> collection,
         IQuery<IAsyncEnumerable<T>> updateQuery, CancellationToken cancellationToken = default)

@@ -28,16 +28,8 @@ public sealed partial class ChooseCampaignGoalViewModel : BaseViewModel, IQueryA
         if (query.TryGetValue("Campaign", out object? campaign))
         {
             _campaign = (Campaign)campaign;
-            PropertyChanged += OnCampaignGoalChanged;
             SetCampaignGoal(_campaign.Goal);
         }
-    }
-
-    private void OnCampaignGoalChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is not nameof(CampaignGoal)) return;
-        Guard.IsNotNull(CampaignGoal, nameof(CampaignGoal));
-        _campaign!.Goal = CampaignGoal;
     }
 
     [RelayCommand]
@@ -49,9 +41,8 @@ public sealed partial class ChooseCampaignGoalViewModel : BaseViewModel, IQueryA
         Guard.IsNotNull(CampaignGoal, nameof(CampaignGoal));
 
         Dictionary<string, object> parameters = [];
-
+        parameters.Add("CampaignGoal", CampaignGoal);
         if (_campaign is not null) parameters.Add("Campaign", _campaign);
-        else parameters.Add("CampaignGoal", CampaignGoal);
 
         return Shell.Current
             .GoToAsync(nameof(ChooseCampaignTypeViewModel), parameters)

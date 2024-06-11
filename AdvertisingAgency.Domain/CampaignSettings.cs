@@ -26,7 +26,7 @@ public sealed class CampaignSettings
 
     public List<Location> Locations { get; set; } = null!;
 
-    public List<Language> ClientSpeakLanguages { get; } = null!;
+    public List<Language> ClientSpeakLanguages { get; set; } = null!;
 
-    public List<AdSchedule> AdSchedules { get; } = null!;
+    public List<AdSchedule> AdSchedules { get; set; } = null!;
 }

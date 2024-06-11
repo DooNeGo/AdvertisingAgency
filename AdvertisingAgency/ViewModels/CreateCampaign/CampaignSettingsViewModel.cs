@@ -1,6 +1,7 @@
 using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
+using AdvertisingAgency.Extensions;
 using AdvertisingAgency.Messages;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Diagnostics;
@@ -25,12 +26,12 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [MinLength(1, ErrorMessage = "Обязательное")]
-    private List<Location> _selectedLocations = [];
+    private ObservableCollection<Location> _selectedLocations = [];
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [MinLength(1, ErrorMessage = "Обязательное")]
-    private List<Language> _selectedLanguages = [];
+    private ObservableCollection<Language> _selectedLanguages = [];
 
     [ObservableProperty] private decimal _budget;
 
@@ -67,26 +68,29 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
         DayOfWeeks = [.. Enum.GetValues<DayOfWeek>()];
     }
 
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    public async void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query.TryGetValue("Campaign", out object? campaign))
+        if (query.TryGetValue("Campaign", out object? obj))
         {
-            _campaign = (Campaign)campaign;
+            _campaign = (Campaign)obj;
+            _campaign.Settings = await _mediator
+                .Send(new GetCampaignSettingsByIdQuery(_campaign.Settings.Id))
+                .ConfigureAwait(false);
+
             Name = _campaign.Name;
-            SelectedLanguages = _campaign.Settings.ClientSpeakLanguages;
-            SelectedLocations = _campaign.Settings.Locations;
-            Schedules = [.._campaign.Settings.AdSchedules];
+            Budget = _campaign.Settings.Budget;
+            SelectedLocations.AddRange(Locations.Where(location => _campaign.Settings.Locations.Any(l => l.Id == location.Id)));
+            SelectedLanguages.AddRange(Languages.Where(language => _campaign.Settings.ClientSpeakLanguages.Any(l => l.Id == language.Id)));
+            _campaign.Settings.AdSchedules.ForEach(Schedules.Add);
         }
-        else
-        {
-            _campaignGoal = (CampaignGoal)query["CampaignGoal"];
-            _campaignType = (CampaignType)query["CampaignType"];
-        }
+        _campaignGoal = (CampaignGoal)query["CampaignGoal"];
+        _campaignType = (CampaignType)query["CampaignType"];
     }
 
     [RelayCommand]
     private void AddSchedule() =>
-        Schedules.Add(new AdSchedule(DayOfWeek.Monday, new DateTime(), new DateTime(DateOnly.MinValue, TimeOnly.MaxValue)));
+        Schedules.Add(new AdSchedule(DayOfWeek.Monday, new DateTime(),
+            new DateTime(DateOnly.MinValue, TimeOnly.MaxValue)));
 
     [RelayCommand]
     private void DeleteSchedule(AdSchedule schedule) => Schedules.Remove(schedule);
@@ -97,34 +101,65 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
         await PrepareFinishAsync(cancellationToken).ConfigureAwait(false);
         if (HasErrors) return;
 
-        var settings = new CampaignSettings(Budget, SelectedLocations, SelectedLanguages, [.. Schedules]);
-
         try
         {
-            CampaignId id = await _mediator
-                .Send(new AddCampaignCommand(_campaignGoal!, _campaignType!, settings, Name), cancellationToken)
-                .ConfigureAwait(false);
-            _messenger.Send(new AddCampaignMessage(id));
+            if (_campaign is null)
+            {
+                await AddCampaignAsync(cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await UpdateCampaignAsync(cancellationToken).ConfigureAwait(false);
+            }
         }
         catch (Exception e)
         {
             Debug.WriteLine(e);
-            await ShowUnsuccessfulAlert(cancellationToken).ConfigureAwait(false);
+            await ShowErrorAlertAsync(cancellationToken).ConfigureAwait(false);
             return;
         }
 
-        await ShowSuccessfulAlert(cancellationToken).ConfigureAwait(false);
         await GoBackAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task PrepareFinishAsync(CancellationToken cancellationToken = default)
+    private async Task UpdateCampaignAsync(CancellationToken cancellationToken = default)
+    {
+        Guard.IsNotNull(_campaign, nameof(_campaign));
+
+        _campaign.Name = Name;
+        _campaign.Goal = _campaignGoal!;
+        _campaign.Type = _campaignType!;
+        _campaign.Settings.ClientSpeakLanguages = [.. SelectedLanguages];
+        _campaign.Settings.Locations = [.. SelectedLocations];
+        _campaign.Settings.Budget = Budget;
+        _campaign.Settings.AdSchedules = [.. Schedules];
+
+        await _mediator.Send(new UpdateCampaignCommand(_campaign), cancellationToken)
+            .ConfigureAwait(false);
+
+        await ShowSuccessfulEditAlertAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task AddCampaignAsync(CancellationToken cancellationToken = default)
+    {
+        var settings = new CampaignSettings(Budget, [.. SelectedLocations], [.. SelectedLanguages], [.. Schedules]);
+
+        CampaignId id = await _mediator
+            .Send(new AddCampaignCommand(_campaignGoal!, _campaignType!, settings, Name), cancellationToken)
+            .ConfigureAwait(false);
+        _messenger.Send(new AddCampaignMessage(id));
+
+        await ShowSuccessfulAddAlertAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private Task PrepareFinishAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         Guard.IsNotNull(_campaignGoal, nameof(_campaignGoal));
         Guard.IsNotNull(_campaignType, nameof(_campaignType));
 
         ValidateAllProperties();
-        await UpdateAllErrorProperties(cancellationToken).ConfigureAwait(false);
+        return UpdateAllErrorProperties(cancellationToken);
     }
 
     private Task UpdateAllErrorProperties(CancellationToken cancellationToken = default) => Task.Run(() =>
@@ -140,13 +175,17 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     private static Task GoBackAsync(CancellationToken cancellationToken = default) =>
         Shell.Current.GoToAsync("../../..").WaitAsync(cancellationToken);
 
-    private static Task ShowSuccessfulAlert(CancellationToken cancellationToken = default) =>
-        App.Current!.Dispatcher.DispatchAsync(async () =>
-            await App.Current.MainPage!.DisplayAlert("Кампания", "Вы успешно создали новую кампанию", "Ок")
-                .WaitAsync(cancellationToken));
+    private static Task ShowSuccessfulAddAlertAsync(CancellationToken cancellationToken = default) =>
+        ShowAlertAsync("Кампания", "Вы успешно создали новую кампанию", "Ок", cancellationToken);
 
-    private static Task ShowUnsuccessfulAlert(CancellationToken cancellationToken = default) =>
+    private static Task ShowSuccessfulEditAlertAsync(CancellationToken cancellationToken = default) =>
+        ShowAlertAsync("Кампания", "Вы успешно изменили кампанию", "Ок", cancellationToken);
+
+    private static Task ShowErrorAlertAsync(CancellationToken cancellationToken = default) =>
+        ShowAlertAsync("Кампания", "Ошибка", "Ок", cancellationToken);
+
+    private static Task ShowAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken = default) =>
         App.Current!.Dispatcher.DispatchAsync(async () =>
-            await App.Current!.MainPage!.DisplayAlert("Кампания", "Ошибка. Не удалось создать кампанию", "Ок")
-                .WaitAsync(cancellationToken));
+            await App.Current!.MainPage!.DisplayAlert(title, message, cancel)
+                .WaitAsync(cancellationToken).WaitAsync(cancellationToken));
 }

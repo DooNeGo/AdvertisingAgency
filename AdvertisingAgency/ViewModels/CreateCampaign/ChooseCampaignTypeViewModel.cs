@@ -29,47 +29,36 @@ public sealed partial class ChooseCampaignTypeViewModel : BaseViewModel, IQueryA
         if (query.TryGetValue("Campaign", out object? campaign))
         {
             _campaign = (Campaign)campaign;
-            PropertyChanged += OnCampaignTypeChanged;
             SetCampaignType(_campaign.Type);
         }
-        else
-        {
-            _campaignGoal = (CampaignGoal)query["CampaignGoal"];
-        }
-    }
-
-    private void OnCampaignTypeChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is not nameof(CampaignType)) return;
-        Guard.IsNotNull(CampaignType, nameof(CampaignType));
-        _campaign!.Type = CampaignType;
+        _campaignGoal = (CampaignGoal)query["CampaignGoal"];
     }
 
     [RelayCommand]
     private void SetCampaignType(CampaignType type) => CampaignType = type;
 
     [RelayCommand(CanExecute = nameof(CanExecuteGoNext))]
-    private Task GoNextAsync(CancellationToken cancellationToken = default)
+    private Task GoNextAsync(CancellationToken cancellationToken = default) =>
+        Shell.Current.GoToAsync(nameof(CampaignSettingsViewModel), GetNavigationParameters())
+            .WaitAsync(cancellationToken);
+
+    private Dictionary<string, object?> GetNavigationParameters()
     {
-        Dictionary<string, object?> parameters = [];
+        Guard.IsNotNull(_campaignGoal, nameof(_campaignGoal));
+        Guard.IsNotNull(CampaignType, nameof(CampaignType));
 
-        if (_campaign is null)
+        Dictionary<string, object?> parameters = new()
         {
-            Guard.IsNotNull(_campaignGoal, nameof(_campaignGoal));
-            Guard.IsNotNull(CampaignType, nameof(CampaignType));
+            { "CampaignGoal", _campaignGoal },
+            { "CampaignType", CampaignType }
+        };
 
-            parameters.Add("CampaignGoal", _campaignGoal);
-            parameters.Add("CampaignType", CampaignType);
-        }
-        else
+        if (_campaign is not null)
         {
-            Guard.IsNotNull(_campaign, nameof(_campaign));
             parameters.Add("Campaign", _campaign);
         }
 
-        return Shell.Current
-            .GoToAsync(nameof(CampaignSettingsViewModel), parameters)
-            .WaitAsync(cancellationToken);
+        return parameters;
     }
 
     private bool CanExecuteGoNext() => CampaignType is not null;

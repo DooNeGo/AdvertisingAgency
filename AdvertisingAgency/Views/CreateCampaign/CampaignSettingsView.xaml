@@ -101,7 +101,7 @@
                                 <templateSelectors:SpecialFirstItemSelector.DefaultTemplate>
                                     <DataTemplate x:DataType="domain:AdSchedule">
                                         <VerticalStackLayout Spacing="5">
-                                            <SwipeView Padding="10,5" androidSpecific:SwipeView.SwipeTransitionMode="Drag">
+                                            <SwipeView Padding="10,3" androidSpecific:SwipeView.SwipeTransitionMode="Drag">
                                                 <SwipeView.RightItems>
                                                     <SwipeItemView>
                                                         <core:DXButton
@@ -142,9 +142,9 @@
                                                         </editors:ComboBoxEdit.DisplayItemTemplate>
                                                     </editors:ComboBoxEdit>
 
-                                                    <editors:TimeEdit Time="{Binding StartTime}" />
+                                                    <editors:TimeEdit TextFontSize="13" Time="{Binding StartTime}" />
 
-                                                    <editors:TimeEdit Time="{Binding EndTime}" />
+                                                    <editors:TimeEdit TextFontSize="13" Time="{Binding EndTime}" />
                                                 </FlexLayout>
                                             </SwipeView>
 
@@ -154,8 +154,11 @@
                                 </templateSelectors:SpecialFirstItemSelector.DefaultTemplate>
                                 <templateSelectors:SpecialFirstItemSelector.SpecialTemplate>
                                     <DataTemplate x:DataType="domain:AdSchedule">
-                                        <VerticalStackLayout Padding="10,5" Spacing="5">
-                                            <FlexLayout BackgroundColor="White" JustifyContent="SpaceBetween">
+                                        <VerticalStackLayout Spacing="5">
+                                            <FlexLayout
+                                                Margin="10,3"
+                                                BackgroundColor="White"
+                                                JustifyContent="SpaceBetween">
                                                 <editors:ComboBoxEdit
                                                     ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
                                                     SelectedItem="{Binding DayOfWeek}"
