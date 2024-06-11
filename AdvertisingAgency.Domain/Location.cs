@@ -1,6 +1,6 @@
 namespace AdvertisingAgency.Domain;
 
-public readonly record struct LocationId(Guid Value)
+public readonly record struct LocationId(Guid Value) : IStronglyTypedId<Guid>
 {
     public static readonly LocationId Empty = new(Guid.Empty);
 

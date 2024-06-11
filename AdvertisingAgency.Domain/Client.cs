@@ -1,6 +1,6 @@
 ﻿namespace AdvertisingAgency.Domain;
 
-public readonly record struct ClientId(Guid Value)
+public readonly record struct ClientId(Guid Value) : IStronglyTypedId<Guid>
 {
     public static readonly ClientId Empty = new(Guid.Empty);
 
@@ -9,7 +9,7 @@ public readonly record struct ClientId(Guid Value)
 
 public sealed class Client
 {
-    public Client(string companyName, string phoneNumber, FullName fullName, Location location)
+    public Client(string companyName, string phoneNumber, FullName fullName, LocationId location)
     {
         Id = ClientId.Create();
         CompanyName = companyName;
@@ -25,7 +25,7 @@ public sealed class Client
 
     public string CompanyName { get; set; } = string.Empty;
 
-    public Location Location { get; set; } = null!;
+    public LocationId Location { get; set; }
 
     public string PhoneNumber { get; set; } = string.Empty;
 

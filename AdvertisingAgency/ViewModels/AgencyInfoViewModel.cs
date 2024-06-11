@@ -14,10 +14,10 @@ public sealed partial class AgencyInfoViewModel : BaseViewModel
     [ObservableProperty] private bool _isRefreshing;
 
     public AgencyInfoViewModel(IMediator mediator) : base(mediator) =>
-        Refresh(CancellationToken.None).SafeFireAndForget();
+        RefreshAsync().SafeFireAndForget();
 
     [RelayCommand]
-    private async Task Refresh(CancellationToken cancellationToken)
+    private async Task RefreshAsync(CancellationToken cancellationToken = default)
     {
         await UpdateCollectionAsync(Employees, new GetEmployeesQuery(), cancellationToken).ConfigureAwait(false);
         IsRefreshing = false;

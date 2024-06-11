@@ -7,7 +7,7 @@ namespace AdvertisingAgency.Application.Queries;
 
 public sealed record GetCampaignsQuery(ClientId Id) : IQuery<IAsyncEnumerable<Campaign>>;
 
-public sealed class GetCampaignsQueryHandler(IApplicationContext context) : IQueryHandler<GetCampaignsQuery, IAsyncEnumerable<Campaign>>
+internal sealed class GetCampaignsQueryHandler(IApplicationContext context) : IQueryHandler<GetCampaignsQuery, IAsyncEnumerable<Campaign>>
 {
     public ValueTask<IAsyncEnumerable<Campaign>> Handle(GetCampaignsQuery query, CancellationToken cancellationToken) =>
         new(context.Campaigns

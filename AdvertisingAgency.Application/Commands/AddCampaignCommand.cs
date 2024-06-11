@@ -16,14 +16,14 @@ public sealed class AddCampaignCommandHandler(IApplicationContext context, IIden
     public async ValueTask<CampaignId> Handle(AddCampaignCommand command, CancellationToken cancellationToken)
     {
         Client client = identityService.CurrentUser?.Client ?? throw new NotLoggedInException();
-        Employee employee = await context.Employees.LastAsync(cancellationToken);
-        Campaign campaign = new(client, employee, command.Goal, command.Type, command.Settings, command.Name);
-        
+        Employee employee = await context.Employees.FirstAsync(cancellationToken).ConfigureAwait(false);
+        Campaign campaign = new(client.Id, employee.Id, command.Goal.Id, command.Type.Id, command.Settings, command.Name);
+
         EntityEntry<Campaign> entry = await context.Campaigns
             .AddAsync(campaign, cancellationToken)
             .ConfigureAwait(false);
-        
-        await context.SaveChangesAsync(cancellationToken);
+
+        await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return entry.Entity.Id;
     }
 }

@@ -17,6 +17,7 @@
 
     <ContentPage.Resources>
         <converters:DayOfWeekConverter x:Key="DayOfWeekConverter" />
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </ContentPage.Resources>
 
     <Shell.TitleView>
@@ -37,22 +38,29 @@
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="10">
             <editors:TextEdit
+                ErrorText="{Binding CampaignNameError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
                 HelpText="Введите название кампании, которое будет отображаться в кампаниях."
                 LabelText="Название кампании"
                 Text="{Binding Name}" />
 
             <editors:NumericEdit
-                DisplayFormat="c"
+                AllowLooping="False"
                 HelpText="Введите бюджет кампании, на основании, которого будет рассчитываться стратегия рекламы"
                 IsUpDownIconVisible="True"
                 LabelText="Бюджет"
+                MinValue="0"
                 StepValue="1"
+                Suffix="BYN"
                 TextHorizontalAlignment="Start"
                 UpDownIconAlignment="End"
                 Value="{Binding Budget}" />
 
             <editors:AutoCompleteTokenEdit
+                ErrorText="{Binding SelectedLocationsError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
                 HelpText="Выберите целевые местоположения."
+                Keyboard="Text"
                 LabelText="Локации"
                 NoResultsFoundText="Нет совпадений"
                 SelectedItems="{Binding SelectedLocations}">
@@ -62,6 +70,8 @@
             </editors:AutoCompleteTokenEdit>
 
             <editors:AutoCompleteTokenEdit
+                ErrorText="{Binding SelectedLanguagesError}"
+                HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
                 HelpText="Выберите языки, на которых говорят ваши клиенты."
                 LabelText="Языки"
                 NoResultsFoundText="Нет совпадений"
@@ -120,14 +130,14 @@
                                                             <DataTemplate>
                                                                 <Label
                                                                     Padding="5"
-                                                                    FontSize="14"
+                                                                    FontSize="13"
                                                                     Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
                                                             </DataTemplate>
                                                         </editors:ComboBoxEdit.ItemTemplate>
 
                                                         <editors:ComboBoxEdit.DisplayItemTemplate>
                                                             <DataTemplate>
-                                                                <Label FontSize="14" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}, StringFormat='{0}'}" />
+                                                                <Label FontSize="13" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
                                                             </DataTemplate>
                                                         </editors:ComboBoxEdit.DisplayItemTemplate>
                                                     </editors:ComboBoxEdit>
@@ -154,21 +164,21 @@
                                                         <DataTemplate>
                                                             <Label
                                                                 Padding="5"
-                                                                FontSize="14"
+                                                                FontSize="13"
                                                                 Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
                                                         </DataTemplate>
                                                     </editors:ComboBoxEdit.ItemTemplate>
 
                                                     <editors:ComboBoxEdit.DisplayItemTemplate>
                                                         <DataTemplate>
-                                                            <Label FontSize="14" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}, StringFormat='{0}'}" />
+                                                            <Label FontSize="13" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}, StringFormat='{0}'}" />
                                                         </DataTemplate>
                                                     </editors:ComboBoxEdit.DisplayItemTemplate>
                                                 </editors:ComboBoxEdit>
 
-                                                <editors:TimeEdit Time="{Binding StartTime}" />
+                                                <editors:TimeEdit TextFontSize="13" Time="{Binding StartTime}" />
 
-                                                <editors:TimeEdit Time="{Binding EndTime}" />
+                                                <editors:TimeEdit TextFontSize="13" Time="{Binding EndTime}" />
                                             </FlexLayout>
 
                                             <BoxView Style="{StaticResource DividerBoxViewStyle}" />

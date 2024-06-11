@@ -55,6 +55,7 @@
                 ErrorText="{Binding PhoneNumberError}"
                 HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
                 HelpText="*Обязательное"
+                Keyboard="Numeric"
                 LabelText="Телефон"
                 Mask="+375 (00) 000 0000"
                 Text="{Binding PhoneNumber}" />
@@ -74,9 +75,7 @@
                 ReturnType="Done"
                 Text="{Binding Password}">
 
-                <!--<validations:MinLengthValidation Message="Минимальная длина 6 символов" MinLength="6" />
-                <validations:RegexValidation Message="Неверный формат пароля" Pattern="{x:Static controls:AdvancedEntry.REGEX_PASSWORD}" />
-                <validations:RequiredValidation Message="Обязательное" />-->
+                <!--<validations:RegexValidation Message="Неверный формат пароля" Pattern="{x:Static controls:AdvancedEntry.REGEX_PASSWORD}" />-->
             </editors:PasswordEdit>
 
             <Label Style="{StaticResource ErrorLabel}" Text="{Binding Error}" />

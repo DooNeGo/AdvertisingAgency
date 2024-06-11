@@ -6,11 +6,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
+    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels"
-    xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     Padding="10,0"
     x:DataType="viewModels:CampaignsViewModel"
     BackgroundColor="{StaticResource Background}"
@@ -26,86 +26,106 @@
 
     <Grid>
         <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView ItemsSource="{Binding Campaigns}" Scrolled="ItemsView_OnScrolled">
-                <CollectionView.Header>
-                    <Label Style="{StaticResource Headline}" Text="Кампании" />
-                </CollectionView.Header>
+            <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}">
+                <toolkit:StateContainer.StateViews>
+                    <CollectionView
+                        x:Name="CollectionView"
+                        toolkit:StateView.StateKey="Normal"
+                        ItemsSource="{Binding Campaigns}"
+                        Scrolled="ItemsView_OnScrolled">
+                        <CollectionView.Header>
+                            <Label Style="{StaticResource Headline}" Text="Кампании" />
+                        </CollectionView.Header>
 
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" />
-                </CollectionView.ItemsLayout>
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="2" />
+                        </CollectionView.ItemsLayout>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="domain:Campaign">
-                        <Grid Padding="5,2,5,8">
-                            <Border
-                                Padding="15"
-                                BackgroundColor="White"
-                                Shadow="{StaticResource ShadowAttr}">
-                                <Border.Behaviors>
-                                    <behaviours:OnAppearingBehaviour />
-                                </Border.Behaviors>
-
-                                <VerticalStackLayout Spacing="8">
-                                    <Grid>
-                                        <Label
-                                            FontSize="12"
-                                            Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}"
-                                            VerticalOptions="Center" />
-                                        <Label
-                                            Padding="1"
-                                            FontSize="14"
-                                            HorizontalOptions="End"
-                                            Text="•••"
-                                            VerticalOptions="Center">
-                                            <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={Type viewModels:CampaignsViewModel}}, Path=ShowCampaignActionMenuCommand}" CommandParameter="{Binding .}" />
-                                            </Label.GestureRecognizers>
-                                        </Label>
-                                    </Grid>
-
-                                    <Label
-                                        FontSize="17"
-                                        Text="{Binding Name}"
-                                        VerticalOptions="Center" />
-
-                                    <Label Text="{Binding Settings.Budget, StringFormat='Бюджет: {0} BYN'}" />
-
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="domain:Campaign">
+                                <Grid Padding="5,2,5,8">
                                     <Border
-                                        Padding="5,3"
-                                        BackgroundColor="{StaticResource Gray50}"
-                                        HorizontalOptions="Start"
-                                        StrokeShape="RoundRectangle 3"
-                                        StrokeThickness="0">
-                                        <Label
-                                            FontAttributes="Bold"
-                                            FontSize="11"
-                                            Text="{Binding Type}"
-                                            TextColor="{StaticResource Gray500}"
-                                            TextTransform="Uppercase" />
+                                        Padding="15"
+                                        BackgroundColor="White"
+                                        Shadow="{StaticResource ShadowAttr}">
+                                        <Border.Behaviors>
+                                            <behaviours:OnAppearingBehaviour />
+                                        </Border.Behaviors>
+
+                                        <VerticalStackLayout Spacing="8">
+                                            <Grid>
+                                                <Label
+                                                    FontSize="12"
+                                                    Text="{Binding Status, Converter={StaticResource CampaignStatusConverter}}"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    Padding="1"
+                                                    FontSize="14"
+                                                    HorizontalOptions="End"
+                                                    Text="•••"
+                                                    VerticalOptions="Center">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={Type viewModels:CampaignsViewModel}}, Path=ShowCampaignActionMenuCommand}" CommandParameter="{Binding .}" />
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </Grid>
+
+                                            <Label
+                                                FontSize="17"
+                                                Text="{Binding Name}"
+                                                VerticalOptions="Center" />
+
+                                            <Label Text="{Binding Settings.Budget, StringFormat='Бюджет: {0} BYN'}" />
+
+                                            <Border
+                                                Padding="5,3"
+                                                BackgroundColor="{StaticResource Gray50}"
+                                                HorizontalOptions="Start"
+                                                StrokeShape="RoundRectangle 3"
+                                                StrokeThickness="0">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="11"
+                                                    Text="{Binding Type}"
+                                                    TextColor="{StaticResource Gray500}"
+                                                    TextTransform="Uppercase" />
+                                            </Border>
+                                        </VerticalStackLayout>
                                     </Border>
-                                </VerticalStackLayout>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <ScrollView toolkit:StateView.StateKey="Empty">
+                        <Label
+                            Padding="20,0"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="Здесь будут отображаться ваши кампании после их создания"
+                            VerticalOptions="Center"
+                            VerticalTextAlignment="Center" />
+                    </ScrollView>
+                </toolkit:StateContainer.StateViews>
+            </Grid>
         </RefreshView>
 
         <core:DXButton
             x:Name="AddButton"
             Margin="0,0,15,15"
             BackgroundColor="{StaticResource PrimaryContainer}"
+            Command="{Binding CreateCampaignCommand}"
+            Content="{x:Static uranium:Regular.Plus}"
             CornerRadius="15"
+            FontFamily="FARegular"
             FontSize="20"
             HeightRequest="65"
-            WidthRequest="65"
-            Style="{StaticResource FilledButtonStyle}"
             HorizontalOptions="End"
-            Command="{Binding CreateCampaignCommand}"
+            Style="{StaticResource FilledButtonStyle}"
             VerticalOptions="End"
-            FontFamily="FARegular"
-            Content="{x:Static uranium:Regular.Plus}">
+            WidthRequest="65">
             <core:DXButton.Shadow>
                 <Shadow
                     Brush="Black"

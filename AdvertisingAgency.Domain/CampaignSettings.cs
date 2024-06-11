@@ -1,6 +1,6 @@
 namespace AdvertisingAgency.Domain;
 
-public readonly record struct CampaignSettingsId(Guid Value)
+public readonly record struct CampaignSettingsId(Guid Value) : IStronglyTypedId<Guid>
 {
     public static readonly CampaignSettingsId Empty = new(Guid.Empty);
 

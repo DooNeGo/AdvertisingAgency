@@ -7,7 +7,7 @@ namespace AdvertisingAgency.Application.Queries;
 
 public sealed record GetCampaignTypesQuery : IQuery<IAsyncEnumerable<CampaignType>>;
 
-public sealed class GetCampaignTypesQueryHandler(IApplicationContext context)
+internal sealed class GetCampaignTypesQueryHandler(IApplicationContext context)
     : IQueryHandler<GetCampaignTypesQuery, IAsyncEnumerable<CampaignType>>
 {
     public ValueTask<IAsyncEnumerable<CampaignType>> Handle(GetCampaignTypesQuery query,

@@ -1,3 +1,4 @@
+using AdvertisingAgency.Domain;
 using AdvertisingAgency.ViewModels.CreateCampaign;
 
 namespace AdvertisingAgency.Views.CreateCampaign;
@@ -26,7 +27,7 @@ public sealed partial class ChooseCampaignGoalView
             }
             
             _selection = (Border)VerticalStackLayout.Children.First(view =>
-                ((BindableObject)view).BindingContext == viewModel.CampaignGoal);
+                (((BindableObject)view).BindingContext as CampaignGoal)?.Id == viewModel.CampaignGoal?.Id);
             _previousBrush = _selection.Stroke;
             _previousThickness = _selection.StrokeThickness;
             

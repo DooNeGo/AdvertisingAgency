@@ -14,6 +14,8 @@ internal sealed class IdentityService(IApplicationContext context) : IIdentitySe
 
     public async Task LoginAsync(string userName, string password, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         CurrentUser = await context.Users
             .AsNoTracking()
             .Where(user => user.UserName == userName && user.Password == password)

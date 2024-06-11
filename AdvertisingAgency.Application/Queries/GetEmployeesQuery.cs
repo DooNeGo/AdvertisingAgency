@@ -7,7 +7,7 @@ namespace AdvertisingAgency.Application.Queries;
 
 public sealed record GetEmployeesQuery : IQuery<IAsyncEnumerable<Employee>>;
 
-public sealed class GetEmployeesQueryHandler(IApplicationContext context)
+internal sealed class GetEmployeesQueryHandler(IApplicationContext context)
     : IQueryHandler<GetEmployeesQuery, IAsyncEnumerable<Employee>>
 {
     public ValueTask<IAsyncEnumerable<Employee>> Handle(GetEmployeesQuery query, CancellationToken cancellationToken) =>

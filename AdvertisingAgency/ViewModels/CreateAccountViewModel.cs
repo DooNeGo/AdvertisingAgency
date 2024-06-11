@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AdvertisingAgency.Application.Commands;
+﻿using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
 using AsyncAwaitBestPractices;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mediator;
+using System.ComponentModel.DataAnnotations;
 using Location = AdvertisingAgency.Domain.Location;
 
 namespace AdvertisingAgency.ViewModels;
@@ -13,68 +14,68 @@ namespace AdvertisingAgency.ViewModels;
 public sealed partial class CreateAccountViewModel : ObservableValidator
 {
     private readonly IMediator _mediator;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     private string _companyName = string.Empty;
 
     [ObservableProperty] private string _companyNameError = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     private string _firstName = string.Empty;
-    
+
     [ObservableProperty] private string _firstNameError = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     private string _lastName = string.Empty;
-    
+
     [ObservableProperty] private string _lastNameError = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     private Location? _selectedLocation;
-    
+
     [ObservableProperty] private string _locationError = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     [Phone]
     [MinLength(9, ErrorMessage = "Неверная длина пароля (ожидаемая длина 13)")]
     private string _phoneNumber = string.Empty;
-    
+
     [ObservableProperty] private string _phoneNumberError = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     [MinLength(6, ErrorMessage = "Минимальная длина логина 6")]
     private string _userName = string.Empty;
-    
+
     [ObservableProperty] private string _userNameError = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
     [MinLength(6, ErrorMessage = "Минимальная длина пароля 6")]
     private string _password = string.Empty;
-    
+
     [ObservableProperty] private string _passwordError = string.Empty;
     [ObservableProperty] private string _error = string.Empty;
 
     [ObservableProperty] private List<Location> _locations = [];
     [ObservableProperty] private List<Language> _languages = [];
-    
+
     public CreateAccountViewModel(IMediator mediator)
     {
         _mediator = mediator;
-        
+
         Task.Run(async () =>
         {
             Locations = await mediator.Send(new GetLocationsQuery()).ConfigureAwait(false);
@@ -88,10 +89,11 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
         await TrimProperties(cancellationToken).ConfigureAwait(false);
         ValidateAllProperties();
         await UpdateErrorProperties(cancellationToken).ConfigureAwait(false);
-        
+
         if (HasErrors) return;
-        
-        var client = new Client(CompanyName, PhoneNumber, new FullName(FirstName, LastName), SelectedLocation!);
+        Guard.IsNotNull(SelectedLocation, nameof(SelectedLocation));
+
+        var client = new Client(CompanyName, PhoneNumber, new FullName(FirstName, LastName), SelectedLocation.Id);
         var user = new User(UserName, Password, client);
         try
         {
@@ -125,7 +127,7 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
         UserNameError = GetErrorMessageOrEmpty(nameof(UserName));
         PasswordError = GetErrorMessageOrEmpty(nameof(Password));
     }, cancellationToken);
-    
+
     private string GetErrorMessageOrEmpty(string propertyName) =>
         GetErrors(propertyName).FirstOrDefault()?.ErrorMessage ?? string.Empty;
 
@@ -137,7 +139,8 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     private static Task GoBackSuccessfulAsync(CancellationToken cancellationToken = default) =>
         App.Current!.Dispatcher.DispatchAsync(async () =>
         {
-            Page page = App.Current.MainPage!;
+            Guard.IsNotNull(App.Current.MainPage, nameof(App.Current.MainPage));
+            Page page = App.Current.MainPage;
             await ShowSuccessfulRegistrationAlert(page, cancellationToken);
             await page.Navigation.PopAsync().WaitAsync(cancellationToken);
         }).WaitAsync(cancellationToken);

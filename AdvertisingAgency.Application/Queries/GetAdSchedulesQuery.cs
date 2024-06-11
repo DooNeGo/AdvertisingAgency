@@ -7,7 +7,8 @@ namespace AdvertisingAgency.Application.Queries;
 
 public sealed record GetAdSchedulesQuery(CampaignSettingsId Id) : IQuery<List<AdSchedule>>;
 
-public sealed class GetAdSchedulesQueryHandler(IApplicationContext context) : IQueryHandler<GetAdSchedulesQuery, List<AdSchedule>>
+internal sealed class GetAdSchedulesQueryHandler(IApplicationContext context)
+    : IQueryHandler<GetAdSchedulesQuery, List<AdSchedule>>
 {
     public ValueTask<List<AdSchedule>> Handle(GetAdSchedulesQuery query, CancellationToken cancellationToken) =>
         new(context.CampaignSettings

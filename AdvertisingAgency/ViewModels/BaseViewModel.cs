@@ -7,7 +7,7 @@ namespace AdvertisingAgency.ViewModels;
 public class BaseViewModel(IMediator mediator) : ObservableObject
 {
     protected async Task UpdateCollectionAsync<T>(ObservableCollection<T> collection,
-        IQuery<IAsyncEnumerable<T>> updateQuery, CancellationToken cancellationToken)
+        IQuery<IAsyncEnumerable<T>> updateQuery, CancellationToken cancellationToken = default)
     {
         await Task.Delay(TimeSpan.FromMilliseconds(260), cancellationToken).ConfigureAwait(false);
         await App.Current!.Dispatcher.DispatchAsync(collection.Clear).ConfigureAwait(false);
