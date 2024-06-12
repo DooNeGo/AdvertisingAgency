@@ -17,7 +17,6 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseDevExpress()
-            //.UseUraniumUI()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -29,6 +28,7 @@ public static class MauiProgram
         builder.Services.AddApplication()
             .AddInfrastructure()
             .AddUI()
+            .AddSingleton<IGlobalContext, GlobalContext>()
             .AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
 #if DEBUG

@@ -11,12 +11,9 @@ internal sealed class GetCampaignsQueryHandler(IApplicationContext context) : IQ
 {
     public ValueTask<IAsyncEnumerable<Campaign>> Handle(GetCampaignsQuery query, CancellationToken cancellationToken) =>
         new(context.Campaigns
-            .AsNoTracking()
             .Where(campaign => campaign.Client.Id == query.Id)
             .Include(campaign => campaign.Client)
             .Include(campaign => campaign.Employee)
             .Include(campaign => campaign.Settings)
-            .Include(campaign => campaign.Goal)
-            .Include(campaign => campaign.Type)
             .AsAsyncEnumerable());
 }

@@ -1,13 +1,11 @@
 ﻿using AdvertisingAgency.Application.Commands;
-using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
-using AsyncAwaitBestPractices;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mediator;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
-using Location = AdvertisingAgency.Domain.Location;
 
 namespace AdvertisingAgency.ViewModels;
 
@@ -39,7 +37,7 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
-    private Location? _selectedLocation;
+    private Country? _selectedCountry;
 
     [ObservableProperty] private string _locationError = string.Empty;
 
@@ -69,18 +67,14 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     [ObservableProperty] private string _passwordError = string.Empty;
     [ObservableProperty] private string _error = string.Empty;
 
-    [ObservableProperty] private List<Location> _locations = [];
-    [ObservableProperty] private List<Language> _languages = [];
+    [ObservableProperty] private ImmutableArray<Country> _countries = [];
+    [ObservableProperty] private ImmutableArray<Language> _languages = [];
 
-    public CreateAccountViewModel(IMediator mediator)
+    public CreateAccountViewModel(IMediator mediator, IGlobalContext globalContext)
     {
         _mediator = mediator;
-
-        Task.Run(async () =>
-        {
-            Locations = await mediator.Send(new GetLocationsQuery()).ConfigureAwait(false);
-            Languages = await mediator.Send(new GetLanguagesQuery()).ConfigureAwait(false);
-        }).SafeFireAndForget();
+        Countries = globalContext.Countries;
+        Languages = globalContext.Languages;
     }
 
     [RelayCommand]
@@ -91,9 +85,9 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
         await UpdateErrorProperties(cancellationToken).ConfigureAwait(false);
 
         if (HasErrors) return;
-        Guard.IsNotNull(SelectedLocation, nameof(SelectedLocation));
+        Guard.IsNotNull(SelectedCountry, nameof(SelectedCountry));
 
-        var client = new Client(CompanyName, PhoneNumber, new FullName(FirstName, LastName), SelectedLocation.Id);
+        var client = new Client(CompanyName, PhoneNumber, new FullName(FirstName, LastName), SelectedCountry.Value);
         var user = new User(UserName, Password, client);
         try
         {
@@ -122,7 +116,7 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
         CompanyNameError = GetErrorMessageOrEmpty(nameof(CompanyName));
         FirstNameError = GetErrorMessageOrEmpty(nameof(FirstName));
         LastNameError = GetErrorMessageOrEmpty(nameof(LastName));
-        LocationError = GetErrorMessageOrEmpty(nameof(SelectedLocation));
+        LocationError = GetErrorMessageOrEmpty(nameof(SelectedCountry));
         PhoneNumberError = GetErrorMessageOrEmpty(nameof(PhoneNumber));
         UserNameError = GetErrorMessageOrEmpty(nameof(UserName));
         PasswordError = GetErrorMessageOrEmpty(nameof(Password));

@@ -11,11 +11,10 @@ internal sealed class GetCampaignByIdQueryHadnler(IApplicationContext context)
     : IQueryHandler<GetCampaignByIdQuery, Campaign>
 {
     public ValueTask<Campaign> Handle(GetCampaignByIdQuery query, CancellationToken cancellationToken) =>
-        new(context.Campaigns.AsNoTracking()
+        new(context.Campaigns
             .Where(campaign => campaign.Id == query.Id)
             .Include(campaign => campaign.Settings)
+            .ThenInclude(settings => settings.AdSchedules)
             .Include(campaign => campaign.Employee)
-            .Include(campaign => campaign.Goal)
-            .Include(campaign => campaign.Type)
             .FirstAsync(cancellationToken));
 }

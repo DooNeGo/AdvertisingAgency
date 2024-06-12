@@ -17,7 +17,8 @@
     Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
-        <converters:BriefStatusConverter x:Key="CampaignStatusConverter" />
+        <converters:CampaignStatusConverter x:Key="CampaignStatusConverter" />
+        <converters:CampaignTypeToTitleConverter x:Key="CampaignTypeToTitleConverter" />
     </ContentPage.Resources>
 
     <ContentPage.Behaviors>
@@ -86,7 +87,7 @@
                                                 <Label
                                                     FontAttributes="Bold"
                                                     FontSize="11"
-                                                    Text="{Binding Type}"
+                                                    Text="{Binding Type, Converter={StaticResource CampaignTypeToTitleConverter}}"
                                                     TextColor="{StaticResource Gray500}"
                                                     TextTransform="Uppercase" />
                                             </Border>

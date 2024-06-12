@@ -1,18 +1,15 @@
-using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
-using AsyncAwaitBestPractices;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mediator;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Collections.Immutable;
 
 namespace AdvertisingAgency.ViewModels.CreateCampaign;
 
 public sealed partial class ChooseCampaignGoalViewModel : BaseViewModel, IQueryAttributable
 {
-    [ObservableProperty] private ObservableCollection<CampaignGoal> _campaignGoals = [];
+    [ObservableProperty] private ImmutableArray<CampaignGoal> _campaignGoals = [];
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(GoNextCommand))]
@@ -20,8 +17,10 @@ public sealed partial class ChooseCampaignGoalViewModel : BaseViewModel, IQueryA
 
     private Campaign? _campaign;
 
-    public ChooseCampaignGoalViewModel(IMediator mediator) : base(mediator) =>
-        UpdateCollectionAsync(CampaignGoals, new GetCampaignGoalsQuery()).SafeFireAndForget();
+    public ChooseCampaignGoalViewModel(IMediator mediator, IGlobalContext globalContext) : base(mediator)
+    {
+        CampaignGoals = globalContext.CampaignGoals;
+    }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {

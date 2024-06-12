@@ -9,11 +9,11 @@ public readonly record struct ClientId(Guid Value) : IStronglyTypedId<Guid>
 
 public sealed class Client
 {
-    public Client(string companyName, string phoneNumber, FullName fullName, LocationId location)
+    public Client(string companyName, string phoneNumber, FullName fullName, Country country)
     {
         Id = ClientId.Create();
         CompanyName = companyName;
-        Location = location;
+        Country = country;
         PhoneNumber = phoneNumber;
         FullName = fullName;
         Campaigns = [];
@@ -25,7 +25,7 @@ public sealed class Client
 
     public string CompanyName { get; set; } = string.Empty;
 
-    public LocationId Location { get; set; }
+    public Country Country { get; set; }
 
     public string PhoneNumber { get; set; } = string.Empty;
 

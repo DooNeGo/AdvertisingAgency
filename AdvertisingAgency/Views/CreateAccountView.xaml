@@ -16,6 +16,8 @@
         <VerticalStackLayout Margin="0,0,0,150" Spacing="10">
             <VerticalStackLayout.Resources>
                 <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+                <converters:CountryToLocalizedStringConverter x:Key="CountryToLocalizedStringConverter" />
+                <converters:CountriesToLocalizedStringsConverter x:Key="CountriesToLocalizedStringsConverter" />
             </VerticalStackLayout.Resources>
 
             <editors:TextEdit
@@ -45,9 +47,10 @@
                 HelpText="*Обязательное"
                 LabelText="Страна"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItem="{Binding SelectedLocation}">
+                ReturnType="Next"
+                SelectedItem="{Binding SelectedCountry, Converter={StaticResource CountryToLocalizedStringConverter}}">
                 <editors:AutoCompleteEdit.ItemsSourceProvider>
-                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Locations}" />
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Countries, Converter={StaticResource CountriesToLocalizedStringsConverter}}" />
                 </editors:AutoCompleteEdit.ItemsSourceProvider>
             </editors:AutoCompleteEdit>
 

@@ -5,12 +5,12 @@ namespace AdvertisingAgency.Converters;
 public sealed class DayOfWeekConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        (value as DayOfWeek?) switch
+        value switch
         {
             DayOfWeek.Monday => "Понедельник",
-            DayOfWeek.Thursday => "Вторник",
+            DayOfWeek.Tuesday => "Вторник",
             DayOfWeek.Wednesday => "Среда",
-            DayOfWeek.Tuesday => "Четверг",
+            DayOfWeek.Thursday => "Четверг",
             DayOfWeek.Friday => "Пятница",
             DayOfWeek.Saturday => "Суббота",
             DayOfWeek.Sunday => "Воскресенье",
@@ -18,12 +18,12 @@ public sealed class DayOfWeekConverter : IValueConverter
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        (value as string) switch
+        value switch
         {
             "Понедельник" => DayOfWeek.Monday,
-            "Вторник" => DayOfWeek.Thursday,
+            "Вторник" => DayOfWeek.Tuesday,
             "Среда" => DayOfWeek.Wednesday,
-            "Четверг" => DayOfWeek.Tuesday,
+            "Четверг" => DayOfWeek.Thursday,
             "Пятница" => DayOfWeek.Friday,
             "Суббота" => DayOfWeek.Saturday,
             "Воскресенье" => DayOfWeek.Sunday,

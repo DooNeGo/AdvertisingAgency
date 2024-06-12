@@ -5,6 +5,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
+    xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:createCampaign="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
@@ -26,6 +27,11 @@
         </Grid>
     </Shell.TitleView>
 
+    <ContentPage.Resources>
+        <converters:CampaignTypeToTitleConverter x:Key="CampaignTypeToTitleConverter" />
+        <converters:CampaignTypeToDetailConverter x:Key="CampaignTypeToDetailConverter" />
+    </ContentPage.Resources>
+
     <VerticalStackLayout x:Name="VerticalStackLayout" BindableLayout.ItemsSource="{Binding CampaignTypes}">
         <BindableLayout.ItemTemplate>
             <DataTemplate x:DataType="domain:CampaignType">
@@ -46,10 +52,10 @@
                         <Label
                             FontAttributes="Bold"
                             FontSize="17"
-                            Text="{Binding Title}" />
+                            Text="{Binding ., Converter={StaticResource CampaignTypeToTitleConverter}}" />
                         <Label
                             FontSize="13"
-                            Text="{Binding Description}"
+                            Text="{Binding ., Converter={StaticResource CampaignTypeToDetailConverter}}"
                             TextColor="{StaticResource Gray500}" />
                     </VerticalStackLayout>
                 </Border>

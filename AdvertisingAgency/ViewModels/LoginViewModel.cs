@@ -31,12 +31,6 @@ public sealed partial class LoginViewModel(IIdentityService identityService) : O
         {
             Error = "Неверный Логин или Пароль";
         }
-        // else
-        // {
-        //     await Shell.Current.GoToAsync("///MainView")
-        //         .WaitAsync(cancellationToken)
-        //         .ConfigureAwait(false);
-        // }
     }
 
     private bool CanExecuteLogin() =>

@@ -1,7 +1,6 @@
 using AdvertisingAgency.Domain;
 using AdvertisingAgency.ViewModels.CreateCampaign;
 using CommunityToolkit.Diagnostics;
-using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace AdvertisingAgency.Views.CreateCampaign;
@@ -23,44 +22,44 @@ public sealed partial class ChooseCampaignGoalView
         InitializeComponent();
         BindingContext = _viewModel = viewModel;
         viewModel.PropertyChanged += OnCampaignGoalChanged;
-        viewModel.CampaignGoals.CollectionChanged += OnCampaignGoalsChanged;
-    }
-
-    private void OnCampaignGoalsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (_viewModel.CampaignGoal is not null)
-        {
-            UpdateSelection();
-        }
     }
 
     private void OnCampaignGoalChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(_viewModel.CampaignGoal))
-        {
-            UpdateSelection();
-        }
+        if (e.PropertyName is not nameof(_viewModel.CampaignGoal)) return;
+        UpdateSelection();
     }
 
     private void UpdateSelection()
     {
-        if (_selection is not null)
-        {
-            _selection.Stroke = _previousBrush;
-            _selection.StrokeThickness = _previousThickness!.Value;
-        }
-
+        RemovePreviousSelection();
         _selection = GetSelectedBorderOrDefault();
+        MemorizeDefaultState();
+        MakeNextSelection();
+    }
+
+    private void MakeNextSelection()
+    {
         if (_selection is null) return;
-
-        _previousBrush = _selection.Stroke;
-        _previousThickness = _selection.StrokeThickness;
-
         _selection.StrokeThickness = SelectedThickness;
         _selection.Stroke = _primaryColor;
     }
 
+    private void MemorizeDefaultState()
+    {
+        if (_selection is null) return;
+        _previousBrush = _selection.Stroke;
+        _previousThickness = _selection.StrokeThickness;
+    }
+
+    private void RemovePreviousSelection()
+    {
+        if (_selection is null) return;
+        _selection.Stroke = _previousBrush;
+        _selection.StrokeThickness = _previousThickness!.Value;
+    }
+
     private Border? GetSelectedBorderOrDefault() =>
         (Border?)VerticalStackLayout.Children.FirstOrDefault(view =>
-            (((BindableObject)view).BindingContext as CampaignGoal)?.Id == _viewModel.CampaignGoal?.Id);
+            ((BindableObject)view).BindingContext as CampaignGoal? == _viewModel.CampaignGoal);
 }

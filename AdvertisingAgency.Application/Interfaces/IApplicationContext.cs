@@ -3,13 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdvertisingAgency.Application.Interfaces;
 
-public interface IApplicationContext
+public interface IApplicationContext : IDisposable, IAsyncDisposable
 {
     public DbSet<Campaign> Campaigns { get; }
-
-    public DbSet<CampaignGoal> CampaignGoals { get; }
-
-    public DbSet<CampaignType> CampaignTypes { get; }
 
     public DbSet<CampaignSettings> CampaignSettings { get; }
     
@@ -20,10 +16,6 @@ public interface IApplicationContext
     public DbSet<Position> Positions { get; }
     
     public DbSet<User> Users { get; }
-    
-    public DbSet<Location> Locations { get; }
-    
-    public DbSet<Language> Languages { get; }
 
     public DbSet<AdSchedule> AdSchedules { get; }
 

@@ -1,4 +1,6 @@
-﻿namespace AdvertisingAgency.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AdvertisingAgency.Domain;
 
 public readonly record struct CampaignId(Guid Value) : IStronglyTypedId<Guid>
 {
@@ -11,8 +13,8 @@ public sealed class Campaign
 {
     public Campaign(ClientId clientId,
         EmployeeId employeeId,
-        CampaignGoalId goalId,
-        CampaignTypeId typeId,
+        CampaignGoal goalId,
+        CampaignType typeId,
         CampaignSettings settings,
         string name)
     {
@@ -21,36 +23,35 @@ public sealed class Campaign
         Status = CampaignStatus.Reviewing;
         ClientId = clientId;
         EmployeeId = employeeId;
-        GoalId = goalId;
-        TypeId = typeId;
+        Goal = goalId;
+        Type = typeId;
         Settings = settings;
     }
 
     private Campaign() { }
 
-    public CampaignId Id { get; }
+    public CampaignId Id { get; init; }
 
     public string Name { get; set; } = string.Empty;
 
     public CampaignStatus Status { get; set; }
 
+    public CampaignType Type { get; set; }
+
+    public CampaignGoal Goal { get; set; }
+
     public Client Client { get; set; } = null!;
 
     public Employee Employee { get; set; } = null!;
 
-    public CampaignGoal Goal { get; set; } = null!;
-
     public CampaignSettings Settings { get; set; } = null!;
-
-    public CampaignType Type { get; set; } = null!;
 
     public ClientId ClientId { get; }
 
     public EmployeeId EmployeeId { get; set; }
 
-    public CampaignGoalId GoalId { get; set; }
-
     public CampaignSettingsId SettingsId { get; }
 
-    public CampaignTypeId TypeId { get; set; }
+    [Timestamp]
+    public byte[]? RowVersion { get; set; }
 }

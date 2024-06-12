@@ -1,18 +1,16 @@
 using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
-using AdvertisingAgency.Extensions;
 using AdvertisingAgency.Messages;
-using AsyncAwaitBestPractices;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mediator;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using Location = AdvertisingAgency.Domain.Location;
 
 namespace AdvertisingAgency.ViewModels.CreateCampaign;
 
@@ -26,22 +24,22 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [MinLength(1, ErrorMessage = "Обязательное")]
-    private ObservableCollection<Location> _selectedLocations = [];
+    private ImmutableArray<Country> _selectedCountries = [];
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [MinLength(1, ErrorMessage = "Обязательное")]
-    private ObservableCollection<Language> _selectedLanguages = [];
+    private ImmutableArray<Language> _selectedLanguages = [];
 
     [ObservableProperty] private decimal _budget;
 
     [ObservableProperty] private string _campaignNameError = string.Empty;
-    [ObservableProperty] private string _selectedLocationsError = string.Empty;
+    [ObservableProperty] private string _selectedCountriesError = string.Empty;
     [ObservableProperty] private string _selectedLanguagesError = string.Empty;
 
-    [ObservableProperty] private List<DayOfWeek> _dayOfWeeks;
-    [ObservableProperty] private List<Location> _locations = [];
-    [ObservableProperty] private List<Language> _languages = [];
+    [ObservableProperty] private ImmutableArray<DayOfWeek> _dayOfWeeks;
+    [ObservableProperty] private ImmutableArray<Country> _countries = [];
+    [ObservableProperty] private ImmutableArray<Language> _languages = [];
 
     [ObservableProperty]
     private ObservableCollection<AdSchedule> _schedules =
@@ -54,18 +52,14 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     private CampaignType? _campaignType;
     private Campaign? _campaign;
 
-    public CampaignSettingsViewModel(IMediator mediator, IMessenger messenger)
+    public CampaignSettingsViewModel(IMediator mediator, IMessenger messenger, IGlobalContext globalContext)
     {
         _mediator = mediator;
         _messenger = messenger;
 
-        Task.Run(async () =>
-        {
-            Languages = await mediator.Send(new GetLanguagesQuery()).ConfigureAwait(false);
-            Locations = await mediator.Send(new GetLocationsQuery()).ConfigureAwait(false);
-        }).SafeFireAndForget();
-
-        DayOfWeeks = [.. Enum.GetValues<DayOfWeek>()];
+        Languages = globalContext.Languages;
+        Countries = globalContext.Countries;
+        DayOfWeeks = globalContext.DayOfWeeks;
     }
 
     public async void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -73,15 +67,16 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
         if (query.TryGetValue("Campaign", out object? obj))
         {
             _campaign = (Campaign)obj;
-            _campaign.Settings = await _mediator
+            CampaignSettings settings = await _mediator
                 .Send(new GetCampaignSettingsByIdQuery(_campaign.Settings.Id))
                 .ConfigureAwait(false);
 
             Name = _campaign.Name;
-            Budget = _campaign.Settings.Budget;
-            SelectedLocations.AddRange(Locations.Where(location => _campaign.Settings.Locations.Any(l => l.Id == location.Id)));
-            SelectedLanguages.AddRange(Languages.Where(language => _campaign.Settings.ClientSpeakLanguages.Any(l => l.Id == language.Id)));
-            _campaign.Settings.AdSchedules.ForEach(Schedules.Add);
+            Budget = settings.Budget;
+            SelectedCountries = SelectedCountries.AddRange(settings.Countries);
+            SelectedLanguages = SelectedLanguages.AddRange(settings.Languages);
+            Schedules.Clear();
+            settings.AdSchedules.ForEach(Schedules.Add);
         }
         _campaignGoal = (CampaignGoal)query["CampaignGoal"];
         _campaignType = (CampaignType)query["CampaignType"];
@@ -126,15 +121,10 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     {
         Guard.IsNotNull(_campaign, nameof(_campaign));
 
-        _campaign.Name = Name;
-        _campaign.Goal = _campaignGoal!;
-        _campaign.Type = _campaignType!;
-        _campaign.Settings.ClientSpeakLanguages = [.. SelectedLanguages];
-        _campaign.Settings.Locations = [.. SelectedLocations];
-        _campaign.Settings.Budget = Budget;
-        _campaign.Settings.AdSchedules = [.. Schedules];
+        var settings = new CampaignSettings(Budget, [.. SelectedCountries], [.. SelectedLanguages], [.. Schedules]) { Id = _campaign.SettingsId };
+        Campaign campaign = new Campaign(_campaign.ClientId, _campaign.EmployeeId, _campaignGoal!.Value, _campaignType!.Value, settings, Name ) { Id = _campaign.Id };
 
-        await _mediator.Send(new UpdateCampaignCommand(_campaign), cancellationToken)
+        await _mediator.Send(new UpdateCampaignCommand(campaign), cancellationToken)
             .ConfigureAwait(false);
 
         await ShowSuccessfulEditAlertAsync(cancellationToken).ConfigureAwait(false);
@@ -142,10 +132,10 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
 
     private async Task AddCampaignAsync(CancellationToken cancellationToken = default)
     {
-        var settings = new CampaignSettings(Budget, [.. SelectedLocations], [.. SelectedLanguages], [.. Schedules]);
+        var settings = new CampaignSettings(Budget, [.. SelectedCountries], [.. SelectedLanguages], [.. Schedules]);
 
         CampaignId id = await _mediator
-            .Send(new AddCampaignCommand(_campaignGoal!, _campaignType!, settings, Name), cancellationToken)
+            .Send(new AddCampaignCommand(_campaignGoal!.Value, _campaignType!.Value, settings, Name), cancellationToken)
             .ConfigureAwait(false);
         _messenger.Send(new AddCampaignMessage(id));
 
@@ -165,7 +155,7 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     private Task UpdateAllErrorProperties(CancellationToken cancellationToken = default) => Task.Run(() =>
     {
         CampaignNameError = GetErrorMessageOrEmpty(nameof(Name));
-        SelectedLocationsError = GetErrorMessageOrEmpty(nameof(SelectedLocations));
+        SelectedCountriesError = GetErrorMessageOrEmpty(nameof(SelectedCountries));
         SelectedLanguagesError = GetErrorMessageOrEmpty(nameof(SelectedLanguages));
     }, cancellationToken);
 

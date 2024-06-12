@@ -19,6 +19,5 @@ internal static class DependencyInjection
             .AddTransientWithShellRoute<ChooseCampaignTypeView, ChooseCampaignTypeViewModel>(nameof(ChooseCampaignTypeViewModel))
             .AddTransientWithShellRoute<CampaignSettingsView, CampaignSettingsViewModel>(nameof(CampaignSettingsViewModel))
             .AddTransientWithShellRoute<UserView, UserViewModel>(nameof(UserViewModel))
-            .AddTransientWithShellRoute<CampaignEditView, CampaignEditViewModel>(nameof(CampaignEditViewModel))
             .AddTransientPopup<CampaignActionMenuPopup, CampaignActionMenuPopupModel>();
 }

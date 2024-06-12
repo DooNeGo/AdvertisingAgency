@@ -3,10 +3,10 @@ using AdvertisingAgency.Domain;
 
 namespace AdvertisingAgency.Converters;
 
-public sealed class BriefStatusConverter : IValueConverter
+public sealed class CampaignStatusConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        (value as CampaignStatus?) switch
+        value switch
         {
             CampaignStatus.Executing => "Выполняется",
             CampaignStatus.Reviewing => "Рассматривается",

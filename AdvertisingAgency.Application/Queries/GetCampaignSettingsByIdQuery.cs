@@ -11,10 +11,8 @@ internal sealed class GetCampaignSettingsByIdQueryHandler(IApplicationContext co
     : IQueryHandler<GetCampaignSettingsByIdQuery, CampaignSettings>
 {
     public ValueTask<CampaignSettings> Handle(GetCampaignSettingsByIdQuery query, CancellationToken cancellationToken) =>
-        new(context.CampaignSettings.AsNoTracking()
+        new(context.CampaignSettings
             .Where(settings => settings.Id == query.Id)
             .Include(settings => settings.AdSchedules)
-            .Include(settings => settings.Locations)
-            .Include(settings => settings.ClientSpeakLanguages)
             .FirstAsync(cancellationToken));
 }

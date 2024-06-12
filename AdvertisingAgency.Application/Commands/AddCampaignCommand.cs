@@ -17,7 +17,7 @@ public sealed class AddCampaignCommandHandler(IApplicationContext context, IIden
     {
         Client client = identityService.CurrentUser?.Client ?? throw new NotLoggedInException();
         Employee employee = await context.Employees.FirstAsync(cancellationToken).ConfigureAwait(false);
-        Campaign campaign = new(client.Id, employee.Id, command.Goal.Id, command.Type.Id, command.Settings, command.Name);
+        Campaign campaign = new(client.Id, employee.Id, command.Goal, command.Type, command.Settings, command.Name);
 
         EntityEntry<Campaign> entry = await context.Campaigns
             .AddAsync(campaign, cancellationToken)

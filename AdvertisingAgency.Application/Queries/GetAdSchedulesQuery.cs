@@ -12,7 +12,6 @@ internal sealed class GetAdSchedulesQueryHandler(IApplicationContext context)
 {
     public ValueTask<List<AdSchedule>> Handle(GetAdSchedulesQuery query, CancellationToken cancellationToken) =>
         new(context.CampaignSettings
-            .AsNoTracking()
             .Where(settings => settings.Id == query.Id)
             .Select(settings => settings.AdSchedules)
             .FirstAsync(cancellationToken));

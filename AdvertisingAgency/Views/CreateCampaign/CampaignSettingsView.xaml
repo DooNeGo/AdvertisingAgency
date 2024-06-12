@@ -10,6 +10,7 @@
     xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+    xmlns:scg="clr-namespace:System.Collections.Generic;assembly=netstandard"
     xmlns:templateSelectors="clr-namespace:AdvertisingAgency.TemplateSelectors"
     xmlns:viewModel="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
     x:DataType="viewModel:CampaignSettingsViewModel"
@@ -18,6 +19,8 @@
     <ContentPage.Resources>
         <converters:DayOfWeekConverter x:Key="DayOfWeekConverter" />
         <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <converters:CountriesToLocalizedStringsConverter x:Key="CountriesToLocalizedStringsConverter" />
+        <converters:LanguagesToLocalizedStringsConverter x:Key="LanguagesToLocalizedStringsConverter" />
     </ContentPage.Resources>
 
     <Shell.TitleView>
@@ -57,15 +60,15 @@
                 Value="{Binding Budget}" />
 
             <editors:AutoCompleteTokenEdit
-                ErrorText="{Binding SelectedLocationsError}"
+                ErrorText="{Binding SelectedCountriesError}"
                 HasError="{Binding Source={RelativeSource Self}, Path=ErrorText, Converter={StaticResource StringToVisibilityConverter}}"
                 HelpText="Выберите целевые местоположения."
                 Keyboard="Text"
                 LabelText="Локации"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItems="{Binding SelectedLocations}">
+                SelectedItems="{Binding SelectedCountries, Converter={StaticResource CountriesToLocalizedStringsConverter}}">
                 <editors:AutoCompleteTokenEdit.ItemsSourceProvider>
-                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Locations}" />
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Countries, Converter={StaticResource CountriesToLocalizedStringsConverter}}" />
                 </editors:AutoCompleteTokenEdit.ItemsSourceProvider>
             </editors:AutoCompleteTokenEdit>
 
@@ -75,9 +78,9 @@
                 HelpText="Выберите языки, на которых говорят ваши клиенты."
                 LabelText="Языки"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItems="{Binding SelectedLanguages}">
+                SelectedItems="{Binding SelectedLanguages, Converter={StaticResource LanguagesToLocalizedStringsConverter}}">
                 <editors:AutoCompleteTokenEdit.ItemsSourceProvider>
-                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Languages}" />
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Languages, Converter={StaticResource LanguagesToLocalizedStringsConverter}}" />
                 </editors:AutoCompleteTokenEdit.ItemsSourceProvider>
             </editors:AutoCompleteTokenEdit>
 

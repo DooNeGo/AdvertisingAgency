@@ -9,24 +9,24 @@ public readonly record struct CampaignSettingsId(Guid Value) : IStronglyTypedId<
 
 public sealed class CampaignSettings
 {
-    public CampaignSettings(decimal budget, List<Location> locations, List<Language> clientSpeakLanguages, List<AdSchedule> adSchedules)
+    public CampaignSettings(decimal budget, List<Country> countries, List<Language> languages, List<AdSchedule> adSchedules)
     {
         Id = CampaignSettingsId.Create();
         Budget = budget;
-        Locations = locations;
-        ClientSpeakLanguages = clientSpeakLanguages;
+        Countries = countries;
+        Languages = languages;
         AdSchedules = adSchedules;
     }
 
     private CampaignSettings() { }
 
-    public CampaignSettingsId Id { get; }
+    public CampaignSettingsId Id { get; init; }
 
     public decimal Budget { get; set; } 
 
-    public List<Location> Locations { get; set; } = null!;
+    public List<Country> Countries { get; set; } = null!;
 
-    public List<Language> ClientSpeakLanguages { get; set; } = null!;
+    public List<Language> Languages { get; set; } = null!;
 
     public List<AdSchedule> AdSchedules { get; set; } = null!;
 }

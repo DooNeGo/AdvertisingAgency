@@ -5,6 +5,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviours="clr-namespace:AdvertisingAgency.Behaviours"
+    xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:domain="clr-namespace:AdvertisingAgency.Domain;assembly=AdvertisingAgency.Domain"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels.CreateCampaign"
@@ -25,6 +26,11 @@
                 Style="{StaticResource TextButtonStyle}" />
         </Grid>
     </Shell.TitleView>
+
+    <ContentPage.Resources>
+        <converters:CampaignGoalToTitleConverter x:Key="CampaignGoalToTitleConverter" />
+        <converters:CampaignGoalToDetailConverter x:Key="CampaignGoalToDetailConverter" />
+    </ContentPage.Resources>
 
     <ScrollView Padding="10">
         <VerticalStackLayout x:Name="VerticalStackLayout" BindableLayout.ItemsSource="{Binding CampaignGoals}">
@@ -47,10 +53,10 @@
                             <Label
                                 FontAttributes="Bold"
                                 FontSize="17"
-                                Text="{Binding Title}" />
+                                Text="{Binding ., Converter={StaticResource CampaignGoalToTitleConverter}}" />
                             <Label
                                 FontSize="13"
-                                Text="{Binding Description}"
+                                Text="{Binding ., Converter={StaticResource CampaignGoalToDetailConverter}}"
                                 TextColor="{StaticResource Gray500}" />
                         </VerticalStackLayout>
                     </Border>
