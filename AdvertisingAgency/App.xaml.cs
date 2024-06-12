@@ -14,7 +14,7 @@ public sealed partial class App
         InitializeComponent();
 
         DevExpress.Maui.Editors.Initializer.Init();
-        
+
         MainPage = new NavigationPage(serviceProvider.GetRequiredService<LoginView>());
         UserAppTheme = AppTheme.Light;
 

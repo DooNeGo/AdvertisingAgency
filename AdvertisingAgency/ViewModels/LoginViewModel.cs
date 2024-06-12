@@ -9,13 +9,13 @@ public sealed partial class LoginViewModel(IIdentityService identityService) : O
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LogInCommand))]
     private string _userName = string.Empty;
-    
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LogInCommand))]
     private string _password = string.Empty;
-    
+
     [ObservableProperty] private string _error = string.Empty;
-    
+
     [RelayCommand]
     private Task GoToCreateAccount(CancellationToken cancellationToken) =>
         Shell.Current.GoToAsync(nameof(CreateAccountViewModel))

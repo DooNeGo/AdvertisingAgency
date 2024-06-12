@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AdvertisingAgency.Domain;
+﻿namespace AdvertisingAgency.Domain;
 
 public readonly record struct CampaignId(Guid Value) : IStronglyTypedId<Guid>
 {
@@ -13,8 +11,8 @@ public sealed class Campaign
 {
     public Campaign(ClientId clientId,
         EmployeeId employeeId,
-        CampaignGoal goalId,
-        CampaignType typeId,
+        CampaignGoal goal,
+        CampaignType type,
         CampaignSettings settings,
         string name)
     {
@@ -23,8 +21,8 @@ public sealed class Campaign
         Status = CampaignStatus.Reviewing;
         ClientId = clientId;
         EmployeeId = employeeId;
-        Goal = goalId;
-        Type = typeId;
+        Goal = goal;
+        Type = type;
         Settings = settings;
     }
 
@@ -49,9 +47,4 @@ public sealed class Campaign
     public ClientId ClientId { get; }
 
     public EmployeeId EmployeeId { get; set; }
-
-    public CampaignSettingsId SettingsId { get; }
-
-    [Timestamp]
-    public byte[]? RowVersion { get; set; }
 }

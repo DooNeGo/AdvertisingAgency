@@ -1,8 +1,8 @@
 using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Converters;
+using AdvertisingAgency.CustomCollections;
 using AdvertisingAgency.Domain;
-using AdvertisingAgency.Extensions;
 using AdvertisingAgency.Messages;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -123,10 +123,10 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
         Guard.IsNotNull(_campaign, nameof(_campaign));
 
         var settings = new CampaignSettings(Budget, SelectedCountries.ToDefaultList(),
-            SelectedLanguages.ToDefaultList(), [.. Schedules]) { Id = _campaign.SettingsId };
+            SelectedLanguages.ToDefaultList(), [.. Schedules]);
 
         Campaign campaign = new Campaign(_campaign.ClientId, _campaign.EmployeeId,
-            _campaignGoal!.Value, _campaignType!.Value, settings, Name ) { Id = _campaign.Id };
+            _campaignGoal!.Value, _campaignType!.Value, settings, Name) { Id = _campaign.Id };
 
         await _mediator.Send(new UpdateCampaignCommand(campaign), cancellationToken)
             .ConfigureAwait(false);

@@ -1,10 +1,10 @@
-using System.Collections.ObjectModel;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mediator;
+using System.Collections.ObjectModel;
 
 namespace AdvertisingAgency.ViewModels;
 

@@ -13,7 +13,7 @@ public enum CampaignActionMenuResult
 public partial class CampaignActionMenuPopup
 {
     private const int ClickDelay = 100;
-    
+
     public CampaignActionMenuPopup(CampaignActionMenuPopupModel popupModel)
     {
         InitializeComponent();
@@ -26,7 +26,7 @@ public partial class CampaignActionMenuPopup
         await Task.Delay(ClickDelay, cancellationToken).ConfigureAwait(false);
         await CloseAsync(result, cancellationToken).ConfigureAwait(false);
     }
-    
+
     private void CancelButton_OnTapped(object? sender, EventArgs e) =>
         CloseWithResultAsync(CampaignActionMenuResult.Cancel).SafeFireAndForget();
 

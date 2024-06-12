@@ -1,10 +1,11 @@
 ﻿using AdvertisingAgency.Application.Commands;
+using AdvertisingAgency.Converters;
+using AdvertisingAgency.CustomCollections;
 using AdvertisingAgency.Domain;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mediator;
-using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdvertisingAgency.ViewModels;
@@ -67,14 +68,12 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     [ObservableProperty] private string _passwordError = string.Empty;
     [ObservableProperty] private string _error = string.Empty;
 
-    [ObservableProperty] private ImmutableArray<Country> _countries = [];
-    [ObservableProperty] private ImmutableArray<Language> _languages = [];
+    [ObservableProperty] private LocalizedCollection<Country, CountryToLocalizedStringConverter> _countries = [];
 
     public CreateAccountViewModel(IMediator mediator, IGlobalContext globalContext)
     {
         _mediator = mediator;
-        Countries = globalContext.Countries;
-        Languages = globalContext.Languages;
+        Countries = new LocalizedCollection<Country, CountryToLocalizedStringConverter>(globalContext.Countries);
     }
 
     [RelayCommand]

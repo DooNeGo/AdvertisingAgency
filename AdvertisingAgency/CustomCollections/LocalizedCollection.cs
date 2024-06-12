@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 
-namespace AdvertisingAgency.Extensions
+namespace AdvertisingAgency.CustomCollections
 {
     public sealed class LocalizedCollection<TFrom, TElementConveter> : ObservableCollection<string>
         where TElementConveter : IValueConverter, new()

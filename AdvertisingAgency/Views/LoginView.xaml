@@ -3,6 +3,7 @@
     x:Class="AdvertisingAgency.Views.LoginView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:AdvertisingAgency.Behaviours"
     xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
     xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -14,6 +15,7 @@
 
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Background}" StatusBarStyle="DarkContent" />
+        <behaviors:OnAppearingBehaviour />
     </ContentPage.Behaviors>
 
     <VerticalStackLayout Spacing="10" VerticalOptions="Center">

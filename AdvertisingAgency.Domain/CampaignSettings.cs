@@ -22,11 +22,13 @@ public sealed class CampaignSettings
 
     public CampaignSettingsId Id { get; init; }
 
-    public decimal Budget { get; set; } 
+    public decimal Budget { get; set; }
 
     public List<Country> Countries { get; set; } = null!;
 
     public List<Language> Languages { get; set; } = null!;
 
     public List<AdSchedule> AdSchedules { get; set; } = null!;
+
+    public CampaignId CampaignId { get; }
 }

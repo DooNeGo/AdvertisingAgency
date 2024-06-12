@@ -9,7 +9,7 @@ internal sealed class IdentityService(IApplicationContext context) : IIdentitySe
     public User? CurrentUser { get; private set; }
 
     public event Action? LoggedOut;
-    
+
     public event Action<User>? LoggedIn;
 
     public async Task LoginAsync(string userName, string password, CancellationToken cancellationToken)

@@ -19,8 +19,6 @@
     <ContentPage.Resources>
         <converters:DayOfWeekConverter x:Key="DayOfWeekConverter" />
         <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-        <converters:CountriesToLocalizedStringsConverter x:Key="CountriesToLocalizedStringsConverter" />
-        <converters:LanguagesToLocalizedStringsConverter x:Key="LanguagesToLocalizedStringsConverter" />
     </ContentPage.Resources>
 
     <Shell.TitleView>

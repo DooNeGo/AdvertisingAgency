@@ -5,7 +5,7 @@ public sealed class OnAppearingBehaviour : Behavior<VisualElement>
     protected override void OnAttachedTo(VisualElement bindable)
     {
         base.OnAttachedTo(bindable);
-        
+
         bindable.Loaded += async (_, _) =>
         {
             double opacity = bindable.Opacity;

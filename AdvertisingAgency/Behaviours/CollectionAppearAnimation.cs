@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui.Animations;
-
-namespace AdvertisingAgency.Behaviours;
+﻿namespace AdvertisingAgency.Behaviours;
 
 internal sealed class CollectionAppearAnimation : Behavior
 {
@@ -15,6 +13,6 @@ internal sealed class CollectionAppearAnimation : Behavior
     private void CollectionView_ChildAdded(object? sender, ElementEventArgs e)
     {
         if (e.Element is not VisualElement element) return;
-        
+
     }
 }

@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AdvertisingAgency.Domain;
 
 public readonly record struct AdScheduleId(Guid Value) : IStronglyTypedId<Guid>
@@ -22,13 +20,12 @@ public sealed class AdSchedule
     private AdSchedule() { }
 
     public AdScheduleId Id { get; }
-    
+
     public DayOfWeek DayOfWeek { get; set; }
-    
+
     public DateTime StartTime { get; set; }
-    
+
     public DateTime EndTime { get; set; }
 
-    [Timestamp]
-    public byte[]? RowVersion { get; set; }
+    public CampaignSettingsId CampaignSettingsId { get; init; }
 }
