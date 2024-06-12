@@ -16,7 +16,7 @@ public sealed class CampaignGoalToDetailConverter : IValueConverter
             CampaignGoal.AppPromotion => "Увеличить количество установок приложения, взаимодействия с ним и предварительных регистраций.",
             CampaignGoal.StoreVisits => "Привлекать посетителей в магазины, рестораны и дилерские центры.",
             CampaignGoal.NoSpecificGoal => "Сначала выбрать тип кампании – без рекомендаций на основе вашей цели.",
-            _ => null,
+            _ => value,
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

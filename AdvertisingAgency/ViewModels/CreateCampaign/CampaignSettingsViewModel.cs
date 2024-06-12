@@ -1,13 +1,14 @@
 using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Queries;
+using AdvertisingAgency.Converters;
 using AdvertisingAgency.Domain;
+using AdvertisingAgency.Extensions;
 using AdvertisingAgency.Messages;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mediator;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -24,12 +25,12 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [MinLength(1, ErrorMessage = "Обязательное")]
-    private ImmutableArray<Country> _selectedCountries = [];
+    private LocalizedCollection<Country, CountryToLocalizedStringConverter> _selectedCountries = [];
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [MinLength(1, ErrorMessage = "Обязательное")]
-    private ImmutableArray<Language> _selectedLanguages = [];
+    private LocalizedCollection<Language, LanguageToLocalizedStringConverter> _selectedLanguages = [];
 
     [ObservableProperty] private decimal _budget;
 
@@ -37,9 +38,9 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     [ObservableProperty] private string _selectedCountriesError = string.Empty;
     [ObservableProperty] private string _selectedLanguagesError = string.Empty;
 
-    [ObservableProperty] private ImmutableArray<DayOfWeek> _dayOfWeeks;
-    [ObservableProperty] private ImmutableArray<Country> _countries = [];
-    [ObservableProperty] private ImmutableArray<Language> _languages = [];
+    [ObservableProperty] private LocalizedCollection<DayOfWeek, DayOfWeekConverter> _dayOfWeeks;
+    [ObservableProperty] private LocalizedCollection<Country, CountryToLocalizedStringConverter> _countries = [];
+    [ObservableProperty] private LocalizedCollection<Language, LanguageToLocalizedStringConverter> _languages = [];
 
     [ObservableProperty]
     private ObservableCollection<AdSchedule> _schedules =
@@ -57,9 +58,9 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
         _mediator = mediator;
         _messenger = messenger;
 
-        Languages = globalContext.Languages;
-        Countries = globalContext.Countries;
-        DayOfWeeks = globalContext.DayOfWeeks;
+        Languages = new LocalizedCollection<Language, LanguageToLocalizedStringConverter>(globalContext.Languages);
+        Countries = new LocalizedCollection<Country, CountryToLocalizedStringConverter>(globalContext.Countries);
+        DayOfWeeks = new LocalizedCollection<DayOfWeek, DayOfWeekConverter>(globalContext.DayOfWeeks);
     }
 
     public async void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -73,8 +74,8 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
 
             Name = _campaign.Name;
             Budget = settings.Budget;
-            SelectedCountries = SelectedCountries.AddRange(settings.Countries);
-            SelectedLanguages = SelectedLanguages.AddRange(settings.Languages);
+            SelectedCountries.AddRange(settings.Countries);
+            SelectedLanguages.AddRange(settings.Languages);
             Schedules.Clear();
             settings.AdSchedules.ForEach(Schedules.Add);
         }
@@ -121,8 +122,11 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     {
         Guard.IsNotNull(_campaign, nameof(_campaign));
 
-        var settings = new CampaignSettings(Budget, [.. SelectedCountries], [.. SelectedLanguages], [.. Schedules]) { Id = _campaign.SettingsId };
-        Campaign campaign = new Campaign(_campaign.ClientId, _campaign.EmployeeId, _campaignGoal!.Value, _campaignType!.Value, settings, Name ) { Id = _campaign.Id };
+        var settings = new CampaignSettings(Budget, SelectedCountries.ToDefaultList(),
+            SelectedLanguages.ToDefaultList(), [.. Schedules]) { Id = _campaign.SettingsId };
+
+        Campaign campaign = new Campaign(_campaign.ClientId, _campaign.EmployeeId,
+            _campaignGoal!.Value, _campaignType!.Value, settings, Name ) { Id = _campaign.Id };
 
         await _mediator.Send(new UpdateCampaignCommand(campaign), cancellationToken)
             .ConfigureAwait(false);
@@ -132,11 +136,12 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
 
     private async Task AddCampaignAsync(CancellationToken cancellationToken = default)
     {
-        var settings = new CampaignSettings(Budget, [.. SelectedCountries], [.. SelectedLanguages], [.. Schedules]);
+        var settings = new CampaignSettings(Budget, SelectedCountries.ToDefaultList(),
+            SelectedLanguages.ToDefaultList(), [.. Schedules]);
 
         CampaignId id = await _mediator
-            .Send(new AddCampaignCommand(_campaignGoal!.Value, _campaignType!.Value, settings, Name), cancellationToken)
-            .ConfigureAwait(false);
+            .Send(new AddCampaignCommand(_campaignGoal!.Value, _campaignType!.Value, settings, Name),
+            cancellationToken).ConfigureAwait(false);
         _messenger.Send(new AddCampaignMessage(id));
 
         await ShowSuccessfulAddAlertAsync(cancellationToken).ConfigureAwait(false);
@@ -174,7 +179,8 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     private static Task ShowErrorAlertAsync(CancellationToken cancellationToken = default) =>
         ShowAlertAsync("Кампания", "Ошибка", "Ок", cancellationToken);
 
-    private static Task ShowAlertAsync(string title, string message, string cancel, CancellationToken cancellationToken = default) =>
+    private static Task ShowAlertAsync(string title, string message, string cancel,
+        CancellationToken cancellationToken = default) =>
         App.Current!.Dispatcher.DispatchAsync(async () =>
             await App.Current!.MainPage!.DisplayAlert(title, message, cancel)
                 .WaitAsync(cancellationToken).WaitAsync(cancellationToken));

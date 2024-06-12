@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using System.Collections;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace AdvertisingAgency.Converters;
@@ -30,6 +32,6 @@ public class CollectionToLocalizedStringsConverter<TElement, TElementConverter> 
     private IEnumerable<object?> ConvertToIEnumerable(IEnumerable<TElement> enumerable, CultureInfo culture) => enumerable
         .Select(country => _converter.Convert(country, typeof(string), null, culture));
 
-    private List<object?> ConvertToList(IEnumerable<TElement> enumerable, CultureInfo culture) =>
-        ConvertToIEnumerable(enumerable, culture).ToList();
+    private ObservableCollection<object?> ConvertToList(IEnumerable<TElement> enumerable, CultureInfo culture) =>
+        ConvertToIEnumerable(enumerable, culture).ToObservableCollection();
 }

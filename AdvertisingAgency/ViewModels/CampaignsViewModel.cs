@@ -49,7 +49,8 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
         try
         {
             ClientId id = _identityService.CurrentUser?.Client.Id ?? throw new NotLoggedInException();
-            await UpdateCollectionAsync(Campaigns, new GetCampaignsQuery(id), cancellationToken).ConfigureAwait(false);
+            await UpdateCollectionAsync(Campaigns, new GetCampaignsQuery(id), cancellationToken)
+                .ConfigureAwait(false);
         }
         finally
         {

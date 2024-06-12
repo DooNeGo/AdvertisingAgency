@@ -13,7 +13,7 @@ public sealed class CampaignTypeToDetailConverter : IValueConverter
             CampaignType.Shopping => "Рекламируйте свои товары пользователям, которые ищут, что купить.",
             CampaignType.App => "Привлекайте внимание к своему приложению и увеличивайте число установок.",
             CampaignType.Smart => "Привлекайте клиентов с помощью универсального решения для малого бизнеса.",
-            _ => null,
+            _ => value,
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

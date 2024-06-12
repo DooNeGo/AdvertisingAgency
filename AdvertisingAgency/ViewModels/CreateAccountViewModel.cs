@@ -125,10 +125,10 @@ public sealed partial class CreateAccountViewModel : ObservableValidator
     private string GetErrorMessageOrEmpty(string propertyName) =>
         GetErrors(propertyName).FirstOrDefault()?.ErrorMessage ?? string.Empty;
 
-    private static Task ShowSuccessfulRegistrationAlert(Page page, CancellationToken cancellationToken = default) =>
-        page.DisplayAlert("Успешная регистрация",
-                "Вы успешно зарегистрировались. Войдите с вашим новым аккаунтом", "Ок")
-            .WaitAsync(cancellationToken);
+    private static Task ShowSuccessfulRegistrationAlert(Page page,
+        CancellationToken cancellationToken = default) => page.DisplayAlert("Успешная регистрация",
+            "Вы успешно зарегистрировались. Войдите с вашим новым аккаунтом",
+            "Ок").WaitAsync(cancellationToken);
 
     private static Task GoBackSuccessfulAsync(CancellationToken cancellationToken = default) =>
         App.Current!.Dispatcher.DispatchAsync(async () =>

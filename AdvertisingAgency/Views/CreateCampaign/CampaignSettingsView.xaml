@@ -66,9 +66,9 @@
                 Keyboard="Text"
                 LabelText="Локации"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItems="{Binding SelectedCountries, Converter={StaticResource CountriesToLocalizedStringsConverter}}">
+                SelectedItems="{Binding SelectedCountries}">
                 <editors:AutoCompleteTokenEdit.ItemsSourceProvider>
-                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Countries, Converter={StaticResource CountriesToLocalizedStringsConverter}}" />
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Countries}" />
                 </editors:AutoCompleteTokenEdit.ItemsSourceProvider>
             </editors:AutoCompleteTokenEdit>
 
@@ -78,9 +78,9 @@
                 HelpText="Выберите языки, на которых говорят ваши клиенты."
                 LabelText="Языки"
                 NoResultsFoundText="Нет совпадений"
-                SelectedItems="{Binding SelectedLanguages, Converter={StaticResource LanguagesToLocalizedStringsConverter}}">
+                SelectedItems="{Binding SelectedLanguages}">
                 <editors:AutoCompleteTokenEdit.ItemsSourceProvider>
-                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Languages, Converter={StaticResource LanguagesToLocalizedStringsConverter}}" />
+                    <editors:FilteredItemsSourceProvider FilterCondition="StartsWith" ItemsSource="{Binding Languages}" />
                 </editors:AutoCompleteTokenEdit.ItemsSourceProvider>
             </editors:AutoCompleteTokenEdit>
 
@@ -126,24 +126,11 @@
 
                                                 <FlexLayout BackgroundColor="White" JustifyContent="SpaceBetween">
                                                     <editors:ComboBoxEdit
+                                                        DropDownItemFontSize="13"
                                                         ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
-                                                        SelectedItem="{Binding DayOfWeek}"
-                                                        VerticalOptions="Center">
-                                                        <editors:ComboBoxEdit.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <Label
-                                                                    Padding="5"
-                                                                    FontSize="13"
-                                                                    Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
-                                                            </DataTemplate>
-                                                        </editors:ComboBoxEdit.ItemTemplate>
-
-                                                        <editors:ComboBoxEdit.DisplayItemTemplate>
-                                                            <DataTemplate>
-                                                                <Label FontSize="13" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
-                                                            </DataTemplate>
-                                                        </editors:ComboBoxEdit.DisplayItemTemplate>
-                                                    </editors:ComboBoxEdit>
+                                                        SelectedItem="{Binding DayOfWeek, Converter={StaticResource DayOfWeekConverter}}"
+                                                        TextFontSize="13"
+                                                        VerticalOptions="Center" />
 
                                                     <editors:TimeEdit TextFontSize="13" Time="{Binding StartTime}" />
 
@@ -163,24 +150,11 @@
                                                 BackgroundColor="White"
                                                 JustifyContent="SpaceBetween">
                                                 <editors:ComboBoxEdit
+                                                    DropDownItemFontSize="13"
                                                     ItemsSource="{Binding Source={RelativeSource AncestorType={Type viewModel:CampaignSettingsViewModel}}, Path=DayOfWeeks}"
-                                                    SelectedItem="{Binding DayOfWeek}"
-                                                    VerticalOptions="Center">
-                                                    <editors:ComboBoxEdit.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Label
-                                                                Padding="5"
-                                                                FontSize="13"
-                                                                Text="{Binding ., Converter={StaticResource DayOfWeekConverter}}" />
-                                                        </DataTemplate>
-                                                    </editors:ComboBoxEdit.ItemTemplate>
-
-                                                    <editors:ComboBoxEdit.DisplayItemTemplate>
-                                                        <DataTemplate>
-                                                            <Label FontSize="13" Text="{Binding ., Converter={StaticResource DayOfWeekConverter}, StringFormat='{0}'}" />
-                                                        </DataTemplate>
-                                                    </editors:ComboBoxEdit.DisplayItemTemplate>
-                                                </editors:ComboBoxEdit>
+                                                    SelectedItem="{Binding DayOfWeek, Converter={StaticResource DayOfWeekConverter}}"
+                                                    TextFontSize="13"
+                                                    VerticalOptions="Center" />
 
                                                 <editors:TimeEdit TextFontSize="13" Time="{Binding StartTime}" />
 

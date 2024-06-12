@@ -20,6 +20,7 @@ internal sealed class IdentityService(IApplicationContext context) : IIdentitySe
             .AsNoTracking()
             .Where(user => user.UserName == userName && user.Password == password)
             .Include(user => user.Client)
+            .ThenInclude(client => client.FullName)
             .FirstOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
 

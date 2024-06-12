@@ -12,7 +12,7 @@ public sealed class CampaignStatusConverter : IValueConverter
             CampaignStatus.Reviewing => "Рассматривается",
             CampaignStatus.Completed => "Выполнен",
             CampaignStatus.Denied => "Отказ",
-            _ => null
+            _ => value
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

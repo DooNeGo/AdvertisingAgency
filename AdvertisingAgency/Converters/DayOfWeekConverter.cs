@@ -14,7 +14,7 @@ public sealed class DayOfWeekConverter : IValueConverter
             DayOfWeek.Friday => "Пятница",
             DayOfWeek.Saturday => "Суббота",
             DayOfWeek.Sunday => "Воскресенье",
-            _ => null
+            _ => value
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
@@ -27,6 +27,6 @@ public sealed class DayOfWeekConverter : IValueConverter
             "Пятница" => DayOfWeek.Friday,
             "Суббота" => DayOfWeek.Saturday,
             "Воскресенье" => DayOfWeek.Sunday,
-            _ => null
+            _ => value
         };
 }

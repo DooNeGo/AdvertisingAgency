@@ -13,7 +13,7 @@ public sealed class CampaignTypeToTitleConverter : IValueConverter
             CampaignType.Shopping => "Торговая кампания",
             CampaignType.App => "Приложение",
             CampaignType.Smart => "Умная",
-            _ => null,
+            _ => value,
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

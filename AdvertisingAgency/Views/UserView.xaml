@@ -4,22 +4,67 @@
     x:Class="AdvertisingAgency.Views.UserView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:AdvertisingAgency.Behaviours"
+    xmlns:converters="clr-namespace:AdvertisingAgency.Converters"
     xmlns:core="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+    xmlns:editors="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
     xmlns:viewModels="clr-namespace:AdvertisingAgency.ViewModels"
     Padding="0"
     x:DataType="viewModels:UserViewModel"
     Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <behaviors:OnAppearingBehaviour />
+    </ContentPage.Behaviors>
+
     <ScrollView Padding="10">
-        <VerticalStackLayout>
-            <Label Style="{StaticResource Headline}" Text="Аккаунт" />
+        <ScrollView.Resources>
+            <converters:CountryToLocalizedStringConverter x:Key="CountryToLocalizedStringConverter" />
+        </ScrollView.Resources>
+
+        <FlexLayout Direction="Column" JustifyContent="SpaceAround">
+            <Grid RowDefinitions="Auto, Auto">
+                <Label
+                    Margin="0,25,0,5"
+                    FontSize="22"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding User.Client.FullName}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    Grid.Row="1"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding User.Client.CompanyName}"
+                    TextColor="{StaticResource Gray500}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+            </Grid>
+
+            <VerticalStackLayout Spacing="15">
+                <editors:TextEdit
+                    IsReadOnly="True"
+                    LabelText="Номер телефона"
+                    Text="{Binding User.Client.PhoneNumber}" />
+
+                <editors:TextEdit
+                    IsReadOnly="True"
+                    LabelText="Страна"
+                    Text="{Binding User.Client.Country, Converter={StaticResource CountryToLocalizedStringConverter}}" />
+
+                <editors:TextEdit
+                    IsReadOnly="True"
+                    LabelText="Логин"
+                    Text="{Binding User.UserName}" />
+            </VerticalStackLayout>
+
             <core:DXButton
                 ButtonType="Outlined"
                 Command="{Binding LogoutCommand}"
-                FontSize="15"
                 Content="Выйти"
+                FontSize="15"
                 PressedBackgroundColor="{StaticResource Error}"
-                TextColor="{StaticResource Error}">
-            </core:DXButton>
-        </VerticalStackLayout>
+                TextColor="{StaticResource Error}" />
+        </FlexLayout>
     </ScrollView>
 </ContentPage>

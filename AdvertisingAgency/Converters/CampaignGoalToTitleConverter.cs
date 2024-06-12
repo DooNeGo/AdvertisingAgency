@@ -16,7 +16,7 @@ public sealed class CampaignGoalToTitleConverter : IValueConverter
             CampaignGoal.AppPromotion => "Реклама приложения",
             CampaignGoal.StoreVisits => "Посещения магазинов и промоакции",
             CampaignGoal.NoSpecificGoal => "Не указывать цель",
-            _ => null,
+            _ => value,
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

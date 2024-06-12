@@ -16,7 +16,7 @@ public sealed class CountryToLocalizedStringConverter : IValueConverter
             Country.Russia => "Россия",
             Country.Tajikistan => "Таджикистан",
             Country.Uzbekistan => "Узбекистан",
-            _ => null,
+            _ => value,
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
@@ -30,6 +30,6 @@ public sealed class CountryToLocalizedStringConverter : IValueConverter
             "Россия" => Country.Russia,
             "Таджикистан" => Country.Tajikistan,
             "Узбекистан" => Country.Uzbekistan,
-            _ => null
+            _ => value
         };
 }
