@@ -1,14 +1,14 @@
-using AdvertisingAgency.Domain;
+using AdvertisingAgency.Application.Dto;
 
 namespace AdvertisingAgency.Application.Interfaces;
 
 public interface IIdentityService
 {
-    public User? CurrentUser { get; }
+    public UserDto? CurrentUser { get; }
 
     public event Action? LoggedOut;
 
-    public event Action<User>? LoggedIn;
+    public event Action<UserDto>? LoggedIn;
 
     public Task LoginAsync(string userName, string password, CancellationToken cancellationToken);
 

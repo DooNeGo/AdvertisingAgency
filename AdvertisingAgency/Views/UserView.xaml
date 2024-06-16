@@ -22,35 +22,34 @@
         </ScrollView.Resources>
 
         <FlexLayout Direction="Column" JustifyContent="SpaceAround">
-            <Grid RowDefinitions="Auto, Auto">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                 <Label
-                    Margin="0,25,0,5"
+                    BackgroundColor="Transparent"
                     FontSize="22"
                     HorizontalOptions="Center"
                     HorizontalTextAlignment="Center"
-                    Text="{Binding User.Client.FullName}"
+                    Text="{Binding User.FullName}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
                 <Label
-                    Grid.Row="1"
                     HorizontalOptions="Center"
                     HorizontalTextAlignment="Center"
-                    Text="{Binding User.Client.CompanyName}"
+                    Text="{Binding User.CompanyName}"
                     TextColor="{StaticResource Gray500}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-            </Grid>
+            </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="15">
                 <editors:TextEdit
                     IsReadOnly="True"
                     LabelText="Номер телефона"
-                    Text="{Binding User.Client.PhoneNumber}" />
+                    Text="{Binding User.PhoneNumber}" />
 
                 <editors:TextEdit
                     IsReadOnly="True"
                     LabelText="Страна"
-                    Text="{Binding User.Client.Country, Converter={StaticResource CountryToLocalizedStringConverter}}" />
+                    Text="{Binding User.Country, Converter={StaticResource CountryToLocalizedStringConverter}}" />
 
                 <editors:TextEdit
                     IsReadOnly="True"

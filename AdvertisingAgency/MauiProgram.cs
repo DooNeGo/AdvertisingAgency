@@ -1,5 +1,7 @@
 ﻿using AdvertisingAgency.Application;
+using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Infrastructure;
+using AdvertisingAgency.Services;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Mvvm.Messaging;
 using DevExpress.Maui;
@@ -28,6 +30,7 @@ public static class MauiProgram
         builder.Services.AddApplication()
             .AddInfrastructure()
             .AddUI()
+            .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<IGlobalContext, GlobalContext>()
             .AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 

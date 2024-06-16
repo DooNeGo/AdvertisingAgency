@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 
 namespace AdvertisingAgency.ViewModels.CreateCampaign;
 
-public sealed partial class ChooseCampaignTypeViewModel : BaseViewModel, IQueryAttributable
+public sealed partial class ChooseCampaignTypeViewModel : ObservableObject, IQueryAttributable
 {
     [ObservableProperty] private ImmutableArray<CampaignType> _campaignTypes = [];
 
@@ -15,10 +15,10 @@ public sealed partial class ChooseCampaignTypeViewModel : BaseViewModel, IQueryA
     [NotifyCanExecuteChangedFor(nameof(GoNextCommand))]
     private CampaignType? _campaignType;
 
-    private CampaignGoal? _campaignGoal;
+    private CampaignGoal _campaignGoal;
     private Campaign? _campaign;
 
-    public ChooseCampaignTypeViewModel(IMediator mediator, IGlobalContext globalContext) : base(mediator) =>
+    public ChooseCampaignTypeViewModel(IGlobalContext globalContext) =>
         CampaignTypes = globalContext.CampaignTypes;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -41,7 +41,6 @@ public sealed partial class ChooseCampaignTypeViewModel : BaseViewModel, IQueryA
 
     private Dictionary<string, object?> GetNavigationParameters()
     {
-        Guard.IsNotNull(_campaignGoal, nameof(_campaignGoal));
         Guard.IsNotNull(CampaignType, nameof(CampaignType));
 
         Dictionary<string, object?> parameters = new()

@@ -7,12 +7,13 @@ namespace AdvertisingAgency.Application.Commands;
 
 public sealed record RegisterUserCommand(User User) : ICommand<UserId>;
 
-public sealed class RegisterUserCommandHandler(IApplicationContext context)
+public sealed class RegisterUserCommandHandler(IApplicationContext context, IHashService hashService)
     : ICommandHandler<RegisterUserCommand, UserId>
 {
     public async ValueTask<UserId> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        EntityEntry<User> entry = await context.Users.AddAsync(command.User, cancellationToken);
+        User user = command.User with { Password = hashService.HashPassword(command.User.Password) };
+        EntityEntry<User> entry = await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
         return entry.Entity.Id;
     }

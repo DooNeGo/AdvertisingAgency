@@ -7,7 +7,7 @@ public readonly record struct UserId(Guid Value) : IStronglyTypedId<Guid>
     public static UserId Create() => new(Guid.NewGuid());
 }
 
-public sealed class User
+public sealed record User
 {
     public User(string userName, string password, Client client)
     {

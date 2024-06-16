@@ -1,3 +1,4 @@
+using AdvertisingAgency.Application.Dto;
 using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Domain;
 using AdvertisingAgency.Domain.Exceptions;
@@ -15,9 +16,9 @@ public sealed class AddCampaignCommandHandler(IApplicationContext context, IIden
 {
     public async ValueTask<CampaignId> Handle(AddCampaignCommand command, CancellationToken cancellationToken)
     {
-        Client client = identityService.CurrentUser?.Client ?? throw new NotLoggedInException();
+        UserDto user = identityService.CurrentUser ?? throw new NotLoggedInException();
         Employee employee = await context.Employees.FirstAsync(cancellationToken).ConfigureAwait(false);
-        Campaign campaign = new(client.Id, employee.Id, command.Goal, command.Type, command.Settings, command.Name);
+        Campaign campaign = new(user.Id, employee.Id, command.Goal, command.Type, command.Settings, command.Name);
 
         EntityEntry<Campaign> entry = await context.Campaigns
             .AddAsync(campaign, cancellationToken)

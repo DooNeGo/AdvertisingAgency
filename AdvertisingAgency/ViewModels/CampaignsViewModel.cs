@@ -1,3 +1,4 @@
+using AdvertisingAgency.Application.Commands;
 using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Domain;
@@ -20,17 +21,17 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
     private readonly IMediator _mediator;
     private readonly IIdentityService _identityService;
     private readonly IPopupService _popupService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty] private ObservableCollection<Campaign> _campaigns = [];
     [ObservableProperty] private bool _isRefreshing;
     [ObservableProperty] private string _currentState = States.Normal;
 
     public CampaignsViewModel(IMediator mediator, IIdentityService identityService, IPopupService popupService,
-        IMessenger messenger) : base(mediator)
+        IMessenger messenger, IDialogService dialogService) : base(mediator)
     {
-        _mediator = mediator;
-        _identityService = identityService;
-        _popupService = popupService;
+        (_mediator, _identityService) = (mediator, identityService);
+        (_popupService, _dialogService) = (popupService, dialogService);
 
         messenger.Register(this);
         IsRefreshing = true;
@@ -39,8 +40,20 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
     public async void Receive(AddCampaignMessage message)
     {
         if (Campaigns.Any(campaign => campaign.Id == message.Value)) return;
-        Campaign campaign = await _mediator.Send(new GetCampaignByIdQuery(message.Value)).ConfigureAwait(false);
-        Campaigns.Add(campaign);
+
+        try
+        {
+            Campaign campaign = await _mediator
+                .Send(new GetCampaignByIdQuery(message.Value))
+                .ConfigureAwait(false);
+
+            Campaigns.Add(campaign);
+        }
+        catch
+        {
+            await _dialogService.ShowInfoAsync("Получение новой кампани", "Ошибка")
+                .ConfigureAwait(false);
+        }
     }
 
     [RelayCommand]
@@ -48,8 +61,13 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
     {
         try
         {
-            ClientId id = _identityService.CurrentUser?.Client.Id ?? throw new NotLoggedInException();
+            ClientId id = _identityService.CurrentUser?.Id ?? throw new NotLoggedInException();
             await UpdateCollectionAsync(Campaigns, new GetCampaignsQuery(id), cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch
+        {
+            await _dialogService.ShowInfoAsync("Обновление", "Ошибка", cancellationToken)
                 .ConfigureAwait(false);
         }
         finally
@@ -72,21 +90,22 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
             .ShowPopupAsync<CampaignActionMenuPopupModel>(model => model.Campaign = campaign, cancellationToken);
 
         if (result is null) return;
-
         var castedResult = (CampaignActionMenuResult)result;
-
-        if (castedResult is CampaignActionMenuResult.Delete)
-        {
-            await DeleteCampaignAsync(campaign, cancellationToken).ConfigureAwait(false);
-        }
-        else if (castedResult is CampaignActionMenuResult.Edit)
-        {
-            await Shell.Current.GoToAsync(nameof(ChooseCampaignGoalViewModel),
-                new Dictionary<string, object> { { "Campaign", campaign } })
-                .WaitAsync(cancellationToken)
-                .ConfigureAwait(false);
-        }
+        await ExecuteCampaignActionAsync(castedResult, campaign, cancellationToken).ConfigureAwait(false);
     }
+
+    private Task ExecuteCampaignActionAsync(CampaignActionMenuResult result, Campaign campaign,
+        CancellationToken token = default) => result switch
+        {
+            CampaignActionMenuResult.Delete => DeleteCampaignAsync(campaign, token),
+            CampaignActionMenuResult.Edit => EditCampaignAsync(campaign, token),
+            _ => Task.CompletedTask
+        };
+
+    private static Task EditCampaignAsync(Campaign campaign, CancellationToken cancellationToken = default) =>
+        Shell.Current
+            .GoToAsync(nameof(ChooseCampaignGoalViewModel), new Dictionary<string, object> { { "Campaign", campaign } })
+            .WaitAsync(cancellationToken);
 
     partial void OnIsRefreshingChanged(bool value)
     {
@@ -100,28 +119,25 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (await App.Current!.MainPage!.DisplayAlert("Удаление",
-                "Вы уверены, что хотите удалить кампанию? Этот процесс будет необратим", "Да", "Нет")
-                .WaitAsync(cancellationToken).ConfigureAwait(false))
+        bool answer = await _dialogService.ShowQuestionAsync("Удаление",
+            "Вы уверены, что хотите удалить кампанию? Этот процесс будет необратим",
+             cancellationToken).ConfigureAwait(false);
+
+        if (!answer) return;
+
+        try
         {
             Campaigns.Remove(campaign);
+
+            await _mediator.Send(new DeleteCampaignByIdCommand(campaign.Id), cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch
+        {
+            await _dialogService.ShowInfoAsync("Удаление", "Ошибка", cancellationToken)
+                .ConfigureAwait(false);
         }
     }
-
-    //private Task ShowCampaignDeleteAlert(CancellationToken cancellationToken)
-    //{
-    //    TaskCompletionSource<bool> result = new();
-    //    App.Current!.Dispatcher.DispatchAsync(async () =>
-    //    {
-    //        Guard.IsNotNull(App.Current!.MainPage, nameof(App.Current.MainPage));
-    //        bool answer = await App.Current!.MainPage.DisplayAlert(
-    //            "Удаление",
-    //            "Вы уверены, что хотите удалить кампанию? Этот процесс будет необратим",
-    //            "Да", "Нет").WaitAsync(cancellationToken);
-    //        result.SetResult(answer);
-    //    }).WaitAsync(cancellationToken).ConfigureAwait(false);
-    //    return result.Task.WaitAsync(cancellationToken);
-    //}
 
     private static class States
     {

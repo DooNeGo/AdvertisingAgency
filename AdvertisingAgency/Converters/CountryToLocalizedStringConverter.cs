@@ -20,7 +20,7 @@ public sealed class CountryToLocalizedStringConverter : IValueConverter
         };
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        value switch
+        (value as string)?.Trim() switch
         {
             "Армения" => Country.Armenia,
             "Беларусь" => Country.Belarus,

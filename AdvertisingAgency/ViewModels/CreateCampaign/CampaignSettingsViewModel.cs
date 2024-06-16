@@ -1,4 +1,5 @@
 using AdvertisingAgency.Application.Commands;
+using AdvertisingAgency.Application.Interfaces;
 using AdvertisingAgency.Application.Queries;
 using AdvertisingAgency.Converters;
 using AdvertisingAgency.CustomCollections;
@@ -17,6 +18,10 @@ namespace AdvertisingAgency.ViewModels.CreateCampaign;
 
 public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQueryAttributable
 {
+    private readonly IMediator _mediator;
+    private readonly IMessenger _messenger;
+    private readonly IDialogService _dialogService;
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Обязательное")]
@@ -46,18 +51,14 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     private ObservableCollection<AdSchedule> _schedules =
         [new AdSchedule(DayOfWeek.Monday, new DateTime(), new DateTime(DateOnly.MinValue, TimeOnly.MaxValue))];
 
-    private readonly IMediator _mediator;
-    private readonly IMessenger _messenger;
-
     private CampaignGoal? _campaignGoal;
     private CampaignType? _campaignType;
     private Campaign? _campaign;
 
-    public CampaignSettingsViewModel(IMediator mediator, IMessenger messenger, IGlobalContext globalContext)
+    public CampaignSettingsViewModel(IMediator mediator, IMessenger messenger, IGlobalContext globalContext,
+        IDialogService dialogService)
     {
-        _mediator = mediator;
-        _messenger = messenger;
-
+        (_mediator, _messenger, _dialogService) = (mediator, messenger, dialogService);
         Languages = new LocalizedCollection<Language, LanguageToLocalizedStringConverter>(globalContext.Languages);
         Countries = new LocalizedCollection<Country, CountryToLocalizedStringConverter>(globalContext.Countries);
         DayOfWeeks = new LocalizedCollection<DayOfWeek, DayOfWeekConverter>(globalContext.DayOfWeeks);
@@ -84,9 +85,8 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     }
 
     [RelayCommand]
-    private void AddSchedule() =>
-        Schedules.Add(new AdSchedule(DayOfWeek.Monday, new DateTime(),
-            new DateTime(DateOnly.MinValue, TimeOnly.MaxValue)));
+    private void AddSchedule() => Schedules.Add(new AdSchedule(DayOfWeek.Monday,
+        new DateTime(), new DateTime(DateOnly.MinValue, TimeOnly.MaxValue)));
 
     [RelayCommand]
     private void DeleteSchedule(AdSchedule schedule) => Schedules.Remove(schedule);
@@ -99,24 +99,22 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
 
         try
         {
-            if (_campaign is null)
-            {
-                await AddCampaignAsync(cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                await UpdateCampaignAsync(cancellationToken).ConfigureAwait(false);
-            }
+            await ExecuteCampaignFinishActionAsync(cancellationToken).ConfigureAwait(false);
+            await GoBackAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (Exception e)
         {
             Debug.WriteLine(e);
             await ShowErrorAlertAsync(cancellationToken).ConfigureAwait(false);
-            return;
         }
-
-        await GoBackAsync(cancellationToken).ConfigureAwait(false);
     }
+
+    private Task ExecuteCampaignFinishActionAsync(CancellationToken cancellationToken = default) =>
+        _campaign switch
+        {
+            null => AddCampaignAsync(cancellationToken),
+            _ => UpdateCampaignAsync(cancellationToken)
+        };
 
     private async Task UpdateCampaignAsync(CancellationToken cancellationToken = default)
     {
@@ -139,9 +137,12 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
         var settings = new CampaignSettings(Budget, SelectedCountries.ToDefaultList(),
             SelectedLanguages.ToDefaultList(), [.. Schedules]);
 
-        CampaignId id = await _mediator
-            .Send(new AddCampaignCommand(_campaignGoal!.Value, _campaignType!.Value, settings, Name),
-            cancellationToken).ConfigureAwait(false);
+        var command = new AddCampaignCommand(_campaignGoal!.Value,
+            _campaignType!.Value, settings, Name);
+
+        CampaignId id = await _mediator.Send(command, cancellationToken)
+            .ConfigureAwait(false);
+
         _messenger.Send(new AddCampaignMessage(id));
 
         await ShowSuccessfulAddAlertAsync(cancellationToken).ConfigureAwait(false);
@@ -170,18 +171,12 @@ public sealed partial class CampaignSettingsViewModel : ObservableValidator, IQu
     private static Task GoBackAsync(CancellationToken cancellationToken = default) =>
         Shell.Current.GoToAsync("../../..").WaitAsync(cancellationToken);
 
-    private static Task ShowSuccessfulAddAlertAsync(CancellationToken cancellationToken = default) =>
-        ShowAlertAsync("Кампания", "Вы успешно создали новую кампанию", "Ок", cancellationToken);
+    private Task ShowSuccessfulAddAlertAsync(CancellationToken cancellationToken = default) =>
+        _dialogService.ShowInfoAsync("Кампания", "Вы успешно создали новую кампанию", cancellationToken);
 
-    private static Task ShowSuccessfulEditAlertAsync(CancellationToken cancellationToken = default) =>
-        ShowAlertAsync("Кампания", "Вы успешно изменили кампанию", "Ок", cancellationToken);
+    private Task ShowSuccessfulEditAlertAsync(CancellationToken cancellationToken = default) =>
+        _dialogService.ShowInfoAsync("Кампания", "Вы успешно изменили кампанию", cancellationToken);
 
-    private static Task ShowErrorAlertAsync(CancellationToken cancellationToken = default) =>
-        ShowAlertAsync("Кампания", "Ошибка", "Ок", cancellationToken);
-
-    private static Task ShowAlertAsync(string title, string message, string cancel,
-        CancellationToken cancellationToken = default) =>
-        App.Current!.Dispatcher.DispatchAsync(async () =>
-            await App.Current!.MainPage!.DisplayAlert(title, message, cancel)
-                .WaitAsync(cancellationToken).WaitAsync(cancellationToken));
+    private Task ShowErrorAlertAsync(CancellationToken cancellationToken = default) =>
+        _dialogService.ShowInfoAsync("Кампания", "Ошибка", cancellationToken);
 }
