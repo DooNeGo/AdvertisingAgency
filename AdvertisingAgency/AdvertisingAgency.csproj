@@ -45,11 +45,10 @@
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <PublishTrimmed>True</PublishTrimmed>
 		<AndroidDexTool>d8</AndroidDexTool>
-		<AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+		<RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android34.0|AnyCPU'">
-		<AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
 		<AndroidDexTool>d8</AndroidDexTool>
 	</PropertyGroup>
 
@@ -85,19 +84,40 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\CreateAccountView.xaml">
+		  <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CreateCampaign\CampaignSettingsView.xaml">
+		  <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CreateCampaign\StartAddPage.xaml">
+		  <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginView.xaml">
+		  <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\AgencyInfoView.xaml">
+		  <SubType>Designer</SubType>
+		  <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+		<MauiXaml Update="Views\CampaignsView.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\UserView.xaml">
+			<SubType>Designer</SubType>
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	  <MauiXaml Update="Views\CreateCampaign\ChooseCampaignTypeView.xaml">
 	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CreateCampaign\ChooseCampaignGoalView.xaml">
 	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 

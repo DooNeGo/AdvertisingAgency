@@ -1,3 +1,5 @@
+using AsyncAwaitBestPractices;
+
 namespace AdvertisingAgency.Behaviours;
 
 public sealed class OnAppearingBehaviour : Behavior<VisualElement>
@@ -6,12 +8,10 @@ public sealed class OnAppearingBehaviour : Behavior<VisualElement>
     {
         base.OnAttachedTo(bindable);
 
-        bindable.Loaded += async (_, _) =>
+        bindable.Loaded += (_, _) =>
         {
-            double opacity = bindable.Opacity;
             bindable.Opacity = 0;
-            await bindable.FadeTo(opacity, 400, Easing.Default)
-                .ConfigureAwait(false);
+            bindable.FadeTo(1, 400, Easing.Default).SafeFireAndForget();
         };
     }
 }

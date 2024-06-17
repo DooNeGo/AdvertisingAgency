@@ -58,7 +58,6 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
             ClientId id = _identityService.CurrentUser?.Id ?? throw new NotLoggedInException();
             await UpdateCollectionAsync(Campaigns, new GetCampaignsQuery(id), cancellationToken)
                 .ConfigureAwait(false);
-            UpdateCurrentState();
         }
         catch
         {
@@ -69,6 +68,8 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
         {
             IsRefreshing = false;
         }
+
+        UpdateCurrentState();
     }
 
     [RelayCommand]
