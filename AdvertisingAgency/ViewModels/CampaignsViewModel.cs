@@ -16,7 +16,7 @@ using System.Collections.ObjectModel;
 
 namespace AdvertisingAgency.ViewModels;
 
-public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCampaignMessage>
+public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCampaignMessage>, IRecipient<UpdateCampaignMessage>
 {
     private readonly IMediator _mediator;
     private readonly IIdentityService _identityService;
@@ -33,27 +33,21 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
         (_mediator, _identityService) = (mediator, identityService);
         (_popupService, _dialogService) = (popupService, dialogService);
 
-        messenger.Register(this);
+        messenger.Register<AddCampaignMessage>(this);
+        messenger.Register<UpdateCampaignMessage>(this);
         IsRefreshing = true;
     }
 
-    public async void Receive(AddCampaignMessage message)
+    public void Receive(AddCampaignMessage message)
     {
         if (Campaigns.Any(campaign => campaign.Id == message.Value)) return;
+        IsRefreshing = true;
+    }
 
-        try
-        {
-            Campaign campaign = await _mediator
-                .Send(new GetCampaignByIdQuery(message.Value))
-                .ConfigureAwait(false);
-
-            Campaigns.Add(campaign);
-        }
-        catch
-        {
-            await _dialogService.ShowInfoAsync("Получение новой кампани", "Ошибка")
-                .ConfigureAwait(false);
-        }
+    public void Receive(UpdateCampaignMessage message)
+    {
+        if (Campaigns.All(campaign => campaign.Id != message.Value)) return;
+        IsRefreshing = true;
     }
 
     [RelayCommand]
@@ -64,6 +58,7 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
             ClientId id = _identityService.CurrentUser?.Id ?? throw new NotLoggedInException();
             await UpdateCollectionAsync(Campaigns, new GetCampaignsQuery(id), cancellationToken)
                 .ConfigureAwait(false);
+            UpdateCurrentState();
         }
         catch
         {
@@ -106,12 +101,6 @@ public sealed partial class CampaignsViewModel : BaseViewModel, IRecipient<AddCa
         Shell.Current
             .GoToAsync(nameof(ChooseCampaignGoalViewModel), new Dictionary<string, object> { { "Campaign", campaign } })
             .WaitAsync(cancellationToken);
-
-    partial void OnIsRefreshingChanged(bool value)
-    {
-        if (value) return;
-        UpdateCurrentState();
-    }
 
     private void UpdateCurrentState() => CurrentState = Campaigns.Count > 0 ? States.Normal : States.Empty;
 

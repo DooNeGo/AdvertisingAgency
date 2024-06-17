@@ -9,8 +9,8 @@ internal sealed partial class LatinOnlyAttribute(string errorMessage) : Validati
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var str = value?.ToString();
-        return string.IsNullOrWhiteSpace(str) ? null :
-                GetLatinRegex().IsMatch(str) ? ValidationResult.Success : new ValidationResult(errorMessage);
+        return string.IsNullOrWhiteSpace(str) ? null : 
+            GetLatinRegex().IsMatch(str) ? ValidationResult.Success : new ValidationResult(errorMessage);
     }
 
     [GeneratedRegex(@"^[a-zA-Z_0-9]*$", RegexOptions.Compiled)]
